@@ -1,47 +1,65 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import QrPopup from "../QrPopup";
+
+const longMessage = Array.from({ length: 8 }, (_, i) => `Line ${i + 1}`).join(
+  "\n",
+);
 
 describe("QrPopup", () => {
   it("renders nothing when there is no message", () => {
-    const { container } = render(<QrPopup message={null} onClose={vi.fn()} />);
+    const { container } = render(<QrPopup message={null} />);
     expect(container).toBeEmptyDOMElement();
   });
 
   it("renders nothing for an empty string message", () => {
-    const { container } = render(<QrPopup message="" onClose={vi.fn()} />);
+    const { container } = render(<QrPopup message="" />);
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("renders the message text and a dialog role when a message is provided", () => {
-    render(
-      <QrPopup
-        message="Server Rack A - Data Center Floor 2"
-        onClose={vi.fn()}
-      />,
-    );
+  it("renders the message text inside a dialog when a message is provided", () => {
+    render(<QrPopup message="Server Rack A - Data Center Floor 2" />);
     expect(
       screen.getByText("Server Rack A - Data Center Floor 2"),
     ).toBeInTheDocument();
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
-  it("renders a dimming overlay behind the card", () => {
-    render(<QrPopup message="Server Rack A" onClose={vi.fn()} />);
+  it("renders a dimming overlay behind the textbox", () => {
+    render(<QrPopup message="Server Rack A" />);
     expect(document.querySelector(".qr-popup-overlay")).toBeInTheDocument();
   });
 
-  it("applies the shared .btn style class to the OK button", () => {
-    render(<QrPopup message="Server Rack A" onClose={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /ok/i })).toHaveClass("btn");
+  it("shows the press-A-to-close indicator when the whole message fits on screen", () => {
+    render(<QrPopup message="Short message" />);
+    expect(screen.getByLabelText(/press a to close/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/more text below/i)).not.toBeInTheDocument();
   });
 
-  it("calls onClose exactly once when OK is clicked", async () => {
-    const onClose = vi.fn();
-    const user = userEvent.setup();
-    render(<QrPopup message="Server Rack A" onClose={onClose} />);
-    await user.click(screen.getByRole("button", { name: /ok/i }));
-    expect(onClose).toHaveBeenCalledOnce();
+  it("shows the blinking down-arrow indicator instead, when there are more lines below", () => {
+    render(<QrPopup message={longMessage} />);
+    expect(screen.getByLabelText(/more text below/i)).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(/press a to close/i),
+    ).not.toBeInTheDocument();
+  });
+
+  it("only shows the visible slice of lines for the current scrollOffset", () => {
+    render(<QrPopup message={longMessage} scrollOffset={0} />);
+    expect(screen.getByText("Line 1")).toBeInTheDocument();
+    expect(screen.queryByText("Line 6")).not.toBeInTheDocument();
+  });
+
+  it("shows the close indicator once scrolled all the way to the end", () => {
+    // 8 lines, 5 max visible => last valid scrollOffset is 3.
+    render(<QrPopup message={longMessage} scrollOffset={3} />);
+    expect(screen.getByText("Line 8")).toBeInTheDocument();
+    expect(screen.getByLabelText(/press a to close/i)).toBeInTheDocument();
+  });
+
+  it("never shows both indicators at once", () => {
+    render(<QrPopup message={longMessage} scrollOffset={1} />);
+    const indicators = document.querySelectorAll(".qr-popup-indicator");
+    expect(indicators).toHaveLength(1);
   });
 });
