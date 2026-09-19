@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useCamera } from "./hooks/useCamera";
 import { useQrScanner } from "./hooks/useQrScanner";
 import { resolveQrMessage } from "./utils/resolveQrMessage";
@@ -7,21 +7,41 @@ import { PHOTO_WIDTH, PHOTO_HEIGHT } from "./constants/camera";
 import Camera from "./components/Camera";
 import PhotoPreview from "./components/PhotoPreview";
 import QrPopup from "./components/QrPopup";
+import Controls from "./components/Controls";
 import "./App.css";
+
+const MAX_MESSAGE_LINES = 5;
+
+function splitMessageIntoLines(value) {
+  return String(value ?? "")
+    .replace(/\r?\n/g, "\n")
+    .split("\n")
+    .filter((line) => line.trim().length > 0)
+    .map((line) => line.trim());
+}
 
 export default function App() {
   const { videoRef, error } = useCamera();
   const photoRef = useRef(null);
   const [hasPhoto, setHasPhoto] = useState(false);
   const [qrMessage, setQrMessage] = useState(null);
+  const [scrollOffset, setScrollOffset] = useState(0);
 
-  const handleDetected = useCallback(
-    (rawValue) => setQrMessage(resolveQrMessage(rawValue, QR_MESSAGES)),
-    [],
+  const messageLines = useMemo(
+    () => (qrMessage ? splitMessageIntoLines(qrMessage) : []),
+    [qrMessage],
   );
+  const maxScroll = Math.max(0, messageLines.length - MAX_MESSAGE_LINES);
+  const canScrollUp = Boolean(qrMessage) && scrollOffset > 0;
+  const canScrollDown = Boolean(qrMessage) && scrollOffset < maxScroll;
 
-  // Paused while a photo or the result popup is showing, so the same
-  // code held in front of the camera can't re-trigger itself.
+  const handleDetected = useCallback((rawValue) => {
+    setQrMessage(resolveQrMessage(rawValue, QR_MESSAGES));
+    setScrollOffset(0);
+  }, []);
+
+  // Paused while a photo or the QR popup is showing, so the same code
+  // held in front of the camera can't re-trigger itself.
   useQrScanner({
     videoRef,
     enabled: !hasPhoto && !qrMessage,
@@ -44,17 +64,62 @@ export default function App() {
     setHasPhoto(false);
   };
 
-  const closeQrPopup = () => setQrMessage(null);
+  const closeQrPopup = () => {
+    setQrMessage(null);
+    setScrollOffset(0);
+  };
+
+  const handleScrollUp = () =>
+    setScrollOffset((current) => Math.max(0, current - 1));
+  const handleScrollDown = () =>
+    setScrollOffset((current) => Math.min(maxScroll, current + 1));
+
+  // Same physical A/B buttons do double duty depending on context, exactly
+  // like on real hardware (A confirms/advances, B backs out/closes) -
+  // this mirrors the app's original click-handler swapping logic 1:1.
+  const handleA = qrMessage ? closeQrPopup : takePhoto;
+  const handleB = qrMessage ? closeQrPopup : closePhoto;
+  const aLabel = qrMessage ? "OK" : "Snap";
 
   return (
-    <div className="App">
-      <Camera videoRef={videoRef} onSnap={takePhoto} error={error} />
-      <PhotoPreview
-        photoRef={photoRef}
-        hasPhoto={hasPhoto}
-        onClose={closePhoto}
-      />
-      <QrPopup message={qrMessage} onClose={closeQrPopup} />
+    <div className="gameboy-shell">
+      <div className="gameboy">
+        <div className="gameboy-brand-row">
+          <span className="gameboy-led" aria-hidden="true" />
+          <span className="gameboy-brand">GAME BOY</span>
+        </div>
+
+        <div className="screen-bezel">
+          <div className="screen">
+            <Camera videoRef={videoRef} error={error} />
+            <PhotoPreview photoRef={photoRef} hasPhoto={hasPhoto} />
+            <QrPopup message={qrMessage} scrollOffset={scrollOffset} />
+          </div>
+        </div>
+
+        <Controls
+          onUp={handleScrollUp}
+          onDown={handleScrollDown}
+          canScrollUp={canScrollUp}
+          canScrollDown={canScrollDown}
+          onA={handleA}
+          onB={handleB}
+          aLabel={aLabel}
+          bLabel="Close"
+        />
+
+        {/* <div className="gameboy-startselect-row" aria-hidden="true">
+          <span className="pill-btn">SELECT</span>
+          <span className="pill-btn">START</span>
+        </div> */}
+
+        <div className="gameboy-speaker" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+      </div>
     </div>
   );
 }
