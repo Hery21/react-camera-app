@@ -1,0 +1,51 @@
+/* Full-screen dim backdrop, centers the card regardless of viewport size. */
+.qr-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* The card itself: a lighter panel than the app's #313131 background so
+   it reads clearly as "on top", with a short pop-in animation. */
+.qr-popup {
+  width: 100%;
+  max-width: 360px;
+  padding: 32px 24px;
+  border-radius: 12px;
+  background-color: #3f3f3f;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  animation: qr-popup-in 0.25s ease-out;
+}
+
+.qr-popup p {
+  margin-bottom: 24px;
+  font-size: 18px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* Overrides the .btn default (absolute, bottom-left) so OK sits inline,
+   centered, at the bottom of the card instead of pinned to the viewport. */
+.qr-popup .btn {
+  position: static;
+  padding: 10px 32px;
+  font-size: 18px;
+}
+
+@keyframes qr-popup-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

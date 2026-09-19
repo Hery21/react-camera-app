@@ -1,0 +1,22 @@
+/* Shared visual style for every actionable button in the app (SNAP,
+   CLOSE, OK). Positioning is intentionally NOT included here - each
+   component decides where its own button sits (see Camera.css,
+   PhotoPreview.css, QrPopup.css), so this file only ever changes when the
+   *look* of a button changes, not where one is placed on screen. */
+.btn {
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+  background-image: linear-gradient(to right, #84844f 0%, #4ffff4 50%, #84844f 100%);
+  background-position: 0%;
+  background-size: 200%;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.btn:hover {
+  background-position: 100%;
+}

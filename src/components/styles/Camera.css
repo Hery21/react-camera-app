@@ -1,0 +1,16 @@
+.camera {
+  position: relative;
+}
+
+.camera video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* SNAP! sits fixed in the bottom-left corner of the camera view. */
+.camera .btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
