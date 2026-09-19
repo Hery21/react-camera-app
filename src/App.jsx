@@ -1,68 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useRef, useState } from "react";
+import { useCamera } from "./hooks/useCamera";
+import { PHOTO_WIDTH, PHOTO_HEIGHT } from "./constants/camera";
+import Camera from "./components/Camera";
+import PhotoPreview from "./components/PhotoPreview";
 
-function App() {
-  const videoRef = useRef(null);
+export default function App() {
+  const { videoRef, error } = useCamera();
   const photoRef = useRef(null);
-
   const [hasPhoto, setHasPhoto] = useState(false);
 
-  // Get webcam stream
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: { width: 1920, height: 1080 }
-      })
-      .then(stream => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-
-  useEffect(() => {
-    getVideo();
-  }, [videoRef]);
-
-  // Take a photo from the video stream
   const takePhoto = () => {
-    const width = 414;
-    const height = width / (16 / 9);
-
-    let video = videoRef.current;
-    let photo = photoRef.current;
-
-    photo.width = width;
-    photo.height = height;
-
-    let ctx = photo.getContext('2d');
-    ctx.drawImage(video, 0, 0, width, height);
+    const photo = photoRef.current;
+    photo.width = PHOTO_WIDTH;
+    photo.height = PHOTO_HEIGHT;
+    photo
+      .getContext("2d")
+      .drawImage(videoRef.current, 0, 0, PHOTO_WIDTH, PHOTO_HEIGHT);
     setHasPhoto(true);
   };
 
-  // Close/reset the photo view
   const closePhoto = () => {
-    let photo = photoRef.current;
-    let ctx = photo.getContext('2d');
-
-    ctx.clearRect(0, 0, photo.width, photo.height);
+    const photo = photoRef.current;
+    photo.getContext("2d").clearRect(0, 0, photo.width, photo.height);
     setHasPhoto(false);
   };
 
   return (
     <div className="App">
-      <div className="camera">
-        <video ref={videoRef}></video>
-        <button onClick={takePhoto}>SNAP!</button>
-      </div>
-      <div className={'result ' + (hasPhoto ? 'hasPhoto' : '')}>
-        <canvas ref={photoRef}></canvas>
-        <button onClick={closePhoto}>CLOSE!</button>
-      </div>
+      <Camera videoRef={videoRef} onSnap={takePhoto} error={error} />
+      <PhotoPreview
+        photoRef={photoRef}
+        hasPhoto={hasPhoto}
+        onClose={closePhoto}
+      />
     </div>
   );
 }
-
-export default App;
