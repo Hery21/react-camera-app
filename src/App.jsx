@@ -7,6 +7,7 @@ import { PHOTO_WIDTH, PHOTO_HEIGHT } from "./constants/camera";
 import Camera from "./components/Camera";
 import PhotoPreview from "./components/PhotoPreview";
 import QrPopup from "./components/QrPopup";
+import "./App.css";
 
 export default function App() {
   const { videoRef, error } = useCamera();
