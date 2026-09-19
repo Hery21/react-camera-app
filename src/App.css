@@ -1,5 +1,170 @@
-.App {
-  min-height: 100vh;
+/* ---------------------------------------------------------------------
+   Palette + sizing tokens live here so every playful color/animation
+   choice is declared once and reused consistently (shell, buttons,
+   bezel) instead of copy-pasted magic values across files.
+   ------------------------------------------------------------------- */
+:root {
+  --gb-shell-a: #b48ee0;
+  --gb-shell-b: #8b5fd1;
+  --gb-shell-c: #6a3fb8;
+  --gb-accent: #ffd400;
+  --gb-pink: #ff5c8a;
+  --gb-pink-dark: #d63868;
+  --gb-ink: #2b1d4a;
+}
+
+/* ---------------------------------------------------------------------
+   Layout strategy (unchanged from before): `.gameboy-shell` fills the
+   viewport and centers `.gameboy`, which uses aspect-ratio + height:min()
+   + max-width so the console always keeps its proportions while filling
+   as much of the screen as it can.
+   ------------------------------------------------------------------- */
+.gameboy-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.gameboy {
   position: relative;
-  background-color: #313131;
+  aspect-ratio: 0.62;
+  height: min(100%, 900px);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    160deg,
+    var(--gb-shell-a) 0%,
+    var(--gb-shell-b) 55%,
+    var(--gb-shell-c) 100%
+  );
+  border-radius: 7% 7% 12% 7%;
+  box-shadow:
+    0 30px 60px rgba(40, 10, 70, 0.5),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.35),
+    inset 0 -14px 30px rgba(30, 0, 60, 0.25);
+  padding: 3% 5% 4%;
+  color: var(--gb-ink);
+  animation: gb-pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* A little life in the shell even at rest - the whole console breathes
+   very subtly, reinforcing "toy", not "product photo". */
+@keyframes gb-pop-in {
+  0% {
+    transform: scale(0.85) translateY(24px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.gameboy-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 0 3%;
+  flex: 0 0 auto;
+}
+
+.gameboy-led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe27a, var(--gb-accent) 70%);
+  box-shadow: 0 0 8px rgba(255, 212, 0, 0.9);
+  flex: 0 0 auto;
+  animation: gb-led-blink 2.4s ease-in-out infinite;
+}
+
+@keyframes gb-led-blink {
+  0%,
+  85%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.35;
+  }
+}
+
+.gameboy-brand {
+  font-size: clamp(9px, 2.4vw, 13px);
+  letter-spacing: 0.12em;
+  font-style: italic;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(80, 30, 130, 0.5);
+}
+
+/* --- Screen area ------------------------------------------------------
+   Requirement: bigger screen, bezel closer to the edge, and the screen's
+   size must scale WITH the console rather than being a fixed box. Both
+   `.screen-bezel` padding and `.gameboy` padding are in %, so as the
+   console scales up/down (via the `height: min(...)` rule above), the
+   bezel thickness and screen size scale together automatically - the
+   ratio between screen and shell never drifts. Making the screen bigger
+   is therefore just "shrink the % paddings around it", not a separate
+   fixed size to keep in sync by hand. */
+.screen-bezel {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #14120f;
+  border-radius: 14px;
+  padding: 2.2%;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 8px 18px rgba(30, 0, 60, 0.35);
+}
+
+.screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #9fe0a8 0%, #6bc784 100%);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.45);
+}
+
+.gameboy-startselect-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 3% 0;
+  transform: rotate(-14deg);
+}
+
+.pill-btn {
+  padding: 5px 12px;
+  font-size: clamp(6px, 1.6vw, 8px);
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: linear-gradient(160deg, var(--gb-shell-c) 0%, #4a2a90 100%);
+  border-radius: 8px;
+  box-shadow: 0 3px 0 rgba(30, 0, 60, 0.4);
+}
+
+.gameboy-speaker {
+  position: absolute;
+  right: 6%;
+  bottom: 4%;
+  display: grid;
+  grid-template-columns: repeat(4, 5px);
+  gap: 6px;
+  transform: rotate(-18deg);
+}
+
+.gameboy-speaker span {
+  width: 5px;
+  height: 32px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.3);
 }

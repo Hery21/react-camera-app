@@ -1,16 +1,22 @@
 .camera {
-  position: relative;
+  position: absolute;
+  inset: 0;
 }
 
 .camera video {
+  display: block;
   width: 100%;
-  max-width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* SNAP! sits fixed in the bottom-left corner of the camera view. */
-.camera .btn {
+.camera .camera-error {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  inset: auto 6% 6% 6%;
+  padding: 6px;
+  font-size: clamp(6px, 1.6vw, 8px);
+  line-height: 1.5;
+  color: #1c2417;
+  background: rgba(244, 244, 230, 0.9);
+  border-radius: 3px;
 }

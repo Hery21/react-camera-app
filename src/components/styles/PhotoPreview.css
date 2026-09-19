@@ -1,29 +1,24 @@
 .result {
-  position: fixed;
-  top: 0;
-  left: 100%;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.9);
-  transition: 0.4s;
+  background: #171a15;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
 }
 
 .result.hasPhoto {
-  left: 0;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .result canvas {
+  display: block;
   width: 100%;
-  height: auto;
-}
-
-/* CLOSE! sits fixed in the bottom-left corner, matching SNAP!'s position
-   so the button doesn't visually jump between the two views. */
-.result .btn {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
+  height: 100%;
+  object-fit: cover;
 }
