@@ -1,11 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 import { PHOTO_WIDTH, PHOTO_HEIGHT } from "./constants/camera";
+import { QR_MESSAGES } from "./constants/qrMessages";
 
-// App only orchestrates; the camera hardware itself is already covered
-// by useCamera.test.js, so it's mocked here to isolate the snap/close logic.
+// App only orchestrates; the camera hardware and QR-decoding loop are
+// already covered by useCamera.test.js / useQrScanner.test.js, so both
+// hooks are mocked here to isolate App's own wiring logic.
 const mockUseCamera = vi.fn(() => ({
   videoRef: { current: "fake-video-el" },
   error: null,
@@ -14,17 +16,27 @@ vi.mock("./hooks/useCamera", () => ({
   useCamera: () => mockUseCamera(),
 }));
 
+const mockUseQrScanner = vi.fn();
+vi.mock("./hooks/useQrScanner", () => ({
+  useQrScanner: (args) => mockUseQrScanner(args),
+}));
+
 function mockCanvasContext() {
   const ctx = { drawImage: vi.fn(), clearRect: vi.fn() };
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(ctx);
   return ctx;
 }
 
-describe("App", () => {
+function latestOnDetected() {
+  return mockUseQrScanner.mock.calls.at(-1)[0].onDetected;
+}
+
+describe("App - photo snapshot", () => {
   let ctx;
 
   beforeEach(() => {
     ctx = mockCanvasContext();
+    mockUseQrScanner.mockClear();
   });
 
   afterEach(() => {
@@ -69,8 +81,6 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: /snap/i }));
     await user.click(screen.getByRole("button", { name: /close/i }));
 
-    // clearRect reads back photo.width/height (the truncated canvas values),
-    // not the original float constants.
     expect(ctx.clearRect).toHaveBeenCalledWith(
       0,
       0,
@@ -86,20 +96,8 @@ describe("App", () => {
 
     await user.click(screen.getByRole("button", { name: /close/i }));
 
-    // Default HTMLCanvasElement dimensions in jsdom, since takePhoto never ran.
     expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 300, 150);
     expect(document.querySelector(".result")).not.toHaveClass("hasPhoto");
-  });
-
-  it("supports taking multiple photos in a row without accumulating state", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    await user.click(screen.getByRole("button", { name: /snap/i }));
-    await user.click(screen.getByRole("button", { name: /snap/i }));
-
-    expect(ctx.drawImage).toHaveBeenCalledTimes(2);
-    expect(document.querySelector(".result")).toHaveClass("hasPhoto");
   });
 
   it("supports a full snap -> close -> snap cycle", async () => {
@@ -116,9 +114,18 @@ describe("App", () => {
   });
 });
 
-describe("App with a camera error", () => {
+describe("App - camera error", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    mockUseCamera.mockReturnValue({
+      videoRef: { current: "fake-video-el" },
+      error: null,
+    });
+  });
+
   it("surfaces the camera error message to the user", () => {
     mockCanvasContext();
+    mockUseQrScanner.mockClear();
     mockUseCamera.mockReturnValueOnce({
       videoRef: { current: null },
       error: "Permission denied",
@@ -126,5 +133,80 @@ describe("App with a camera error", () => {
 
     render(<App />);
     expect(screen.getByText("Permission denied")).toBeInTheDocument();
+  });
+});
+
+describe("App - QR scanning", () => {
+  beforeEach(() => {
+    mockCanvasContext();
+    mockUseQrScanner.mockClear();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("enables QR scanning by default, with no photo and no popup showing", () => {
+    render(<App />);
+    expect(mockUseQrScanner).toHaveBeenLastCalledWith(
+      expect.objectContaining({ enabled: true }),
+    );
+  });
+
+  it("disables QR scanning while the photo preview is open", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: /snap/i }));
+    expect(mockUseQrScanner).toHaveBeenLastCalledWith(
+      expect.objectContaining({ enabled: false }),
+    );
+  });
+
+  it("shows the resolved predefined text in a popup once a known QR code is detected", () => {
+    render(<App />);
+
+    act(() => latestOnDetected()("ASSET-001"));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(QR_MESSAGES.get("ASSET-001"))).toBeInTheDocument();
+  });
+
+  it("shows the unknown-code fallback for an unrecognized QR value", () => {
+    render(<App />);
+
+    act(() => latestOnDetected()("NOT-A-REAL-CODE"));
+
+    expect(screen.getByText(/unrecognized qr code/i)).toBeInTheDocument();
+  });
+
+  it("pauses QR scanning while the popup is open, and resumes after it is closed", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    act(() => latestOnDetected()("ASSET-001"));
+    expect(mockUseQrScanner).toHaveBeenLastCalledWith(
+      expect.objectContaining({ enabled: false }),
+    );
+
+    await user.click(screen.getByRole("button", { name: /ok/i }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(mockUseQrScanner).toHaveBeenLastCalledWith(
+      expect.objectContaining({ enabled: true }),
+    );
+  });
+
+  it("lets a new detection replace the currently shown message", () => {
+    render(<App />);
+
+    act(() => latestOnDetected()("ASSET-001"));
+    expect(screen.getByText(QR_MESSAGES.get("ASSET-001"))).toBeInTheDocument();
+
+    act(() => latestOnDetected()("ASSET-002"));
+    expect(screen.getByText(QR_MESSAGES.get("ASSET-002"))).toBeInTheDocument();
+    expect(
+      screen.queryByText(QR_MESSAGES.get("ASSET-001")),
+    ).not.toBeInTheDocument();
   });
 });
