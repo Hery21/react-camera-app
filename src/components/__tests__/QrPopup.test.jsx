@@ -21,18 +21,26 @@ describe("QrPopup", () => {
         onClose={vi.fn()}
       />,
     );
-
     expect(
       screen.getByText("Server Rack A - Data Center Floor 2"),
     ).toBeInTheDocument();
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
+  it("renders a dimming overlay behind the card", () => {
+    render(<QrPopup message="Server Rack A" onClose={vi.fn()} />);
+    expect(document.querySelector(".qr-popup-overlay")).toBeInTheDocument();
+  });
+
+  it("applies the shared .btn style class to the OK button", () => {
+    render(<QrPopup message="Server Rack A" onClose={vi.fn()} />);
+    expect(screen.getByRole("button", { name: /ok/i })).toHaveClass("btn");
+  });
+
   it("calls onClose exactly once when OK is clicked", async () => {
     const onClose = vi.fn();
     const user = userEvent.setup();
     render(<QrPopup message="Server Rack A" onClose={onClose} />);
-
     await user.click(screen.getByRole("button", { name: /ok/i }));
     expect(onClose).toHaveBeenCalledOnce();
   });
