@@ -1,6 +1,3 @@
-/* Overlay sits on top of the screen content (video / photo), anchored to
-   the bottom - the classic RPG dialogue-box position - rather than
-   centered or filling the whole LCD. */
 .qr-popup-overlay {
   position: absolute;
   inset: 0;
@@ -24,7 +21,10 @@
 }
 
 .qr-popup-message {
-  font-size: clamp(6px, 1.5vw, 9px);
+  /* --gb-unit is defined once on .gameboy (App.css) and inherits down
+     to every descendant, so this always scales in lockstep with the
+     console - no independent unit, no px floor/ceiling. */
+  font-size: calc(var(--gb-unit) * 1.5);
   line-height: 1.8;
   text-align: left;
 }
@@ -33,12 +33,11 @@
   min-height: 1.8em;
 }
 
-/* Exactly one of these two shows at a time - never both. */
 .qr-popup-indicator {
   position: absolute;
   right: 8%;
   bottom: 6%;
-  font-size: clamp(9px, 2.2vw, 13px);
+  font-size: calc(var(--gb-unit) * 2.2);
   animation: qr-blink 0.8s steps(1, end) infinite;
 }
 
@@ -47,14 +46,8 @@
 }
 
 @keyframes qr-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 @keyframes qr-popup-in {

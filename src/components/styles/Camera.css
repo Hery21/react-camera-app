@@ -14,7 +14,10 @@
   position: absolute;
   inset: auto 6% 6% 6%;
   padding: 6px;
-  font-size: clamp(6px, 1.6vw, 8px);
+  /* --gb-unit is defined once on .gameboy (App.css) and inherits down
+     to every descendant, so this always scales in lockstep with the
+     console - no independent unit, no px floor/ceiling. */
+  font-size: calc(var(--gb-unit) * 1.6);
   line-height: 1.5;
   color: #1c2417;
   background: rgba(244, 244, 230, 0.9);

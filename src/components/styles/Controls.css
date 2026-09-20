@@ -7,111 +7,171 @@
   min-height: 0;
 }
 
-/* --- D-pad -------------------------------------------------------------
-   A rounded, chunky cross built from a 3x3 grid. Each arm gets its own
-   gradient + raised bevel (like a real button cap) instead of one flat
-   gray plus, and the two functional arms (up/down) get a soft pulsing
-   glow so they visibly invite a tap - the shape now reads as a toy
-   controller, not a flat placeholder icon. */
+/* ---------------------------------------------------------------------
+   D-pad: ONE single plus shape (clip-path, true right angles). All sizes
+   below read from `--gb-unit`, the single custom property defined once
+   on `.gameboy` in App.css and inherited down through the DOM tree
+   (CSS custom properties cascade automatically) - so the D-pad always
+   scales in exact lockstep with the console and every other control,
+   with no independent unit system of its own.
+   ------------------------------------------------------------------- */
 .dpad {
   position: relative;
-  width: 36%;
+  width: 34%;
   aspect-ratio: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 2px;
-  filter: drop-shadow(0 6px 10px rgba(20, 0, 40, 0.35));
+  clip-path: polygon(
+    32% 0%,
+    68% 0%,
+    68% 32%,
+    100% 32%,
+    100% 68%,
+    68% 68%,
+    68% 100%,
+    32% 100%,
+    32% 68%,
+    0% 68%,
+    0% 32%,
+    32% 32%
+  );
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0) 32%
+    ),
+    linear-gradient(160deg, #5a3f8a 0%, #2e1f4d 70%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.15),
+    inset 3px 3px 5px rgba(255, 255, 255, 0.35),
+    inset -5px -6px 10px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
+    drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45));
+  transition:
+    transform 0.08s ease-out,
+    filter 0.08s ease-out;
+  animation: dpad-idle-glow 3s ease-in-out infinite;
+}
+
+.dpad:hover {
+  filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
+    drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45)) brightness(1.08);
+}
+
+@keyframes dpad-idle-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
+      drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
+      drop-shadow(0 10px 18px rgba(255, 212, 0, 0.4));
+  }
+}
+
+/* Whole pad tilts/sinks toward whichever direction is held - a seesaw
+   around the center pivot, not just the pressed arrow reacting alone. */
+.dpad:has(.dpad-up:active:not(:disabled)) {
+  transform: translateY(-4px) scale(0.96) rotate(-1.5deg);
+  filter: drop-shadow(0 1px 0 rgba(35, 15, 60, 0.75))
+    drop-shadow(0 3px 6px rgba(20, 0, 40, 0.55)) brightness(0.85);
+  animation: none;
+}
+
+.dpad:has(.dpad-down:active:not(:disabled)) {
+  transform: translateY(4px) scale(0.96) rotate(1.5deg);
+  filter: drop-shadow(0 1px 0 rgba(35, 15, 60, 0.75))
+    drop-shadow(0 3px 6px rgba(20, 0, 40, 0.55)) brightness(0.85);
+  animation: none;
 }
 
 .dpad-arm,
 .dpad-center {
-  background: linear-gradient(160deg, #4a3470 0%, #2e1f4d 100%);
-  box-shadow:
-    inset 0 2px 3px rgba(255, 255, 255, 0.25),
-    inset 0 -3px 5px rgba(0, 0, 0, 0.35);
+  position: relative;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dpad-up {
   grid-area: 1 / 2 / 2 / 3;
-  border-radius: 10px 10px 3px 3px;
 }
-
 .dpad-down {
   grid-area: 3 / 2 / 4 / 3;
-  border-radius: 3px 3px 10px 10px;
 }
-
 .dpad-left {
   grid-area: 2 / 1 / 3 / 2;
-  border-radius: 10px 3px 3px 10px;
 }
-
 .dpad-right {
   grid-area: 2 / 3 / 3 / 4;
-  border-radius: 3px 10px 10px 3px;
 }
-
 .dpad-center {
   grid-area: 2 / 2 / 3 / 3;
-  border-radius: 4px;
-  background: radial-gradient(circle at 38% 32%, #6c4fa0 0%, #2e1f4d 75%);
+}
+
+.dpad-center::after {
+  content: "";
+  position: absolute;
+  inset: 32%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6c4fa0, #201336 75%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dpad-glyph {
+  font-size: calc(var(--gb-unit) * 2.6);
+  line-height: 1;
+  color: var(--gb-accent, #ffd400);
+  user-select: none;
+  transition: filter 0.08s ease-out;
+}
+
+.dpad-left .dpad-glyph,
+.dpad-right .dpad-glyph {
+  opacity: 0.5;
 }
 
 .dpad-up,
 .dpad-down {
-  border: none;
-  color: var(--gb-accent, #ffd400);
-  font-size: clamp(11px, 2.4vw, 16px);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  border: none;
+  background: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Soft glowing pulse - only while the button can actually do something -
-   so the D-pad visibly "invites" a press instead of sitting inert. */
-.dpad-up:not(:disabled),
-.dpad-down:not(:disabled) {
-  animation: dpad-glow 1.6s ease-in-out infinite;
+.dpad-up:hover:not(:disabled) .dpad-glyph,
+.dpad-down:hover:not(:disabled) .dpad-glyph {
+  filter: drop-shadow(0 0 4px rgba(255, 212, 0, 0.8));
 }
 
-.dpad-up:hover:not(:disabled),
-.dpad-down:hover:not(:disabled) {
-  transform: scale(1.08);
+.dpad-up:active:not(:disabled) .dpad-glyph,
+.dpad-down:active:not(:disabled) .dpad-glyph {
+  filter: brightness(0.7);
 }
 
-.dpad-up:active:not(:disabled),
-.dpad-down:active:not(:disabled) {
-  transform: scale(0.92) translateY(2px);
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.5);
-  animation: none;
+.dpad-up:disabled .dpad-glyph,
+.dpad-down:disabled .dpad-glyph {
+  opacity: 0.3;
 }
 
 .dpad-up:disabled,
 .dpad-down:disabled {
-  opacity: 0.3;
   cursor: default;
-  filter: grayscale(0.6);
 }
 
-@keyframes dpad-glow {
-  0%, 100% {
-    box-shadow:
-      inset 0 2px 3px rgba(255, 255, 255, 0.25),
-      inset 0 -3px 5px rgba(0, 0, 0, 0.35),
-      0 0 0 rgba(255, 212, 0, 0);
-  }
-  50% {
-    box-shadow:
-      inset 0 2px 3px rgba(255, 255, 255, 0.25),
-      inset 0 -3px 5px rgba(0, 0, 0, 0.35),
-      0 0 10px 2px rgba(255, 212, 0, 0.55);
-  }
-}
-
-/* --- A/B buttons --------------------------------------------------------
-   Same diagonal arrangement as before (A upper-right, B lower-left), but
-   brighter, bouncier, and with a playful idle wobble so the console feels
-   alive rather than a static render. */
+/* --- A/B buttons --------------------------------------------------------- */
 .ab-cluster {
   position: relative;
   width: 42%;
@@ -124,17 +184,39 @@
   aspect-ratio: 1;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(145deg, #ff9bbd 0%, var(--gb-pink, #ff5c8a) 55%, var(--gb-pink-dark, #d63868) 100%);
+  background: linear-gradient(
+    145deg,
+    #ff9bbd 0%,
+    var(--gb-pink, #ff5c8a) 55%,
+    var(--gb-pink-dark, #d63868) 100%
+  );
   color: #560f2c;
   font-weight: 700;
-  font-size: clamp(11px, 2.6vw, 17px);
+  font-size: calc(var(--gb-unit) * 2.6);
   box-shadow:
     inset 0 0 0 3px rgba(255, 255, 255, 0.35),
     0 6px 0 rgba(120, 10, 45, 0.65),
     0 8px 14px rgba(120, 10, 45, 0.35);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.08s ease-out,
+    box-shadow 0.08s ease-out;
+  will-change: transform;
   animation: gb-btn-wobble 3.2s ease-in-out infinite;
+}
+
+.round-btn::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 16%;
+  width: 50%;
+  height: 32%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  filter: blur(1px);
+  pointer-events: none;
 }
 
 .b-btn {
@@ -146,7 +228,7 @@
 }
 
 .round-btn:active {
-  transform: translateY(5px) scale(0.95);
+  transform: translateY(5px) scale(0.92);
   box-shadow:
     inset 0 0 0 3px rgba(255, 255, 255, 0.3),
     0 1px 0 rgba(120, 10, 45, 0.65);
@@ -163,8 +245,13 @@
   top: 36%;
 }
 
-/* Tiny idle wobble - subtle, not distracting, just enough to say "tap me". */
 @keyframes gb-btn-wobble {
-  0%, 92%, 100% { transform: translateY(0) rotate(0deg); }
-  95% { transform: translateY(-3px) rotate(-4deg); }
+  0%,
+  92%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  95% {
+    transform: translateY(-3px) rotate(-4deg);
+  }
 }
