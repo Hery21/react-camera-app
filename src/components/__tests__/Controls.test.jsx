@@ -6,10 +6,12 @@ import Controls from "../Controls";
 const noop = () => {};
 
 describe("Controls", () => {
-  it("renders A and B buttons with the given accessible labels", () => {
+  it("renders X and Y buttons with the given accessible labels", () => {
     render(<Controls onA={noop} onB={noop} aLabel="Snap" bLabel="Close" />);
     expect(screen.getByRole("button", { name: "Snap" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+    expect(document.querySelector(".x-btn")).toHaveTextContent("X");
+    expect(document.querySelector(".y-btn")).toHaveTextContent("Y");
   });
 
   it("calls onA exactly once per click", async () => {
@@ -80,7 +82,7 @@ describe("Controls", () => {
     expect(onDown).not.toHaveBeenCalled();
   });
 
-  it("renders exactly 4 real buttons - up, down, A, B - and no more", () => {
+  it("renders exactly 4 real buttons - up, down, X, Y - and no more", () => {
     render(<Controls onA={noop} onB={noop} aLabel="Snap" bLabel="Close" />);
     expect(screen.getAllByRole("button")).toHaveLength(4);
   });

@@ -52,12 +52,12 @@ export default function Controls({
         <div className="dpad-center" aria-hidden="true" />
       </div>
 
-      <div className="ab-cluster">
-        <button type="button" className="round-btn b-btn" onClick={onB} aria-label={bLabel}>
-          B
+      <div className="ab-cluster" aria-label="action buttons">
+        <button type="button" className="round-btn x-btn" onClick={onB} aria-label={bLabel}>
+          X
         </button>
-        <button type="button" className="round-btn a-btn" onClick={onA} aria-label={aLabel}>
-          A
+        <button type="button" className="round-btn y-btn" onClick={onA} aria-label={aLabel}>
+          Y
         </button>
       </div>
     </div>

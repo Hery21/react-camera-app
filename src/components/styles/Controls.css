@@ -9,11 +9,13 @@
 
 /* ---------------------------------------------------------------------
    D-pad: ONE single plus shape (clip-path, true right angles). All sizes
-   below read from `--gb-unit`, the single custom property defined once
-   on `.gameboy` in App.css and inherited down through the DOM tree
-   (CSS custom properties cascade automatically) - so the D-pad always
-   scales in exact lockstep with the console and every other control,
-   with no independent unit system of its own.
+   read from `--gb-unit` (defined once on `.gameboy` in App.css and
+   inherited down the DOM), so the pad always scales in lockstep with the
+   console and every other control.
+
+   Plate recolored from purple to a dark maroon/charcoal so it sits
+   comfortably against the new red shell instead of clashing (purple on
+   red read as two unrelated palettes).
    ------------------------------------------------------------------- */
 .dpad {
   position: relative;
@@ -23,51 +25,43 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   clip-path: polygon(
-    32% 0%,
-    68% 0%,
-    68% 32%,
-    100% 32%,
-    100% 68%,
-    68% 68%,
-    68% 100%,
-    32% 100%,
-    32% 68%,
-    0% 68%,
-    0% 32%,
-    32% 32%
+    32% 0%, 68% 0%,
+    68% 32%, 100% 32%,
+    100% 68%, 68% 68%,
+    68% 100%, 32% 100%,
+    32% 68%, 0% 68%,
+    0% 32%, 32% 32%
   );
   background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.35) 0%,
-      rgba(255, 255, 255, 0) 32%
-    ),
-    linear-gradient(160deg, #5a3f8a 0%, #2e1f4d 70%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 32%),
+    linear-gradient(160deg, #4a2a28 0%, #241210 70%);
   box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.15),
-    inset 3px 3px 5px rgba(255, 255, 255, 0.35),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    inset 3px 3px 5px rgba(255, 255, 255, 0.3),
     inset -5px -6px 10px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
-    drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45));
-  transition:
-    transform 0.08s ease-out,
-    filter 0.08s ease-out;
+  filter:
+    drop-shadow(0 7px 0 rgba(30, 10, 10, 0.75))
+    drop-shadow(0 10px 16px rgba(40, 0, 0, 0.45));
+  transition: transform 0.08s ease-out, filter 0.08s ease-out;
   animation: dpad-idle-glow 3s ease-in-out infinite;
 }
 
 .dpad:hover {
-  filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
-    drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45)) brightness(1.08);
+  filter:
+    drop-shadow(0 7px 0 rgba(30, 10, 10, 0.75))
+    drop-shadow(0 10px 16px rgba(40, 0, 0, 0.45))
+    brightness(1.08);
 }
 
 @keyframes dpad-idle-glow {
-  0%,
-  100% {
-    filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
-      drop-shadow(0 10px 16px rgba(20, 0, 40, 0.45));
+  0%, 100% {
+    filter:
+      drop-shadow(0 7px 0 rgba(30, 10, 10, 0.75))
+      drop-shadow(0 10px 16px rgba(40, 0, 0, 0.45));
   }
   50% {
-    filter: drop-shadow(0 7px 0 rgba(35, 15, 60, 0.75))
+    filter:
+      drop-shadow(0 7px 0 rgba(30, 10, 10, 0.75))
       drop-shadow(0 10px 18px rgba(255, 212, 0, 0.4));
   }
 }
@@ -76,15 +70,19 @@
    around the center pivot, not just the pressed arrow reacting alone. */
 .dpad:has(.dpad-up:active:not(:disabled)) {
   transform: translateY(-4px) scale(0.96) rotate(-1.5deg);
-  filter: drop-shadow(0 1px 0 rgba(35, 15, 60, 0.75))
-    drop-shadow(0 3px 6px rgba(20, 0, 40, 0.55)) brightness(0.85);
+  filter:
+    drop-shadow(0 1px 0 rgba(30, 10, 10, 0.75))
+    drop-shadow(0 3px 6px rgba(40, 0, 0, 0.55))
+    brightness(0.85);
   animation: none;
 }
 
 .dpad:has(.dpad-down:active:not(:disabled)) {
   transform: translateY(4px) scale(0.96) rotate(1.5deg);
-  filter: drop-shadow(0 1px 0 rgba(35, 15, 60, 0.75))
-    drop-shadow(0 3px 6px rgba(20, 0, 40, 0.55)) brightness(0.85);
+  filter:
+    drop-shadow(0 1px 0 rgba(30, 10, 10, 0.75))
+    drop-shadow(0 3px 6px rgba(40, 0, 0, 0.55))
+    brightness(0.85);
   animation: none;
 }
 
@@ -97,44 +95,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
-.dpad-up {
-  grid-area: 1 / 2 / 2 / 3;
-}
-.dpad-down {
-  grid-area: 3 / 2 / 4 / 3;
-}
-.dpad-left {
-  grid-area: 2 / 1 / 3 / 2;
-}
-.dpad-right {
-  grid-area: 2 / 3 / 3 / 4;
-}
-.dpad-center {
-  grid-area: 2 / 2 / 3 / 3;
-}
+.dpad-up { grid-area: 1 / 2 / 2 / 3; }
+.dpad-down { grid-area: 3 / 2 / 4 / 3; }
+.dpad-left { grid-area: 2 / 1 / 3 / 2; }
+.dpad-right { grid-area: 2 / 3 / 3 / 4; }
+.dpad-center { grid-area: 2 / 2 / 3 / 3; }
 
 .dpad-center::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 32%;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #6c4fa0, #201336 75%);
+  background: radial-gradient(circle at 35% 30%, #5a3230, #170b0a 75%);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .dpad-glyph {
-  font-size: calc(var(--gb-unit) * 2.6);
+  display: block;
+  font-size: calc(var(--gb-unit) * 2.9);
   line-height: 1;
   color: var(--gb-accent, #ffd400);
+  text-shadow: 0 1px 0 rgba(94, 51, 0, 0.7);
   user-select: none;
-  transition: filter 0.08s ease-out;
+  transition: transform 0.08s ease-out, filter 0.08s ease-out, opacity 0.08s ease-out;
 }
 
 .dpad-left .dpad-glyph,
-.dpad-right .dpad-glyph {
-  opacity: 0.5;
+.dpad-right .dpad-glyph,
+.dpad-up .dpad-glyph,
+.dpad-down .dpad-glyph {
+  opacity: 1;
+  color: var(--gb-accent, #ffd400);
 }
 
 .dpad-up,
@@ -143,12 +138,17 @@
   border: none;
   background: transparent;
   padding: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease-out, filter 0.08s ease-out;
+}
+
+.dpad-left,
+.dpad-right {
+  pointer-events: none;
+  cursor: default;
 }
 
 .dpad-up:hover:not(:disabled) .dpad-glyph,
@@ -156,19 +156,27 @@
   filter: drop-shadow(0 0 4px rgba(255, 212, 0, 0.8));
 }
 
+.dpad-up:active:not(:disabled),
+.dpad-down:active:not(:disabled) {
+  transform: translateY(2px) scale(0.94);
+}
+
 .dpad-up:active:not(:disabled) .dpad-glyph,
 .dpad-down:active:not(:disabled) .dpad-glyph {
-  filter: brightness(0.7);
+  transform: scale(0.9);
+  filter: brightness(0.72) drop-shadow(0 0 6px rgba(255, 212, 0, 0.9));
 }
 
 .dpad-up:disabled .dpad-glyph,
 .dpad-down:disabled .dpad-glyph {
-  opacity: 0.3;
+  opacity: 1;
+  filter: none;
 }
 
 .dpad-up:disabled,
 .dpad-down:disabled {
   cursor: default;
+  opacity: 1;
 }
 
 /* --- A/B buttons --------------------------------------------------------- */
@@ -184,30 +192,22 @@
   aspect-ratio: 1;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(
-    145deg,
-    #ff9bbd 0%,
-    var(--gb-pink, #ff5c8a) 55%,
-    var(--gb-pink-dark, #d63868) 100%
-  );
-  color: #560f2c;
+  color: #fff;
   font-weight: 700;
   font-size: calc(var(--gb-unit) * 2.6);
   box-shadow:
     inset 0 0 0 3px rgba(255, 255, 255, 0.35),
-    0 6px 0 rgba(120, 10, 45, 0.65),
-    0 8px 14px rgba(120, 10, 45, 0.35);
+    0 6px 0 rgba(57, 82, 28, 0.7),
+    0 8px 14px rgba(60, 77, 30, 0.35);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition:
-    transform 0.08s ease-out,
-    box-shadow 0.08s ease-out;
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
   will-change: transform;
   animation: gb-btn-wobble 3.2s ease-in-out infinite;
 }
 
 .round-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 10%;
   left: 16%;
@@ -219,8 +219,18 @@
   pointer-events: none;
 }
 
-.b-btn {
-  animation-delay: 0.3s;
+.x-btn {
+  left: 0%;
+  top: 36%;
+  background: linear-gradient(145deg, #ffb3c7 0%, #ff7f9d 45%, #ea3d63 100%);
+  color: #4f0e23;
+}
+
+.y-btn {
+  right: 0%;
+  top: 4%;
+  background: linear-gradient(145deg, #aafca7 0%, #6ee36d 45%, #4bab51 100%);
+  color: #113a18;
 }
 
 .round-btn:hover {
@@ -231,27 +241,15 @@
   transform: translateY(5px) scale(0.92);
   box-shadow:
     inset 0 0 0 3px rgba(255, 255, 255, 0.3),
-    0 1px 0 rgba(120, 10, 45, 0.65);
+    0 1px 0 rgba(57, 82, 28, 0.7);
   animation: none;
 }
 
-.a-btn {
-  right: 0%;
-  top: 4%;
-}
-
-.b-btn {
-  left: 0%;
-  top: 36%;
+.x-btn {
+  animation-delay: 0.3s;
 }
 
 @keyframes gb-btn-wobble {
-  0%,
-  92%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  95% {
-    transform: translateY(-3px) rotate(-4deg);
-  }
+  0%, 92%, 100% { transform: translateY(0) rotate(0deg); }
+  95% { transform: translateY(-3px) rotate(-4deg); }
 }
