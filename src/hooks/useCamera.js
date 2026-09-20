@@ -28,7 +28,9 @@ export function useCamera() {
       try {
         return await navigator.mediaDevices.getUserMedia({ video: rearFacing });
       } catch {
-        return await navigator.mediaDevices.getUserMedia({ video: VIDEO_CONSTRAINTS });
+        return await navigator.mediaDevices.getUserMedia({
+          video: VIDEO_CONSTRAINTS,
+        });
       }
     };
 

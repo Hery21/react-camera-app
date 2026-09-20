@@ -35,7 +35,16 @@ describe("Controls", () => {
   it("enables the up button and calls onUp when canScrollUp is true", async () => {
     const onUp = vi.fn();
     const user = userEvent.setup();
-    render(<Controls onA={noop} onB={noop} onUp={onUp} canScrollUp aLabel="Snap" bLabel="Close" />);
+    render(
+      <Controls
+        onA={noop}
+        onB={noop}
+        onUp={onUp}
+        canScrollUp
+        aLabel="Snap"
+        bLabel="Close"
+      />,
+    );
 
     const up = screen.getByRole("button", { name: /scroll up/i });
     expect(up).toBeEnabled();
@@ -47,7 +56,14 @@ describe("Controls", () => {
     const onUp = vi.fn();
     const user = userEvent.setup();
     render(
-      <Controls onA={noop} onB={noop} onUp={onUp} canScrollUp={false} aLabel="Snap" bLabel="Close" />
+      <Controls
+        onA={noop}
+        onB={noop}
+        onUp={onUp}
+        canScrollUp={false}
+        aLabel="Snap"
+        bLabel="Close"
+      />,
     );
 
     const up = screen.getByRole("button", { name: /scroll up/i });
@@ -60,7 +76,14 @@ describe("Controls", () => {
     const onDown = vi.fn();
     const user = userEvent.setup();
     render(
-      <Controls onA={noop} onB={noop} onDown={onDown} canScrollDown aLabel="Snap" bLabel="Close" />
+      <Controls
+        onA={noop}
+        onB={noop}
+        onDown={onDown}
+        canScrollDown
+        aLabel="Snap"
+        bLabel="Close"
+      />,
     );
 
     const down = screen.getByRole("button", { name: /scroll down/i });
@@ -73,7 +96,14 @@ describe("Controls", () => {
     const onDown = vi.fn();
     const user = userEvent.setup();
     render(
-      <Controls onA={noop} onB={noop} onDown={onDown} canScrollDown={false} aLabel="Snap" bLabel="Close" />
+      <Controls
+        onA={noop}
+        onB={noop}
+        onDown={onDown}
+        canScrollDown={false}
+        aLabel="Snap"
+        bLabel="Close"
+      />,
     );
 
     const down = screen.getByRole("button", { name: /scroll down/i });
@@ -96,9 +126,17 @@ describe("Controls", () => {
 
   it("renders an arrow glyph in all four directions, including the decorative left/right", () => {
     render(<Controls onA={noop} onB={noop} aLabel="Snap" bLabel="Close" />);
-    expect(document.querySelector(".dpad-up .dpad-glyph")).toHaveTextContent("▲");
-    expect(document.querySelector(".dpad-down .dpad-glyph")).toHaveTextContent("▼");
-    expect(document.querySelector(".dpad-left .dpad-glyph")).toHaveTextContent("◀");
-    expect(document.querySelector(".dpad-right .dpad-glyph")).toHaveTextContent("▶");
+    expect(document.querySelector(".dpad-up .dpad-glyph")).toHaveTextContent(
+      "▲",
+    );
+    expect(document.querySelector(".dpad-down .dpad-glyph")).toHaveTextContent(
+      "▼",
+    );
+    expect(document.querySelector(".dpad-left .dpad-glyph")).toHaveTextContent(
+      "◀",
+    );
+    expect(document.querySelector(".dpad-right .dpad-glyph")).toHaveTextContent(
+      "▶",
+    );
   });
 });

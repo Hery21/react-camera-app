@@ -19,8 +19,8 @@ export default function Controls({
   canScrollDown = false,
   onA,
   onB,
-  aLabel = 'Snap',
-  bLabel = 'Close',
+  aLabel = "Snap",
+  bLabel = "Close",
 }) {
   return (
     <div className="gameboy-controls-row">
@@ -53,10 +53,20 @@ export default function Controls({
       </div>
 
       <div className="ab-cluster" aria-label="action buttons">
-        <button type="button" className="round-btn x-btn" onClick={onB} aria-label={bLabel}>
+        <button
+          type="button"
+          className="round-btn x-btn"
+          onClick={onB}
+          aria-label={bLabel}
+        >
           X
         </button>
-        <button type="button" className="round-btn y-btn" onClick={onA} aria-label={aLabel}>
+        <button
+          type="button"
+          className="round-btn y-btn"
+          onClick={onA}
+          aria-label={aLabel}
+        >
           Y
         </button>
       </div>
