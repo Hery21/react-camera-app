@@ -91,4 +91,12 @@ describe("Controls", () => {
     expect(document.querySelector(".dpad-right")?.tagName).toBe("DIV");
     expect(document.querySelector(".dpad-center")?.tagName).toBe("DIV");
   });
+
+  it("renders an arrow glyph in all four directions, including the decorative left/right", () => {
+    render(<Controls onA={noop} onB={noop} aLabel="Snap" bLabel="Close" />);
+    expect(document.querySelector(".dpad-up .dpad-glyph")).toHaveTextContent("▲");
+    expect(document.querySelector(".dpad-down .dpad-glyph")).toHaveTextContent("▼");
+    expect(document.querySelector(".dpad-left .dpad-glyph")).toHaveTextContent("◀");
+    expect(document.querySelector(".dpad-right .dpad-glyph")).toHaveTextContent("▶");
+  });
 });

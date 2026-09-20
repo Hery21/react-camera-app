@@ -6,10 +6,11 @@ import "./styles/Controls.css";
  * the screen bezel in App - Camera/PhotoPreview never render buttons
  * themselves, matching how a real Game Boy is built.
  *
- * Only Up/Down are wired to anything (scrolling long QR messages); Left/
- * Right/the center hub are rendered as plain, non-interactive elements so
- * the D-pad reads as a complete cross shape without adding dead buttons
- * that do nothing when pressed.
+ * Only Up/Down are wired to anything (scrolling long QR messages). Left/
+ * Right render their arrow glyphs too - for visual symmetry, so the pad
+ * reads as one complete, real D-pad rather than "two working arrows and
+ * two blank stubs" - but stay non-interactive plain <div>s since the app
+ * has no left/right action to wire them to yet.
  */
 export default function Controls({
   onUp,
@@ -24,7 +25,9 @@ export default function Controls({
   return (
     <div className="gameboy-controls-row">
       <div className="dpad" aria-label="direction pad">
-        <div className="dpad-arm dpad-left" aria-hidden="true" />
+        <div className="dpad-arm dpad-left" aria-hidden="true">
+          <span className="dpad-glyph">◀</span>
+        </div>
         <button
           type="button"
           className="dpad-arm dpad-up"
@@ -32,9 +35,11 @@ export default function Controls({
           disabled={!canScrollUp}
           aria-label="Scroll up"
         >
-          ▲
+          <span className="dpad-glyph">▲</span>
         </button>
-        <div className="dpad-arm dpad-right" aria-hidden="true" />
+        <div className="dpad-arm dpad-right" aria-hidden="true">
+          <span className="dpad-glyph">▶</span>
+        </div>
         <button
           type="button"
           className="dpad-arm dpad-down"
@@ -42,7 +47,7 @@ export default function Controls({
           disabled={!canScrollDown}
           aria-label="Scroll down"
         >
-          ▼
+          <span className="dpad-glyph">▼</span>
         </button>
         <div className="dpad-center" aria-hidden="true" />
       </div>
