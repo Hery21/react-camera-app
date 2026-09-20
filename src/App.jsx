@@ -40,8 +40,6 @@ export default function App() {
     setScrollOffset(0);
   }, []);
 
-  // Paused while a photo or the QR popup is showing, so the same code
-  // held in front of the camera can't re-trigger itself.
   useQrScanner({
     videoRef,
     enabled: !hasPhoto && !qrMessage,
@@ -74,9 +72,6 @@ export default function App() {
   const handleScrollDown = () =>
     setScrollOffset((current) => Math.min(maxScroll, current + 1));
 
-  // Same physical A/B buttons do double duty depending on context, exactly
-  // like on real hardware (A confirms/advances, B backs out/closes) -
-  // this mirrors the app's original click-handler swapping logic 1:1.
   const handleA = qrMessage ? closeQrPopup : takePhoto;
   const handleB = qrMessage ? closeQrPopup : closePhoto;
   const aLabel = qrMessage ? "OK" : "Snap";
@@ -84,16 +79,20 @@ export default function App() {
   return (
     <div className="gameboy-shell">
       <div className="gameboy">
-        <div className="gameboy-brand-row">
-          <span className="gameboy-led" aria-hidden="true" />
-          <span className="gameboy-brand">GAME BOY</span>
-        </div>
-
         <div className="screen-bezel">
+          <div className="power-row">
+            <span className="power-led" aria-hidden="true" />
+            <span className="power-label">POWER</span>
+          </div>
+
           <div className="screen">
             <Camera videoRef={videoRef} error={error} />
             <PhotoPreview photoRef={photoRef} hasPhoto={hasPhoto} />
             <QrPopup message={qrMessage} scrollOffset={scrollOffset} />
+          </div>
+
+          <div className="logo-slot">
+            <div className="logo-placeholder">YOUR LOGO</div>
           </div>
         </div>
 
@@ -108,10 +107,10 @@ export default function App() {
           bLabel="Close"
         />
 
-        {/* <div className="gameboy-startselect-row" aria-hidden="true">
+        <div className="gameboy-startselect-row" aria-hidden="true">
           <span className="pill-btn">SELECT</span>
           <span className="pill-btn">START</span>
-        </div> */}
+        </div>
 
         <div className="gameboy-speaker" aria-hidden="true">
           <span />
