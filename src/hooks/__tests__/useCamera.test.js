@@ -44,7 +44,11 @@ describe("useCamera", () => {
 
     await waitFor(() =>
       expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
-        video: { width: 1920, height: 1080 },
+        video: expect.objectContaining({
+          width: 1920,
+          height: 1080,
+          facingMode: { ideal: "environment" },
+        }),
       }),
     );
   });

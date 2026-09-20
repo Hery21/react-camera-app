@@ -19,18 +19,31 @@ export function useCamera() {
 
     let cancelled = false;
 
-    navigator.mediaDevices
-      .getUserMedia({ video: VIDEO_CONSTRAINTS })
+    const requestRearCamera = async () => {
+      const rearFacing = {
+        ...VIDEO_CONSTRAINTS,
+        facingMode: { ideal: "environment" },
+      };
+
+      try {
+        return await navigator.mediaDevices.getUserMedia({ video: rearFacing });
+      } catch {
+        return await navigator.mediaDevices.getUserMedia({ video: VIDEO_CONSTRAINTS });
+      }
+    };
+
+    requestRearCamera()
       .then((stream) => {
         if (cancelled) {
-          // Unmounted while the permission prompt was still pending -
-          // don't leave the camera light on for a component that's gone.
           stream.getTracks().forEach((track) => track.stop());
           return;
         }
+
         streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          videoRef.current.muted = true;
+          videoRef.current.playsInline = true;
 
           const playPromise = videoRef.current.play?.();
           if (playPromise && typeof playPromise.catch === "function") {
