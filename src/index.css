@@ -13,9 +13,6 @@ body,
   height: 100%;
 }
 
-/* The console is meant to read as a physical object sitting on a surface,
-   not a normal scrollable web page - hence the fixed, non-scrolling
-   ambient background instead of a plain white/gray page. */
 body {
   min-height: 100dvh;
   overflow: hidden;
