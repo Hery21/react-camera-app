@@ -1,45 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import { Animated, Text, View } from "react-native";
-
-import { styles } from "./styles/qr-popup";
+import { useMemo } from 'react';
+import { View, Text, Animated, StyleSheet } from 'react-native';
+import { useBlink } from '@/hooks/use-blink';
+import { GAME_BOY_FONT_FAMILY } from '@/constants/game-boy-theme';
 
 const MAX_MESSAGE_LINES = 5;
 
 function splitMessageIntoLines(value: string | null | undefined): string[] {
-  return String(value ?? "")
-    .replace(/\r?\n/g, "\n")
-    .split("\n")
+  return String(value ?? '')
+    .replace(/\r?\n/g, '\n')
+    .split('\n')
     .filter((line) => line.trim().length > 0)
     .map((line) => line.trim());
-}
-
-/**
- * CSS `@keyframes qr-blink { steps(1, end) infinite }` has no RN
- * equivalent - reproduced here with Animated.loop + Animated.sequence.
- */
-function useBlink(): Animated.Value {
-  const [opacity] = useState(() => new Animated.Value(1));
-
-  useEffect(() => {
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, {
-          toValue: 0,
-          duration: 400,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 400,
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    loop.start();
-    return () => loop.stop();
-  }, [opacity]);
-
-  return opacity;
 }
 
 export interface QrPopupProps {
@@ -47,17 +18,9 @@ export interface QrPopupProps {
   scrollOffset?: number;
 }
 
-/**
- * Pokemon-style dialogue box, anchored to the bottom of the screen. A
- * blinking "more text below" arrow shows while there's content left to
- * scroll to; a "press Y to close" badge shows once the end is reached.
- */
 export default function QrPopup({ message, scrollOffset = 0 }: QrPopupProps) {
   const lines = useMemo(() => splitMessageIntoLines(message), [message]);
-  const visibleLines = lines.slice(
-    scrollOffset,
-    scrollOffset + MAX_MESSAGE_LINES,
-  );
+  const visibleLines = lines.slice(scrollOffset, scrollOffset + MAX_MESSAGE_LINES);
   const hasMoreBelow = scrollOffset + MAX_MESSAGE_LINES < lines.length;
   const blink = useBlink();
 
@@ -76,13 +39,26 @@ export default function QrPopup({ message, scrollOffset = 0 }: QrPopupProps) {
 
         <Animated.Text
           style={[styles.indicator, { opacity: blink }]}
-          accessibilityLabel={
-            hasMoreBelow ? "More text below, scroll down" : "Press Y to close"
-          }
+          accessibilityLabel={hasMoreBelow ? 'More text below, scroll down' : 'Press Y to close'}
         >
-          {hasMoreBelow ? "▼" : "Y"}
+          {hasMoreBelow ? '▼' : 'Ⓨ'}
         </Animated.Text>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  overlay: { ...StyleSheet.absoluteFillObject, justifyContent: 'flex-end', padding: 16, zIndex: 20 },
+  popup: {
+    width: '100%',
+    minHeight: '46%',
+    padding: 16,
+    backgroundColor: '#f4f4e6',
+    borderWidth: 3,
+    borderColor: '#1c1c14',
+    borderRadius: 4,
+  },
+  line: { fontFamily: GAME_BOY_FONT_FAMILY, fontSize: 10, lineHeight: 18, minHeight: 18, color: '#1c1c14' },
+  indicator: { position: 'absolute', right: 16, bottom: 12, fontSize: 14, color: '#7a1030' },
+});

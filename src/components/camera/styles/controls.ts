@@ -17,7 +17,10 @@ export const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#241210",
     borderRadius: 6,
-    boxShadow: "0px 4px 6px rgba(30, 10, 10, 0.5)",
+    shadowColor: "#1b0908",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
     elevation: 6,
   },
   padBarHorizontal: { top: "32%", bottom: "32%", left: 0, right: 0 },
@@ -52,7 +55,10 @@ export const styles = StyleSheet.create({
   roundBtnWrap: {
     position: "absolute",
     borderRadius: 999,
-    boxShadow: "0px 5px 6px rgba(60, 10, 21, 0.5)",
+    shadowColor: "#3c0a15",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
     elevation: 6,
   },
   roundBtnPressable: {

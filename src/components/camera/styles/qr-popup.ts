@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     padding: 16,
     zIndex: 20,
   },
+  overlayNoPointerEvents: {
+    pointerEvents: "none",
+  },
   popup: {
     width: "100%",
     minHeight: "46%",
