@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts, PressStart2P_400Regular } from '@expo-google-fonts/press-start-2p';
@@ -11,24 +11,16 @@ import QrPopup from '@/components/camera/qr-popup';
 import Controls from '@/components/camera/controls';
 import StartMenu, { type StartMenuOption } from '@/components/camera/start-menu';
 import WelcomeScreen from '@/components/camera/welcome-screen';
+import PixelText from '@/components/camera/pixel-text';
 import { useCameraPermission } from '@/hooks/use-camera-permission';
 import { useGameBoyMetrics } from '@/hooks/use-game-boy-metrics';
 import { resolveQrMessage } from '@/utils/resolve-qr-message';
 import { QR_MESSAGES } from '@/constants/qr-messages';
-import { GAME_BOY_COLORS, GAME_BOY_FONT_FAMILY } from '@/constants/game-boy-theme';
-import { BottomTabInset, Spacing } from '@/constants/theme';
+import { GAME_BOY_COLORS } from '@/constants/game-boy-theme';
+import { createCameraScreenStyles } from '@/components/camera/styles/camera-screen.styles';
 
 const MAX_MESSAGE_LINES = 5;
 
-/**
- * The four screens this route can show, inside the LCD:
- *  - "welcome" - title/branding screen, shown first (like a cartridge's
- *                title screen before you press Start)
- *  - "menu"    - start/mode-select screen (StartMenu)
- *  - "tour"    - QR scanning ON (walk around, scan object plaques)
- *  - "photo"   - QR scanning OFF (so framing a photo of an outfit
- *                display is never interrupted by an accidental scan)
- */
 type Mode = 'welcome' | 'menu' | 'tour' | 'photo';
 
 const MENU_OPTIONS: readonly StartMenuOption[] = [
@@ -48,6 +40,7 @@ export default function CameraScreen() {
   const [fontsLoaded] = useFonts({ PressStart2P_400Regular });
   const { isGranted, isLoading, requestPermission } = useCameraPermission();
   const { width, height, unit } = useGameBoyMetrics();
+  const styles = useMemo(() => createCameraScreenStyles(unit), [unit]);
   const cameraRef = useRef<CameraViewType>(null);
 
   const [mode, setMode] = useState<Mode>('welcome');
@@ -68,11 +61,6 @@ export default function CameraScreen() {
   );
   const maxScroll = Math.max(0, messageLines.length - MAX_MESSAGE_LINES);
 
-  // D-pad is disabled entirely on the welcome screen (nothing to
-  // navigate yet), repurposed for menu-option selection in "menu", and
-  // repurposed again for scrolling a long QR message in "tour"/"photo" -
-  // same two physical buttons, three different meanings depending on
-  // which screen is showing.
   const canScrollUp = inWelcome ? false : inMenu ? menuIndex > 0 : Boolean(qrMessage) && scrollOffset > 0;
   const canScrollDown = inWelcome
     ? false
@@ -121,10 +109,6 @@ export default function CameraScreen() {
     setScrollOffset((current) => Math.min(maxScroll, current + 1));
   };
 
-  // Y button: confirms whatever's currently in front - leaves the
-  // welcome screen, confirms the highlighted menu option, closes the QR
-  // popup, or takes a photo. Exactly one of these is ever active, so
-  // there's no ambiguity about what a press does.
   const handleConfirm = () => {
     if (inWelcome) {
       enterMenu();
@@ -141,8 +125,6 @@ export default function CameraScreen() {
     takePhoto();
   };
 
-  // X button: a single, consistent "go back one step" action. Hidden
-  // entirely on the welcome/menu screens (nothing to back out of yet).
   const handleBack = () => {
     if (qrMessage) {
       closeQrPopup();
@@ -164,9 +146,9 @@ export default function CameraScreen() {
   if (!isGranted) {
     return (
       <SafeAreaView style={styles.shell}>
-        <Text style={styles.permissionText} onPress={requestPermission}>
+        <PixelText style={styles.permissionText} onPress={requestPermission}>
           Tap to allow camera access
-        </Text>
+        </PixelText>
       </SafeAreaView>
     );
   }
@@ -179,30 +161,33 @@ export default function CameraScreen() {
         <View style={styles.screenBezel}>
           <View style={styles.powerRow}>
             <View style={styles.powerLed} />
-            <Text style={styles.powerLabel}>POWER</Text>
+            <PixelText style={styles.powerLabel}>POWER</PixelText>
           </View>
 
           <View style={styles.screen}>
             {inWelcome ? (
-              <WelcomeScreen />
+              <WelcomeScreen unit={unit} />
             ) : inMenu ? (
-              <StartMenu options={MENU_OPTIONS} selectedIndex={menuIndex} />
+              <StartMenu options={MENU_OPTIONS} selectedIndex={menuIndex} unit={unit} />
             ) : (
               <>
                 <Viewfinder
                   ref={cameraRef}
+                  unit={unit}
                   scanningEnabled={scanningEnabled}
                   onBarcodeScanned={handleBarcodeScanned}
                 />
                 <PhotoPreview photoUri={photoUri} hasPhoto={hasPhoto} />
-                {mode === 'tour' && <QrPopup message={qrMessage} scrollOffset={scrollOffset} />}
+                {mode === 'tour' && (
+                  <QrPopup message={qrMessage} scrollOffset={scrollOffset} unit={unit} />
+                )}
               </>
             )}
           </View>
 
           <View style={styles.logoSlot}>
             <View style={styles.logoPlaceholder}>
-              <Text style={styles.logoText}>YOUR LOGO</Text>
+              <PixelText style={styles.logoText}>YOUR LOGO</PixelText>
             </View>
           </View>
         </View>
@@ -220,58 +205,12 @@ export default function CameraScreen() {
         />
 
         <View style={styles.startSelectRow}>
-          <Text style={styles.pillBtn}>SELECT</Text>
-          {/* START is now a real control, not decorative text: on the
-              welcome screen it advances to the menu, same as pressing Y
-              - matching the classic "press START" title-screen prompt.
-              Everywhere else it's intentionally a no-op, same as SELECT
-              always has been. */}
+          <PixelText style={styles.pillBtn}>SELECT</PixelText>
           <Pressable onPress={inWelcome ? enterMenu : undefined} accessibilityRole="button" accessibilityLabel="Start" hitSlop={8}>
-            <Text style={styles.pillBtn}>START</Text>
+            <PixelText style={styles.pillBtn}>START</PixelText>
           </Pressable>
         </View>
       </LinearGradient>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  shell: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#20242c', paddingBottom: BottomTabInset },
-  permissionText: { fontFamily: GAME_BOY_FONT_FAMILY, color: '#fff', fontSize: 12, textAlign: 'center', padding: Spacing.four },
-  gameboy: {
-    borderRadius: 24,
-    padding: '3%',
-    shadowColor: '#5a0a0a',
-    shadowOffset: { width: 0, height: 14 },
-    shadowOpacity: 0.5,
-    shadowRadius: 24,
-    elevation: 16,
-  },
-  screenBezel: { flex: 1, backgroundColor: GAME_BOY_COLORS.bezel, borderRadius: 18, padding: '3%' },
-  powerRow: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingBottom: 8 },
-  powerLed: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#ff2b1f' },
-  powerLabel: { fontFamily: GAME_BOY_FONT_FAMILY, fontSize: 8, color: '#fff5e6', letterSpacing: 1 },
-  screen: { flex: 1, borderRadius: 6, overflow: 'hidden', backgroundColor: GAME_BOY_COLORS.screenBottom },
-  logoSlot: { alignItems: 'center', paddingVertical: 10 },
-  logoPlaceholder: {
-    width: '100%',
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: 'rgba(255,255,255,0.5)',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  logoText: { fontFamily: GAME_BOY_FONT_FAMILY, fontSize: 10, color: 'rgba(255,255,255,0.85)', letterSpacing: 1 },
-  startSelectRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 16, paddingTop: 10 },
-  pillBtn: {
-    fontFamily: GAME_BOY_FONT_FAMILY,
-    fontSize: 8,
-    color: '#fff',
-    backgroundColor: GAME_BOY_COLORS.shellC,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
-});
