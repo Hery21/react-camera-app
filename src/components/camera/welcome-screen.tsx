@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
-import { View, Animated } from 'react-native';
-import { useBlink } from '@/hooks/use-blink';
-import { APP_NAME, APP_TAGLINE } from '@/constants/branding';
-import PixelText from './pixel-text';
-import { createWelcomeScreenStyles } from './styles/welcome-screen.styles';
+import { APP_NAME, APP_TAGLINE } from "@/constants/branding";
+import { useBlink } from "@/hooks/use-blink";
+import { useMemo } from "react";
+import { Animated, Image, type ImageSourcePropType, View } from "react-native";
+import PixelText from "./pixel-text";
+import { createWelcomeScreenStyles } from "./styles/welcome-screen.styles";
+
+const IKTLogo =
+  require("../../../assets/images/IKT-icon.gif") as ImageSourcePropType;
 
 export interface WelcomeScreenProps {
   appName?: string;
@@ -21,14 +24,21 @@ export default function WelcomeScreen({
 
   return (
     <View style={styles.container}>
-      <View style={styles.badge}>
+      {/* <View style={styles.badge}>
         <PixelText style={styles.badgeGlyph}>★</PixelText>
-      </View>
+      </View> */}
+      <Image
+        source={IKTLogo}
+        style={{ width: unit * 16, height: unit * 16, resizeMode: "contain" }}
+      />
 
       <PixelText style={styles.appName}>{appName}</PixelText>
       <PixelText style={styles.tagline}>{tagline}</PixelText>
 
-      <Animated.Text allowFontScaling={false} style={[styles.prompt, { opacity: blink }]}>
+      <Animated.Text
+        allowFontScaling={false}
+        style={[styles.prompt, { opacity: blink }]}
+      >
         PRESS START
       </Animated.Text>
     </View>

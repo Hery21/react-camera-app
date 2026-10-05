@@ -1,3 +1,3 @@
 // UNCHANGED - no sizing here.
-export const APP_NAME = 'RELIC CAM';
-export const APP_TAGLINE = 'STEP INTO HISTORY';
+export const APP_NAME = "PEKAN SENI BUDAYA";
+export const APP_TAGLINE = "IKATAN KELUARGA TIONGHOA RIAU KOMPLEKS";
