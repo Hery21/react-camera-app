@@ -1,12 +1,7 @@
-import { useCameraPermissions } from "expo-camera";
-import { useEffect } from "react";
+// UNCHANGED - no sizing here, included for completeness only.
+import { useEffect } from 'react';
+import { useCameraPermissions } from 'expo-camera';
 
-/**
- * There is no getUserMedia/MediaStream concept in RN - expo-camera's
- * <CameraView> owns the actual camera hardware lifecycle internally
- * (including releasing it on unmount), so this hook's only job is
- * permissions.
- */
 export interface CameraPermissionState {
   isGranted: boolean;
   isLoading: boolean;
