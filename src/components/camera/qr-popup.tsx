@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
-import { View, Animated } from 'react-native';
-import { useBlink } from '@/hooks/use-blink';
-import PixelText from './pixel-text';
-import { createQrPopupStyles } from './styles/qr-popup.styles';
+import { useBlink } from "@/hooks/use-blink";
+import { useMemo } from "react";
+import { Animated, View } from "react-native";
+import PixelText from "./pixel-text";
+import { createQrPopupStyles } from "./styles/qr-popup.styles";
 
 const MAX_MESSAGE_LINES = 5;
 
 function splitMessageIntoLines(value: string | null | undefined): string[] {
-  return String(value ?? '')
-    .replace(/\r?\n/g, '\n')
-    .split('\n')
+  return String(value ?? "")
+    .replace(/\r?\n/g, "\n")
+    .split("\n")
     .filter((line) => line.trim().length > 0)
     .map((line) => line.trim());
 }
@@ -20,10 +20,17 @@ export interface QrPopupProps {
   unit: number;
 }
 
-export default function QrPopup({ message, scrollOffset = 0, unit }: QrPopupProps) {
+export default function QrPopup({
+  message,
+  scrollOffset = 0,
+  unit,
+}: QrPopupProps) {
   const styles = useMemo(() => createQrPopupStyles(unit), [unit]);
   const lines = useMemo(() => splitMessageIntoLines(message), [message]);
-  const visibleLines = lines.slice(scrollOffset, scrollOffset + MAX_MESSAGE_LINES);
+  const visibleLines = lines.slice(
+    scrollOffset,
+    scrollOffset + MAX_MESSAGE_LINES,
+  );
   const hasMoreBelow = scrollOffset + MAX_MESSAGE_LINES < lines.length;
   const blink = useBlink();
 
@@ -46,8 +53,11 @@ export default function QrPopup({ message, scrollOffset = 0, unit }: QrPopupProp
         <Animated.Text
           allowFontScaling={false}
           style={[styles.indicator, { opacity: blink }]}
-          accessibilityLabel={hasMoreBelow ? 'More text below, scroll down' : 'Press A to close'}>
-          {hasMoreBelow ? '▼' : 'Ⓐ'}
+          accessibilityLabel={
+            hasMoreBelow ? "More text below, scroll down" : "Press A to close"
+          }
+        >
+          {hasMoreBelow ? "▼" : "Ⓐ"}
         </Animated.Text>
       </View>
     </View>

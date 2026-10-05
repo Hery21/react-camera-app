@@ -1,9 +1,9 @@
-import { useMemo, useRef } from 'react';
-import { View, Pressable, Animated, type ViewStyle } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { GAME_BOY_COLORS } from '@/constants/game-boy-theme';
-import PixelText from './pixel-text';
-import { createControlsStyles } from './styles/controls.styles';
+import { GAME_BOY_COLORS } from "@/constants/game-boy-theme";
+import { LinearGradient } from "expo-linear-gradient";
+import { useMemo, useState } from "react";
+import { Animated, Pressable, View, type ViewStyle } from "react-native";
+import PixelText from "./pixel-text";
+import { createControlsStyles } from "./styles/controls.styles";
 
 const NOOP = () => {};
 
@@ -26,15 +26,20 @@ export default function Controls({
   canScrollDown = false,
   onA,
   onB,
-  aLabel = 'Snap',
-  bLabel = 'Close',
+  aLabel = "Snap",
+  bLabel = "Close",
   unit,
 }: ControlsProps) {
   const styles = useMemo(() => createControlsStyles(unit), [unit]);
-  const tilt = useRef(new Animated.Value(0)).current;
+  const [tilt] = useState(() => new Animated.Value(0));
 
   const animateTilt = (toValue: number) => {
-    Animated.spring(tilt, { toValue, useNativeDriver: true, speed: 40, bounciness: 6 }).start();
+    Animated.spring(tilt, {
+      toValue,
+      useNativeDriver: true,
+      speed: 40,
+      bounciness: 6,
+    }).start();
   };
 
   const padTilt = {
@@ -48,7 +53,7 @@ export default function Controls({
       {
         rotate: tilt.interpolate({
           inputRange: [-1, 0, 1],
-          outputRange: ['-1.5deg', '0deg', '1.5deg'],
+          outputRange: ["-1.5deg", "0deg", "1.5deg"],
         }),
       },
     ],
@@ -70,23 +75,48 @@ export default function Controls({
   // down) when tilt>0 - i.e. when DOWN is the one being pressed.
   const upArmAnim = {
     transform: [
-      { scale: tilt.interpolate({ inputRange: [-1, 0, 1], outputRange: [1, 1, 0.82] }) },
-      { translateY: tilt.interpolate({ inputRange: [-1, 0, 1], outputRange: [0, 0, armShrink] }) },
+      {
+        scale: tilt.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [1, 1, 0.82],
+        }),
+      },
+      {
+        translateY: tilt.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [0, 0, armShrink],
+        }),
+      },
     ],
   };
   // Mirror of the above: down only shrinks/shifts (toward up) when up is
   // the one being pressed (tilt<0).
   const downArmAnim = {
     transform: [
-      { scale: tilt.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.82, 1, 1] }) },
-      { translateY: tilt.interpolate({ inputRange: [-1, 0, 1], outputRange: [-armShrink, 0, 0] }) },
+      {
+        scale: tilt.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [0.82, 1, 1],
+        }),
+      },
+      {
+        translateY: tilt.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [-armShrink, 0, 0],
+        }),
+      },
     ],
   };
   // Left/right are never the pressed arm, so they shrink and shift
   // toward whichever direction (up OR down) is currently active.
   const sideArmAnim = {
     transform: [
-      { scale: tilt.interpolate({ inputRange: [-1, 0, 1], outputRange: [0.82, 1, 0.82] }) },
+      {
+        scale: tilt.interpolate({
+          inputRange: [-1, 0, 1],
+          outputRange: [0.82, 1, 0.82],
+        }),
+      },
       {
         translateY: tilt.interpolate({
           inputRange: [-1, 0, 1],
@@ -112,7 +142,8 @@ export default function Controls({
               onPressOut={() => animateTilt(0)}
               accessibilityRole="button"
               accessibilityLabel="Scroll up"
-              hitSlop={8}>
+              hitSlop={8}
+            >
               {/* Always full-strength, even when canScrollUp is false -
                   the button stays visually identical whether or not it
                   currently does anything; `disabled` below still safely
@@ -129,7 +160,8 @@ export default function Controls({
               onPressOut={() => animateTilt(0)}
               accessibilityRole="button"
               accessibilityLabel="Scroll down"
-              hitSlop={8}>
+              hitSlop={8}
+            >
               <PixelText style={styles.glyph}>▼</PixelText>
             </Pressable>
           </Animated.View>
@@ -139,10 +171,16 @@ export default function Controls({
               dimmed - same full-strength glyph style as up/down, and
               they now join the same rocker animation as every other
               arm. */}
-          <Animated.View style={[styles.armSlot, styles.armLeft, sideArmAnim]} pointerEvents="none">
+          <Animated.View
+            style={[styles.armSlot, styles.armLeft, sideArmAnim]}
+            pointerEvents="none"
+          >
             <PixelText style={styles.glyph}>◀</PixelText>
           </Animated.View>
-          <Animated.View style={[styles.armSlot, styles.armRight, sideArmAnim]} pointerEvents="none">
+          <Animated.View
+            style={[styles.armSlot, styles.armRight, sideArmAnim]}
+            pointerEvents="none"
+          >
             <PixelText style={styles.glyph}>▶</PixelText>
           </Animated.View>
         </View>
@@ -161,7 +199,7 @@ export default function Controls({
           onPress={onB ?? NOOP}
           disabled={!onB}
           accessibilityLabel={bLabel}
-          style={{ left: 0, top: '36%' }}
+          style={{ left: 0, top: "36%" }}
           styles={styles}
         />
         <RoundButton
@@ -170,7 +208,7 @@ export default function Controls({
           colors={GAME_BOY_COLORS.yBtn}
           onPress={onA}
           accessibilityLabel={aLabel}
-          style={{ right: 0, top: '4%' }}
+          style={{ right: 0, top: "4%" }}
           styles={styles}
         />
       </View>
@@ -199,9 +237,14 @@ function RoundButton({
   style,
   styles,
 }: RoundButtonProps) {
-  const scale = useRef(new Animated.Value(1)).current;
+  const [scale] = useState(() => new Animated.Value(1));
   const press = (toValue: number) =>
-    Animated.spring(scale, { toValue, useNativeDriver: true, speed: 40, bounciness: 8 }).start();
+    Animated.spring(scale, {
+      toValue,
+      useNativeDriver: true,
+      speed: 40,
+      bounciness: 8,
+    }).start();
 
   const size = unit * 14;
 
@@ -211,7 +254,12 @@ function RoundButton({
     // whether a press actually does anything (and skips the press-in
     // tilt animation below), never how the button looks.
     <Animated.View
-      style={[styles.roundBtnWrap, style, { width: size, height: size, transform: [{ scale }] }]}>
+      style={[
+        styles.roundBtnWrap,
+        style,
+        { width: size, height: size, transform: [{ scale }] },
+      ]}
+    >
       <Pressable
         disabled={disabled}
         onPress={onPress}
@@ -220,12 +268,14 @@ function RoundButton({
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
         accessibilityState={{ disabled }}
-        style={styles.roundBtnPressable}>
+        style={styles.roundBtnPressable}
+      >
         <LinearGradient
           colors={colors}
           start={{ x: 0.2, y: 0 }}
           end={{ x: 0.8, y: 1 }}
-          style={styles.roundBtnGradient}>
+          style={styles.roundBtnGradient}
+        >
           <PixelText style={styles.roundBtnLabel}>{label}</PixelText>
         </LinearGradient>
       </Pressable>
