@@ -6,6 +6,18 @@ import { StyleSheet } from "react-native";
 
 export function createStartMenuStyles(unit: number) {
   return StyleSheet.create({
+    background: {
+      flex: 1,
+      width: "100%",
+      height: "100%",
+    },
+    backgroundImage: {
+      resizeMode: "cover",
+    },
+    greenOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: "rgba(107, 199, 132, 0.7)",
+    },
     container: {
       flex: 1,
       alignItems: "center",

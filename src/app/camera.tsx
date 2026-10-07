@@ -8,7 +8,12 @@ import {
 } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import {
+  ImageBackground,
+  Pressable,
+  View,
+  type ImageSourcePropType,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Controls from "@/components/camera/controls";
@@ -28,6 +33,8 @@ import { useGameBoyMetrics } from "@/hooks/use-game-boy-metrics";
 import { resolveQrMessage } from "@/utils/resolve-qr-message";
 
 const MAX_MESSAGE_LINES = 5;
+const SCREEN_BACKGROUND =
+  require("../../assets/images/background.jpg") as ImageSourcePropType;
 
 type Mode = "welcome" | "menu" | "tour" | "photo";
 
@@ -170,11 +177,18 @@ export default function CameraScreen() {
 
   if (!isGranted) {
     return (
-      <SafeAreaView style={styles.shell}>
-        <PixelText style={styles.permissionText} onPress={requestPermission}>
-          Tap to allow camera access
-        </PixelText>
-      </SafeAreaView>
+      <ImageBackground
+        source={SCREEN_BACKGROUND}
+        style={styles.shell}
+        imageStyle={{ resizeMode: "cover" }}
+      >
+        <View style={styles.screenTint} />
+        <SafeAreaView style={styles.shell}>
+          <PixelText style={styles.permissionText} onPress={requestPermission}>
+            Tap to allow camera access
+          </PixelText>
+        </SafeAreaView>
+      </ImageBackground>
     );
   }
 

@@ -3,6 +3,18 @@ import { GAME_BOY_COLORS, GAME_BOY_FONT_FAMILY } from '@/constants/game-boy-them
 
 export function createWelcomeScreenStyles(unit: number) {
   return StyleSheet.create({
+    background: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+    },
+    backgroundImage: {
+      resizeMode: 'cover',
+    },
+    greenOverlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(107, 199, 132, 0.7)',
+    },
     container: {
       flex: 1,
       alignItems: 'center',
