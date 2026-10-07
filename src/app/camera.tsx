@@ -149,6 +149,10 @@ export default function CameraScreen() {
       closePhoto();
       return;
     }
+    if (inMenu) {
+      setMode("welcome");
+      return;
+    }
     setMode("menu");
   };
 
@@ -233,7 +237,7 @@ export default function CameraScreen() {
           canScrollUp={canScrollUp}
           canScrollDown={canScrollDown}
           onA={handleConfirm}
-          onB={inWelcome || inMenu ? undefined : handleBack}
+          onB={inWelcome ? undefined : handleBack}
           aLabel={aLabel}
           bLabel="Back"
         />
