@@ -18,8 +18,8 @@ describe('WelcomeScreen', () => {
     expect(screen.getByText('A TEST TAGLINE')).toBeTruthy();
   });
 
-  it('renders the press-start prompt', () => {
+  it('renders the press-Y prompt', () => {
     render(<WelcomeScreen unit={TEST_UNIT} />);
-    expect(screen.getByText('PRESS START')).toBeTruthy();
+    expect(screen.getByText('PRESS Y')).toBeTruthy();
   });
 });

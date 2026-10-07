@@ -102,22 +102,5 @@ export function createCameraScreenStyles(unit: number) {
       color: "rgba(255,255,255,0.85)",
       letterSpacing: unit * 0.3, // same fix as powerLabel above
     },
-    startSelectRow: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: unit * 4.6,
-      paddingTop: unit * 2.9,
-    },
-    pillBtn: {
-      fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 2.3,
-      color: "#fff",
-      backgroundColor: GAME_BOY_COLORS.shellC,
-      paddingHorizontal: unit * 2.9,
-      paddingVertical: unit * 1.7,
-      borderRadius: unit * 2.3,
-      overflow: "hidden",
-    },
   });
 }

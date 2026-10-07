@@ -8,12 +8,7 @@ import {
 } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useMemo, useRef, useState } from "react";
-import {
-  ImageBackground,
-  Pressable,
-  View,
-  type ImageSourcePropType,
-} from "react-native";
+import { ImageBackground, View, type ImageSourcePropType } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Controls from "@/components/camera/controls";
@@ -39,7 +34,7 @@ const SCREEN_BACKGROUND =
 type Mode = "welcome" | "menu" | "tour" | "photo";
 
 const MENU_OPTIONS: readonly StartMenuOption[] = [
-  { value: "tour", label: "Start Tour" },
+  { value: "tour", label: "Tour" },
   { value: "photo", label: "Take Photos" },
 ];
 
@@ -164,9 +159,9 @@ export default function CameraScreen() {
   };
 
   const yLabel = inWelcome
-    ? "Start"
+    ? "Open"
     : inMenu
-      ? "Select"
+      ? "Open"
       : qrMessage
         ? "OK"
         : "Snap";
@@ -255,18 +250,6 @@ export default function CameraScreen() {
           yLabel={yLabel}
           xLabel="Back"
         />
-
-        <View style={styles.startSelectRow}>
-          <PixelText style={styles.pillBtn}>SELECT</PixelText>
-          <Pressable
-            onPress={inWelcome ? enterMenu : undefined}
-            accessibilityRole="button"
-            accessibilityLabel="Start"
-            hitSlop={8}
-          >
-            <PixelText style={styles.pillBtn}>START</PixelText>
-          </Pressable>
-        </View>
       </LinearGradient>
     </SafeAreaView>
   );

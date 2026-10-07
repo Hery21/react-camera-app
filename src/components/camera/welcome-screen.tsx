@@ -54,7 +54,7 @@ export default function WelcomeScreen({
           allowFontScaling={false}
           style={[styles.prompt, { opacity: blink }]}
         >
-          PRESS START
+          PRESS Y
         </Animated.Text>
       </View>
     </ImageBackground>

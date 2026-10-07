@@ -39,7 +39,7 @@ jest.mock("@/constants/game-boy-theme", () => ({
 }));
 
 const OPTIONS = [
-  { value: "tour", label: "Start Tour" },
+  { value: "tour", label: "Tour" },
   { value: "photo", label: "Take Photos" },
 ];
 
@@ -50,7 +50,7 @@ const TEST_UNIT = 4;
 describe("StartMenu", () => {
   it("renders every option label", () => {
     render(<StartMenu options={OPTIONS} selectedIndex={0} unit={TEST_UNIT} />);
-    expect(screen.getByText("Start Tour")).toBeTruthy();
+    expect(screen.getByText("Tour")).toBeTruthy();
     expect(screen.getByText("Take Photos")).toBeTruthy();
   });
 
@@ -74,7 +74,7 @@ describe("StartMenu", () => {
     const { rerender } = render(
       <StartMenu options={OPTIONS} selectedIndex={0} unit={TEST_UNIT} />,
     );
-    expect(screen.getByText("Start Tour").props.style).toEqual(
+    expect(screen.getByText("Tour").props.style).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ textDecorationLine: "underline" }),
       ]),
@@ -98,7 +98,7 @@ describe("StartMenu", () => {
   it("enables the X button in the start menu and returns to the welcome screen when pressed", () => {
     render(<CameraScreen />);
 
-    fireEvent.press(screen.getAllByLabelText("Start")[0]);
+    fireEvent.press(screen.getByLabelText("Open"));
 
     const backButton = screen.getByLabelText("Back");
     expect(backButton.props.accessibilityState).toMatchObject({
@@ -107,6 +107,6 @@ describe("StartMenu", () => {
 
     fireEvent.press(backButton);
 
-    expect(screen.getByText("PRESS START")).toBeTruthy();
+    expect(screen.getByText("PRESS Y")).toBeTruthy();
   });
 });

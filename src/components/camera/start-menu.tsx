@@ -64,7 +64,7 @@ export default function StartMenu({
           })}
         </View>
 
-        <PixelText style={styles.hint}>▲▼ Choose Ⓨ Select</PixelText>
+        <PixelText style={styles.hint}>▲▼ Choose Ⓨ Open</PixelText>
       </View>
     </ImageBackground>
   );
