@@ -98,7 +98,7 @@ describe("StartMenu", () => {
   it("enables the X button in the start menu and returns to the welcome screen when pressed", () => {
     render(<CameraScreen />);
 
-    fireEvent.press(screen.getByLabelText("Open"));
+    fireEvent.press(screen.getByLabelText("Select"));
 
     const backButton = screen.getByLabelText("Back");
     expect(backButton.props.accessibilityState).toMatchObject({

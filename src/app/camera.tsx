@@ -159,9 +159,9 @@ export default function CameraScreen() {
   };
 
   const yLabel = inWelcome
-    ? "Open"
+    ? "Start"
     : inMenu
-      ? "Open"
+      ? "Start"
       : qrMessage
         ? "OK"
         : "Snap";
