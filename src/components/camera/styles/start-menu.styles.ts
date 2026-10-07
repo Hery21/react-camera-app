@@ -27,8 +27,8 @@ export function createStartMenuStyles(unit: number) {
     },
     title: {
       fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 3.1,
-      lineHeight: unit * 5.7,
+      fontSize: unit * 3.7,
+      lineHeight: unit * 6.6,
       textAlign: "center",
       color: GAME_BOY_COLORS.screenText,
     },
@@ -43,7 +43,7 @@ export function createStartMenuStyles(unit: number) {
     },
     cursor: {
       fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 3.4,
+      fontSize: unit * 4.0,
       color: GAME_BOY_COLORS.screenText,
     },
     cursorHidden: {
@@ -51,7 +51,7 @@ export function createStartMenuStyles(unit: number) {
     },
     optionLabel: {
       fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 3.1,
+      fontSize: unit * 3.6,
       color: GAME_BOY_COLORS.screenText,
       opacity: 0.6,
     },
@@ -63,13 +63,13 @@ export function createStartMenuStyles(unit: number) {
       position: "absolute",
       bottom: unit * 2.9,
       fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 2.1,
+      fontSize: unit * 2.4,
       fontWeight: "bold",
       color: GAME_BOY_COLORS.screenText,
       opacity: 0.7,
     },
     pointer: {
-      width: unit * 3.4,
+      width: unit * 4.0,
     },
   });
 }
