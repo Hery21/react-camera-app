@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
+import { Text } from "react-native";
 import CameraScreen from "../../../app/camera";
 import StartMenu from "../start-menu";
 
@@ -53,10 +54,20 @@ describe("StartMenu", () => {
     expect(screen.getByText("Take Photos")).toBeTruthy();
   });
 
-  it("shows a cursor glyph for every row (visibility toggled via opacity, not removal)", () => {
+  it("renders a cursor element for every row and toggles its visibility via opacity", () => {
     render(<StartMenu options={OPTIONS} selectedIndex={0} unit={TEST_UNIT} />);
-    const cursors = screen.getAllByText("▶");
-    expect(cursors).toHaveLength(OPTIONS.length);
+
+    const cursorNodes = screen.UNSAFE_getAllByType(Text).filter((node) => {
+      const children = node.props.children;
+      return Array.isArray(children)
+        ? children.some((child) => child && child.type === "img")
+        : children && children.type === "img";
+    });
+
+    expect(cursorNodes).toHaveLength(OPTIONS.length);
+    expect(cursorNodes[0].props.style).toEqual(
+      expect.not.objectContaining({ opacity: 0 }),
+    );
   });
 
   it("moves the visually-selected option when selectedIndex changes", () => {

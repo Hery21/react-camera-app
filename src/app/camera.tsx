@@ -156,7 +156,7 @@ export default function CameraScreen() {
     setMode("menu");
   };
 
-  const aLabel = inWelcome
+  const yLabel = inWelcome
     ? "Start"
     : inMenu
       ? "Select"
@@ -236,10 +236,10 @@ export default function CameraScreen() {
           onDown={handleDown}
           canScrollUp={canScrollUp}
           canScrollDown={canScrollDown}
-          onA={handleConfirm}
-          onB={inWelcome ? undefined : handleBack}
-          aLabel={aLabel}
-          bLabel="Back"
+          onY={handleConfirm}
+          onX={inWelcome ? undefined : handleBack}
+          yLabel={yLabel}
+          xLabel="Back"
         />
 
         <View style={styles.startSelectRow}>

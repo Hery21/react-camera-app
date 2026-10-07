@@ -12,10 +12,10 @@ export interface ControlsProps {
   onDown?: () => void;
   canScrollUp?: boolean;
   canScrollDown?: boolean;
-  onA: () => void;
-  onB?: () => void;
-  aLabel?: string;
-  bLabel?: string;
+  onY: () => void;
+  onX?: () => void;
+  yLabel?: string;
+  xLabel?: string;
   unit: number;
 }
 
@@ -24,10 +24,10 @@ export default function Controls({
   onDown,
   canScrollUp = false,
   canScrollDown = false,
-  onA,
-  onB,
-  aLabel = "Snap",
-  bLabel = "Close",
+  onY,
+  onX,
+  yLabel = "Snap",
+  xLabel = "Close",
   unit,
 }: ControlsProps) {
   const styles = useMemo(() => createControlsStyles(unit), [unit]);
@@ -188,7 +188,7 @@ export default function Controls({
 
       <View style={{ width: unit * 42, height: unit * 26 }}>
         {/* X is now ALWAYS rendered - previously it was removed from the
-            tree entirely whenever onB was undefined (Welcome/Menu
+            tree entirely whenever onX was undefined (Welcome/Menu
             screens), which is exactly why it appeared to vanish. It
             stays at full visual strength the whole time; `disabled`
             just means pressing it safely does nothing on those screens. */}
@@ -196,9 +196,9 @@ export default function Controls({
           label="X"
           unit={unit}
           colors={GAME_BOY_COLORS.xBtn}
-          onPress={onB ?? NOOP}
-          disabled={!onB}
-          accessibilityLabel={bLabel}
+          onPress={onX ?? NOOP}
+          disabled={!onX}
+          accessibilityLabel={xLabel}
           style={{ left: 0, top: "36%" }}
           styles={styles}
         />
@@ -206,8 +206,8 @@ export default function Controls({
           label="Y"
           unit={unit}
           colors={GAME_BOY_COLORS.yBtn}
-          onPress={onA}
-          accessibilityLabel={aLabel}
+          onPress={onY}
+          accessibilityLabel={yLabel}
           style={{ right: 0, top: "4%" }}
           styles={styles}
         />
