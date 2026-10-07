@@ -11,6 +11,7 @@ describe("Viewfinder", () => {
   it("renders the error message when an error is provided, instead of the camera", () => {
     render(
       <Viewfinder
+        unit={4}
         error="Permission denied"
         scanningEnabled
         onBarcodeScanned={() => {}}
@@ -21,14 +22,24 @@ describe("Viewfinder", () => {
 
   it("renders no error text when there is no error", () => {
     render(
-      <Viewfinder error={null} scanningEnabled onBarcodeScanned={() => {}} />,
+      <Viewfinder
+        unit={4}
+        error={null}
+        scanningEnabled
+        onBarcodeScanned={() => {}}
+      />,
     );
     expect(screen.queryByText(/.+/)).toBeNull();
   });
 
   it("fills the available screen area when the camera is active", () => {
     render(
-      <Viewfinder error={null} scanningEnabled onBarcodeScanned={() => {}} />,
+      <Viewfinder
+        unit={4}
+        error={null}
+        scanningEnabled
+        onBarcodeScanned={() => {}}
+      />,
     );
     const camera = screen.UNSAFE_getByType(CameraView);
     expect(camera.props.style).toEqual(

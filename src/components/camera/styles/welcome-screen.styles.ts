@@ -15,7 +15,7 @@ export function createWelcomeScreenStyles(unit: number) {
       resizeMode: "cover",
     },
     greenOverlay: {
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
       backgroundColor: "rgba(107, 199, 132, 0.7)",
     },
     container: {
@@ -52,6 +52,7 @@ export function createWelcomeScreenStyles(unit: number) {
       textAlign: "center",
       color: GAME_BOY_COLORS.screenText,
       opacity: 0.75,
+      lineHeight: unit * 3.0,
     },
     prompt: {
       position: "absolute",

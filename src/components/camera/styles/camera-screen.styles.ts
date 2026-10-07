@@ -80,7 +80,7 @@ export function createCameraScreenStyles(unit: number) {
       backgroundColor: GAME_BOY_COLORS.screenBottom,
     },
     screenTint: {
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
       backgroundColor: "rgba(107, 199, 132, 0.7)",
     },
     logoSlot: {

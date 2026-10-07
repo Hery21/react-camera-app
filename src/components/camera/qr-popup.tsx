@@ -54,7 +54,7 @@ export default function QrPopup({
           allowFontScaling={false}
           style={[styles.indicator, { opacity: blink }]}
           accessibilityLabel={
-            hasMoreBelow ? "More text below, scroll down" : "Press A to close"
+            hasMoreBelow ? "More text below, scroll down" : "Press Y to close"
           }
         >
           {hasMoreBelow ? "▼" : "Ⓐ"}

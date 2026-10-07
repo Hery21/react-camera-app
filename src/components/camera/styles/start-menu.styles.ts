@@ -15,7 +15,7 @@ export function createStartMenuStyles(unit: number) {
       resizeMode: "cover",
     },
     greenOverlay: {
-      ...StyleSheet.absoluteFillObject,
+      ...StyleSheet.absoluteFill,
       backgroundColor: "rgba(107, 199, 132, 0.7)",
     },
     container: {
@@ -63,7 +63,8 @@ export function createStartMenuStyles(unit: number) {
       position: "absolute",
       bottom: unit * 2.9,
       fontFamily: GAME_BOY_FONT_FAMILY,
-      fontSize: unit * 2.0,
+      fontSize: unit * 2.1,
+      fontWeight: "bold",
       color: GAME_BOY_COLORS.screenText,
       opacity: 0.7,
     },
