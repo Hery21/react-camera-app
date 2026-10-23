@@ -10,6 +10,7 @@ import { createQrScanner } from './lib/qrScanner.js'
 import { parseQrPayload } from './lib/qrPayload.js'
 import { getExhibitById } from './lib/exhibitLookup.js'
 import { AppShell } from './components/AppShell.jsx'
+import heroMirror from './assets/mirror-hero.png'
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
@@ -125,6 +126,7 @@ function App() {
   return (
     <AppShell language={language} onLanguageChange={handleLanguageChange}>
       <div className="placeholder" aria-labelledby="app-title">
+        <img src={heroMirror} alt="" className="hero-mirror" />
         <p className="eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
         <h1 id="app-title">{getTranslation(language, 'app.title')}</h1>
         <p>{getTranslation(language, 'app.tagline')}</p>

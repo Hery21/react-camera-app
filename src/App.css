@@ -23,6 +23,14 @@
   text-align: center;
 }
 
+.hero-mirror {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto var(--space-4);
+}
+
 .placeholder h1 {
   margin: var(--space-2) 0;
 }
