@@ -10,9 +10,8 @@ import {
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
+  const [screen, setScreen] = useState('welcome')
 
-  // Sync <html lang> on mount and on every change so assistive tech
-  // pronounces the active language correctly.
   useEffect(() => {
     applyDocumentLanguage(language)
   }, [language])
@@ -20,8 +19,6 @@ function App() {
   function handleLanguageChange(next) {
     if (!SUPPORTED_LANGUAGES.includes(next) || next === language) return
     setLanguage(next)
-    // Persist only on explicit selection so first-visit browser
-    // auto-detection does not freeze the visitor's language choice.
     persistLanguage(next)
   }
 
@@ -53,6 +50,16 @@ function App() {
           <p className="eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
           <h1 id="app-title">{getTranslation(language, 'app.title')}</h1>
           <p>{getTranslation(language, 'app.tagline')}</p>
+
+          <div className="verification-block">
+            <p>Current Screen: {screen}</p>
+            <button
+              type="button"
+              onClick={() => setScreen((prev) => (prev === 'welcome' ? 'scanner' : 'welcome'))}
+            >
+              Switch Screen
+            </button>
+          </div>
         </div>
       </section>
     </main>
