@@ -15,9 +15,11 @@
     "check:exhibit": "node scripts/check-exhibit-lookup.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "check:validate": "node scripts/check-validate-exhibits.mjs",
-    "check:phase3": "node scripts/check-phase3-exit.mjs"
+    "check:phase3": "node scripts/check-phase3-exit.mjs",
+    "check:scanner": "node scripts/check-qr-scanner.mjs"
   },
   "dependencies": {
+    "@zxing/browser": "^0.2.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
