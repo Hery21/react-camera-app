@@ -144,3 +144,18 @@
 **Decisions made:** Strict regex /^EXPO-\d{3}$/i with length guard. Never parses URLs. Case-insensitive input but always returns uppercase ID. Fixtures include two exhibits to test optional fields (EXPO-002 lacks symbolism). All three languages (en, id, zh) are populated in the fixtures as required by the extended scope.  
 **Next part:** Phase 3.2 — exhibit lookup helper (mapping parsed IDs to fixture records).  
 **Commit:** ae47515
+
+## Phase 3.2 — Exhibit lookup helper
+
+**Status:** Complete  
+**Goal:** Provide a pure, structured lookup from a parsed exhibit ID to its exhibit record, and prove the parse-to-lookup pipeline composes cleanly before the camera phase.  
+**Files changed:** src/lib/exhibitLookup.js (new), scripts/check-exhibit-lookup.mjs (new), package.json (adds check:exhibit script).  
+**User-visible result:** None yet — no screen consumes getExhibitById until Phase 7.  
+**Automated checks:** npm run lint; npm run check:exhibit (20 self-check assertions including 5 pipeline integration cases).  
+**Unit tests:** Intentionally omitted per urgent-policy override. Plain Node self-check covers the branchy lookup and the composed pipeline.  
+**Manual checks:** None applicable.  
+**Not checked:** npm run build (deferred per user request). Real exhibit content — fixtures remain provisional.  
+**Remaining risks:** getExhibitById is case-sensitive by design (the parser always uppercases), so a caller that bypasses parseQrPayload and passes raw scanned text directly could produce spurious unknown-exhibit results. Enforce parse-then-lookup at the scanner layer in Phase 7. Fixture exhibits remain provisional pending expo team content.  
+**Decisions made:** Return shape { ok: true, exhibit } / { ok: false, reason: 'unknown-exhibit' } matches the parser's ok/reason pattern so callers pattern-match once. Failure reason reuses the master-plan canonical label unknown-exhibit rather than a new label such as not-found, so error messaging can be driven off the reason string. find() chosen over a Map built at module load for the 2-item MVP (documented as a shortcut to revisit when exhibit count grows). No localized content helper added at this layer — content[language] || content.en is trivial and will live in the screen that consumes it.  
+**Next part:** Phase 3.3 — content validator (duplicate IDs, required EN/ID/ZH fields, optional section integrity) and a validate:content npm script.  
+**Commit:** cc6f5b3
