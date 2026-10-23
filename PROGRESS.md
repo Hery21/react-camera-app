@@ -69,3 +69,18 @@
 **Decisions made:** Split translations into per-language files (src/i18n/locales/*.js) combined by src/i18n/translations.js, rather than a single multi-language file, so each language is easy to edit in isolation. This is a deliberate supersession of the MASTER-PHASE-PLAN's single-file layout. Not a barrel export: translations.js constructs the combined object, it does not merely re-export named bindings. Generic zh tag used (Simplified assumed); upgrade to zh-Hans/zh-Hant split later only if content approval requires it.  
 **Next part:** Phase 2.2 — translation helper (getTranslation) with selected-language → English → visible-key fallback.  
 **Commit:** 1fb1850
+
+## Phase 2.2 — Translation helper
+
+**Status:** Complete  
+**Goal:** Provide one deterministic lookup function so screen components never scatter language ternaries and always have a safe fallback for missing translations.  
+**Files changed:** src/i18n/getTranslation.js (new), scripts/check-i18n.mjs (new), package.json (adds check:i18n script).  
+**User-visible result:** None yet — no screen consumes getTranslation until Phase 2.4. App.jsx still renders hardcoded English placeholder strings.  
+**Automated checks:** npm run lint; npm run check:i18n (12 self-check assertions).  
+**Unit tests:** Intentionally omitted per handoff urgent-policy override. A plain Node self-check script (not Vitest / not Testing Library) covers the non-trivial fallback branches and edge cases required by AGENTS.md. No test framework was introduced.  
+**Manual checks:** None applicable at this phase.  
+**Not checked:** npm run build (deferred per user request). Rendering with a real screen (no consumer exists yet).  
+**Remaining risks:** Dev-only console.warn dedupe is a module-level Set; in long dev sessions with many missing keys it will remember warnings across the session (intentional). Fallback warning is skipped for 'fr'-style unknown languages that resolve via English — only the missing-everywhere case warns for those; acceptable for MVP.  
+**Decisions made:** Pure function getTranslation(language, key) — no curried t() factory, no React hook, no context, no prop drilling helper. Smallest complete change. Fallback chain locked: selected -> English -> key itself, with the key returned visibly so gaps surface in dev. import.meta.env?.DEV guards the warnings so production builds are silent without extra config. scripts/check-i18n.mjs is infrastructure that will be reused when Phase 3 adds exhibit data (content validator will reuse this pattern); note that current ESLint config only lints **/*.{js,jsx}, so .mjs scripts are not linted — acceptable given the pattern, revisit if lint coverage of scripts matters later.  
+**Next part:** Phase 2.3 — initial language selection (stored preference -> browser language -> English), localStorage persistence under 'storytelling-mirror-language', document.documentElement.lang sync.  
+**Commit:** ff9baff
