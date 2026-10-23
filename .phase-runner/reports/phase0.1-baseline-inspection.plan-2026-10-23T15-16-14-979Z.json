@@ -1,0 +1,47 @@
+{
+  "plan": "Phase 0.1 — inspect the Vite starter baseline",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T15:16:15.150Z",
+    "startHead": "9192b81",
+    "hash": {
+      "docs": "6624ebd"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T15:16:20.510Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "record node version",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "record npm version",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "lint starter",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "build starter",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "create progress log if missing",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "commit baseline progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}
