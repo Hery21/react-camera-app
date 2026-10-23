@@ -67,8 +67,6 @@
   padding: var(--space-4);
 }
 
-/* Scanner screen overrides the default centered grid: it must fill the
-   remaining height so the controls stay on screen. See Phase 7.1a. */
 .app--scanner .app-main {
   display: flex;
   flex-direction: column;
@@ -223,21 +221,26 @@
   outline-offset: 3px;
 }
 
-/* Scanner screen — Phase 7.1a.
-   The screen fills available height (flex: 1 1 auto + min-height: 0) so
-   the video area shrinks or grows to fit, and the controls below it are
-   always visible without scrolling. The video wrapper has no fixed
-   aspect-ratio — it takes whatever height remains. object-fit: cover
-   on the <video> handles the arbitrary shape gracefully. */
+/* Scanner screen — Phase 7.1a responsive flex layout, Phase 7.1b width */
 .scanner-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  max-width: 28rem;
+  max-width: min(100%, 32rem);
   flex: 1 1 auto;
   min-height: 0;
+}
+
+/* On tablet portrait and larger, let the scanner take up more horizontal
+   space so it does not read as a cramped mobile column. 44rem (704px)
+   caps it well below the viewport width on iPad and desktop, keeping the
+   camera as a "viewfinder" rather than a full-screen video. */
+@media (min-width: 640px) {
+  .scanner-screen {
+    max-width: min(100%, 44rem);
+  }
 }
 
 .scanner-video-wrapper {
@@ -357,10 +360,6 @@
   text-align: center;
 }
 
-/* Result card (temporary inline view; Phase 8 extracts ScanResultScreen).
-   margin: auto 0 vertically centers safely — collapses to 0 when the
-   card exceeds available height so the parent's overflow-y: auto can
-   still scroll it. */
 .scanner-result {
   margin: auto 0;
   padding: var(--space-4);
