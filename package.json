@@ -12,7 +12,9 @@
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:language": "node scripts/check-language.mjs",
     "check:qr": "node scripts/check-qr.mjs",
-    "check:exhibit": "node scripts/check-exhibit-lookup.mjs"
+    "check:exhibit": "node scripts/check-exhibit-lookup.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "check:validate": "node scripts/check-validate-exhibits.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
