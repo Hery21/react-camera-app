@@ -174,3 +174,23 @@
 **Decisions made:** Validator is a pure function (no I/O) so the same logic can later run in a Vite build hook, a CI step, or a dev-mode assert without refactor. Two separate npm scripts chosen over one: validate:content gates the real fixtures (build-time gate) while check:validate is a unit self-check with synthetic bad data (development regression guard). ID format regex is duplicated between parser and validator intentionally — they must stay in sync only if the real expo QR format changes, which is documented in both files. Optional fields (period, symbolism, gallery) are not required and their absence is not an error.  
 **Next part:** Phase 3.4 — verify one QR resolves to one exhibit independent of language via an integration self-check; then Phase 4.1 — install @zxing/browser and create the scanner adapter.  
 **Commit:** 430d28e
+
+## Phase 3.4 — Phase 3 exit gate verification
+
+**Status:** Complete  
+**Goal:** Assert every criterion from the MASTER-PHASE-PLAN Phase 3 exit gate as a first-class, runnable artifact so "Phase 3 done" is provable, not assumed.  
+**Files changed:** scripts/check-phase3-exit.mjs (new), package.json (adds check:phase3 script).  
+**User-visible result:** None — this phase produces no UI change.  
+**Automated checks:** npm run lint; npm run check:phase3 (7 assertions mapped 1:1 to exit-gate criteria).  
+**Unit tests:** Intentionally omitted per urgent-policy override. The 7-assertion plain-Node script plays the role that unit tests would have: it proves each gate criterion independently of the 3.1/3.2/3.3 self-checks, so this file is the canonical "is Phase 3 done?" reference for future maintainers.  
+**Manual checks:** None applicable.  
+**Not checked:** npm run build (deferred per user request). Real physical QR codes — the contract remains provisional until Phase 11 inspection of the actual printed labels.  
+**Remaining risks:** None new for Phase 3. The gate proof does not include the manual browser-side reload-persistence check from Phase 2.4, which is still pending and should be performed before Phase 4 debugging begins so the two concerns (localization + camera) do not tangle.  
+**Decisions made:** No new resolveScannedText wrapper added — the master-plan "validation flow" (decoded text -> parser -> lookup -> accepted/error) is only 4 lines at the call site and Phase 7's scanner will inline it. A wrapper now would be speculative; adding it in Phase 7 with the actual caller in view is the smallest complete change. The gate check deliberately re-imports the parser, lookup, and validator rather than reusing the earlier self-check files, so it stands alone if 3.1/3.2/3.3 self-checks are later refactored or consolidated.  
+**Next part:** Phase 4.1 — install @zxing/browser and create src/lib/qrScanner.js as the isolated scanner adapter. First real dependency addition and first browser-API code path.  
+**Commit:** cb1073d
+
+## Phase 3 — QR and multilingual content contract: CLOSED
+
+The MASTER-PHASE-PLAN Phase 3 exit gate is fully satisfied as of Phase 3.4. Run npm run check:phase3 at any time to re-verify. Parts 3.1 through 3.4 together cover: strict EXPO-NNN parsing, exhibit lookup, trilingual fixtures (en/id/zh), optional-section coverage (symbolism present + absent), content validation, and language-independent resolution proof.  
+**Next phase:** Phase 4 — Camera and QR scanner spike.  
