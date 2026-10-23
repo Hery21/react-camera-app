@@ -325,3 +325,18 @@ The Phase 4 exit gate is satisfied on iOS Safari + desktop webcam. Android Chrom
 **Decisions made:** Safe-area padding applied to .app rather than body so that individual screens can opt out if needed (none currently do). Global :focus-visible uses the rosewood token; specific overrides (like .language-toggle-button) still take precedence where defined. Reduced-motion rule is the standard broad-stroke nuke (animations and transitions), not a per-component opt-in, ensuring no new animation in future phases can accidentally violate accessibility. Spacing/radius/shadow tokens were added here rather than 5.1 because 5.2 is their first real consumer; this matches the master-plan rule of adding tokens only when used. App.css spike styles were updated to use the new tokens during this phase to prove the token layer works end-to-end, rather than waiting for 5.3.  
 **Next part:** Phase 5.3 — shared app shell and first hero image integration (using the src/assets files).  
 **Commit:** c4283dc
+
+## Phase 5.3 — Shared app shell and language toggle extraction
+
+**Status:** Code complete; no manual check required (no behavior change)  
+**Goal:** Establish the reusable screen shell and extract the language toggle into a named component, per the master-plan source layout. This unblocks Phase 6/7/8/9 from each reimplementing the header.  
+**Files changed:** src/components/LanguageToggle.jsx (new), src/components/AppShell.jsx (new), src/App.jsx (refactored to render AppShell with the existing placeholder + spike as children).  
+**User-visible result:** None — the toggle stays centered in the header, the placeholder copy is unchanged, the spike UI is unchanged. Behavior identical to Phase 5.2.  
+**Automated checks:** npm run lint.  
+**Unit tests:** Intentionally omitted per urgent-policy override. This is a structural extraction with no new logic.  
+**Manual checks:** Optional — verify the toggle still works (click ID, click 中文, click EN) and the spike camera flow is unchanged. If anything looks different from 5.2, something regressed.  
+**Not checked:** npm run build (deferred per user request). Hero image display — deferred to Phase 5.4. Back/Home header button — deferred to Phase 7 (production scanner).  
+**Remaining risks:** The AppShell header is centered-toggle-only; when Phase 7 adds a Back button, the header CSS will need a small refactor (probably grid with three slots). Documented as a Phase 7 concern, not pre-built speculatively. The LanguageToggle component's SUPPORTED_LANGUAGES import was moved from App.jsx to LanguageToggle.jsx — no other consumer of that constant exists yet.  
+**Decisions made:** Master-plan source layout followed exactly (src/components/AppShell.jsx, src/components/LanguageToggle.jsx). Semantic improvement: AppShell renders div.app > header + main.app-main, so the page has exactly one <main> element. Previously the outer <main className="app"> wrapped header+content, which was imprecise (header is not main content). No per-component CSS files introduced — styles stay in App.css for now; if a future phase needs component-scoped CSS we will add it then. Back/Home button deliberately not stubbed — YAGNI; Phase 7 will add it with the actual production scanner's requirements in view.  
+**Next part:** Phase 5.4 — hero image integration. Import src/assets/mirror-hero.png into App.jsx, render it above the placeholder text with width/height attributes to prevent layout shift, with appropriate alt text (empty alt since it is decorative in the spike, real alt in Phase 6 when the Welcome screen gives it semantic meaning). This proves the asset pipeline works end-to-end before Phase 6 commits the Welcome composition to its final layout.  
+**Commit:** e80ca0a
