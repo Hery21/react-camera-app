@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { getTranslation } from './i18n/getTranslation.js'
 import {
-  SUPPORTED_LANGUAGES,
   applyDocumentLanguage,
   getInitialLanguage,
   persistLanguage,
@@ -10,6 +9,7 @@ import {
 import { createQrScanner } from './lib/qrScanner.js'
 import { parseQrPayload } from './lib/qrPayload.js'
 import { getExhibitById } from './lib/exhibitLookup.js'
+import { AppShell } from './components/AppShell.jsx'
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
@@ -36,14 +36,12 @@ function App() {
   }, [])
 
   function handleLanguageChange(next) {
-    if (!SUPPORTED_LANGUAGES.includes(next) || next === language) return
+    if (next === language) return
     setLanguage(next)
     persistLanguage(next)
   }
 
   function handleDecode(text) {
-    // Synchronous lock: refs update before the next line runs, so two rapid
-    // onDecode calls cannot both pass this guard. useState would race here.
     if (acceptedRef.current) return
     setDecodedText(text)
 
@@ -125,112 +123,88 @@ function App() {
     : null
 
   return (
-    <main className="app">
-      <header className="app-header">
-        <div
-          className="language-toggle"
-          role="group"
-          aria-label={getTranslation(language, 'language.label')}
-        >
-          {SUPPORTED_LANGUAGES.map((code) => (
-            <button
-              key={code}
-              type="button"
-              lang={code}
-              className="language-toggle-button"
-              aria-pressed={language === code}
-              aria-label={getTranslation(language, 'language.' + code + 'FullName')}
-              onClick={() => handleLanguageChange(code)}
-            >
-              {getTranslation(language, 'language.' + code)}
+    <AppShell language={language} onLanguageChange={handleLanguageChange}>
+      <div className="placeholder" aria-labelledby="app-title">
+        <p className="eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
+        <h1 id="app-title">{getTranslation(language, 'app.title')}</h1>
+        <p>{getTranslation(language, 'app.tagline')}</p>
+
+        {result && resultContent ? (
+          <div className="spike-result" aria-live="polite">
+            <p className="spike-state">Matched: {result.parsedId}</p>
+            <h2 className="spike-result-title">{resultContent.title}</h2>
+            {resultContent.period && (
+              <p className="spike-result-period">{resultContent.period}</p>
+            )}
+            <p className="spike-result-summary">{resultContent.summary}</p>
+            <button type="button" className="spike-button" onClick={handleScanAnother}>
+              Scan Another
             </button>
-          ))}
-        </div>
-      </header>
+          </div>
+        ) : (
+          <div className="spike">
+            <p className="spike-state">Scanner state: {scannerState}</p>
 
-      <section className="app-main">
-        <div className="placeholder" aria-labelledby="app-title">
-          <p className="eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
-          <h1 id="app-title">{getTranslation(language, 'app.title')}</h1>
-          <p>{getTranslation(language, 'app.tagline')}</p>
-
-          {result && resultContent ? (
-            <div className="spike-result" aria-live="polite">
-              <p className="spike-state">Matched: {result.parsedId}</p>
-              <h2 className="spike-result-title">{resultContent.title}</h2>
-              {resultContent.period && (
-                <p className="spike-result-period">{resultContent.period}</p>
-              )}
-              <p className="spike-result-summary">{resultContent.summary}</p>
-              <button type="button" className="spike-button" onClick={handleScanAnother}>
-                Scan Another
-              </button>
-            </div>
-          ) : (
-            <div className="spike">
-              <p className="spike-state">Scanner state: {scannerState}</p>
-
-              <div className="spike-video-wrapper">
-                <video
-                  ref={videoRef}
-                  className="spike-video"
-                  playsInline
-                  muted
-                />
-                {scannerState === 'idle' && (
-                  <p className="spike-placeholder">Camera off</p>
-                )}
-                {scannerState === 'requesting' && (
-                  <p className="spike-placeholder">Requesting camera…</p>
-                )}
-              </div>
-
+            <div className="spike-video-wrapper">
+              <video
+                ref={videoRef}
+                className="spike-video"
+                playsInline
+                muted
+              />
               {scannerState === 'idle' && (
-                <button type="button" className="spike-button" onClick={handleStart}>
-                  Start Camera
-                </button>
+                <p className="spike-placeholder">Camera off</p>
               )}
               {scannerState === 'requesting' && (
-                <button type="button" className="spike-button" disabled>
-                  Starting…
-                </button>
-              )}
-              {scannerState === 'scanning' && (
-                <button type="button" className="spike-button" onClick={handleStop}>
-                  Stop Camera
-                </button>
-              )}
-              {scannerState === 'error' && (
-                <div className="spike-error">
-                  <p>Camera error: {errorMessage}</p>
-                  <button type="button" className="spike-button" onClick={handleStart}>
-                    Try Again
-                  </button>
-                  <button type="button" className="spike-button" onClick={handleStop}>
-                    Cancel
-                  </button>
-                </div>
-              )}
-
-              {decodedText && (
-                <div className="spike-decoded">
-                  <p>Last decoded:</p>
-                  <pre>{decodedText}</pre>
-                </div>
-              )}
-
-              {inlineError && (
-                <p className="spike-inline-error" role="status">
-                  {inlineError.kind === 'unknown-exhibit'
-                    ? 'Unknown exhibit: ' + inlineError.detail + ' — keep scanning'
-                    : 'Invalid code (' + inlineError.kind + ') — keep scanning'}
-                </p>
+                <p className="spike-placeholder">Requesting camera…</p>
               )}
             </div>
-          )}
-        </div>
-      </section>
-    </main>
+
+            {scannerState === 'idle' && (
+              <button type="button" className="spike-button" onClick={handleStart}>
+                Start Camera
+              </button>
+            )}
+            {scannerState === 'requesting' && (
+              <button type="button" className="spike-button" disabled>
+                Starting…
+              </button>
+            )}
+            {scannerState === 'scanning' && (
+              <button type="button" className="spike-button" onClick={handleStop}>
+                Stop Camera
+              </button>
+            )}
+            {scannerState === 'error' && (
+              <div className="spike-error">
+                <p>Camera error: {errorMessage}</p>
+                <button type="button" className="spike-button" onClick={handleStart}>
+                  Try Again
+                </button>
+                <button type="button" className="spike-button" onClick={handleStop}>
+                  Cancel
+                </button>
+              </div>
+            )}
+
+            {decodedText && (
+              <div className="spike-decoded">
+                <p>Last decoded:</p>
+                <pre>{decodedText}</pre>
+              </div>
+            )}
+
+            {inlineError && (
+              <p className="spike-inline-error" role="status">
+                {inlineError.kind === 'unknown-exhibit'
+                  ? 'Unknown exhibit: ' + inlineError.detail + ' — keep scanning'
+                  : 'Invalid code (' + inlineError.kind + ') — keep scanning'}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    </AppShell>
   )
 }
 
