@@ -72,9 +72,97 @@
   outline-offset: 2px;
 }
 
-/* Temporary — Phase 2.5 verification block, removed in Phase 6 */
-.verification-block {
+/* Spike — Phase 4.2 only. Replaced by the production scanner in Phase 7. */
+.spike {
   margin-top: 2rem;
-  padding: 1rem;
-  border: 1px dashed #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.spike-state {
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #666;
+}
+
+.spike-video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.spike-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spike-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: #fff;
+  font-size: 0.875rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.spike-button {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #4a2e26;
+  border-radius: 6px;
+  background: #4a2e26;
+  color: #fffaf0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.spike-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spike-button:focus-visible {
+  outline: 2px solid #b32222;
+  outline-offset: 2px;
+}
+
+.spike-error {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #9f1f1f;
+  border-radius: 6px;
+  background: #fdeaea;
+  color: #4a2e26;
+  max-width: 360px;
+}
+
+.spike-decoded {
+  width: 100%;
+  max-width: 360px;
+  padding: 0.75rem;
+  background: #fffaf0;
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+  text-align: left;
+  word-break: break-all;
+}
+
+.spike-decoded pre {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
 }
