@@ -72,7 +72,7 @@
   outline-offset: 2px;
 }
 
-/* Spike — Phase 4.2 only. Replaced by the production scanner in Phase 7. */
+/* Spike — Phase 4.2/4.3 only. Replaced by the production scanner in Phase 7. */
 .spike {
   margin-top: 2rem;
   display: flex;
@@ -165,4 +165,47 @@
   margin: 0.25rem 0 0;
   font-size: 0.75rem;
   white-space: pre-wrap;
+}
+
+.spike-inline-error {
+  width: 100%;
+  max-width: 360px;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+  background: #fff4d6;
+  color: #4a2e26;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.spike-result {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+  background: #fffaf0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.spike-result-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #4a2e26;
+}
+
+.spike-result-period {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.spike-result-summary {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #2a211d;
 }
