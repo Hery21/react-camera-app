@@ -18,33 +18,6 @@
   padding: var(--space-4);
 }
 
-.placeholder {
-  width: min(100%, var(--max-width-content));
-  text-align: center;
-}
-
-.hero-mirror {
-  display: block;
-  width: 100%;
-  max-width: 200px;
-  height: auto;
-  margin: 0 auto var(--space-4);
-}
-
-.placeholder h1 {
-  margin: var(--space-2) 0;
-}
-
-.placeholder p {
-  margin: 0;
-}
-
-.eyebrow {
-  font-size: 0.875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .language-toggle {
   display: inline-flex;
   gap: var(--space-1);
@@ -81,9 +54,138 @@
   outline-offset: 2px;
 }
 
+.eyebrow {
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-rosewood);
+  margin: 0;
+}
+
+/* Welcome screen — Phase 6.1 onwards */
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4) 0;
+  width: 100%;
+  max-width: var(--max-width-content);
+  text-align: center;
+}
+
+.welcome-hero {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  display: block;
+}
+
+.welcome-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 28rem;
+}
+
+.welcome-title {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.75rem, 5vw + 0.75rem, 2.5rem);
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-rosewood);
+}
+
+.welcome-tagline {
+  font-size: 1rem;
+  color: var(--color-rosewood);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.welcome-subtagline {
+  font-family: var(--font-family-display);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-vermilion);
+  margin: 0;
+}
+
+.welcome-explanation {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.welcome-camera-notice {
+  font-size: 0.85rem;
+  color: var(--color-rosewood);
+  opacity: 0.75;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.welcome-cta {
+  min-height: 48px;
+  padding: var(--space-3) var(--space-6);
+  margin-top: var(--space-2);
+  background: var(--color-vermilion);
+  color: var(--color-surface);
+  border: 2px solid var(--color-vermilion-dark);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-cta:hover {
+  background: var(--color-vermilion-dark);
+}
+
+.welcome-cta:focus-visible {
+  outline: 2px solid var(--color-rosewood);
+  outline-offset: 2px;
+}
+
 /* Spike — Phase 4.2/4.3 only. Replaced by the production scanner in Phase 7. */
+.spike-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: var(--max-width-content);
+}
+
+.spike-back {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-rosewood);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-rosewood);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.spike-back:hover {
+  background: var(--color-warm-ivory);
+}
+
+.spike-back:focus-visible {
+  outline: 2px solid var(--color-rosewood);
+  outline-offset: 2px;
+}
+
 .spike {
-  margin-top: var(--space-8);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -93,7 +195,9 @@
 .spike-state {
   font-size: 0.75rem;
   font-family: monospace;
-  color: #666;
+  color: var(--color-rosewood);
+  opacity: 0.6;
+  margin: 0;
 }
 
 .spike-video-wrapper {
@@ -190,7 +294,6 @@
 }
 
 .spike-result {
-  margin-top: var(--space-8);
   padding: var(--space-4);
   border: 1px solid var(--color-antique-gold);
   border-radius: var(--radius-sm);
@@ -199,18 +302,22 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  width: 100%;
+  max-width: 360px;
 }
 
 .spike-result-title {
   margin: 0;
   font-size: 1.25rem;
+  font-family: var(--font-family-display);
   color: var(--color-rosewood);
 }
 
 .spike-result-period {
   margin: 0;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--color-rosewood);
+  opacity: 0.7;
 }
 
 .spike-result-summary {

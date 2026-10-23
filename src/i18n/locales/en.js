@@ -14,7 +14,12 @@ export const en = {
     idFullName: 'Bahasa Indonesia',
     zhFullName: 'Mandarin Chinese'
   },
-  welcome: {},
+  welcome: {
+    explanation: 'Scan the QR code beside any exhibit to uncover its story.',
+    cameraNotice: 'This experience uses your camera. You will be asked for permission when you start.',
+    subTagline: 'More than just a scan, it is a journey through heritage.',
+    cta: 'Start Exploring'
+  },
   scanner: {},
   result: {},
   exhibit: {},

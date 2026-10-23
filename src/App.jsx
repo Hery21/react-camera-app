@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
-import { getTranslation } from './i18n/getTranslation.js'
 import {
   applyDocumentLanguage,
   getInitialLanguage,
@@ -10,10 +9,11 @@ import { createQrScanner } from './lib/qrScanner.js'
 import { parseQrPayload } from './lib/qrPayload.js'
 import { getExhibitById } from './lib/exhibitLookup.js'
 import { AppShell } from './components/AppShell.jsx'
-import heroMirror from './assets/mirror-hero.png'
+import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
+  const [screen, setScreen] = useState('welcome')
   const [scannerState, setScannerState] = useState('idle')
   const [decodedText, setDecodedText] = useState('')
   const [inlineError, setInlineError] = useState(null)
@@ -40,6 +40,24 @@ function App() {
     if (next === language) return
     setLanguage(next)
     persistLanguage(next)
+  }
+
+  function handleStartExploring() {
+    setScreen('spike')
+  }
+
+  function handleBackToWelcome() {
+    if (scannerRef.current) {
+      scannerRef.current.stop()
+      scannerRef.current = null
+    }
+    acceptedRef.current = false
+    setScannerState('idle')
+    setDecodedText('')
+    setErrorMessage('')
+    setInlineError(null)
+    setResult(null)
+    setScreen('welcome')
   }
 
   function handleDecode(text) {
@@ -125,87 +143,91 @@ function App() {
 
   return (
     <AppShell language={language} onLanguageChange={handleLanguageChange}>
-      <div className="placeholder" aria-labelledby="app-title">
-        <img src={heroMirror} alt="" className="hero-mirror" />
-        <p className="eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
-        <h1 id="app-title">{getTranslation(language, 'app.title')}</h1>
-        <p>{getTranslation(language, 'app.tagline')}</p>
+      {screen === 'welcome' ? (
+        <WelcomeScreen language={language} onStart={handleStartExploring} />
+      ) : (
+        <section className="spike-view" aria-label="Camera spike preview">
+          {/* shortcut: Phase 7 replaces this whole spike view with a proper ScannerScreen; remove this temporary back link then */}
+          <button type="button" className="spike-back" onClick={handleBackToWelcome}>
+            {'\u2190 Return to Welcome'}
+          </button>
 
-        {result && resultContent ? (
-          <div className="spike-result" aria-live="polite">
-            <p className="spike-state">Matched: {result.parsedId}</p>
-            <h2 className="spike-result-title">{resultContent.title}</h2>
-            {resultContent.period && (
-              <p className="spike-result-period">{resultContent.period}</p>
-            )}
-            <p className="spike-result-summary">{resultContent.summary}</p>
-            <button type="button" className="spike-button" onClick={handleScanAnother}>
-              Scan Another
-            </button>
-          </div>
-        ) : (
-          <div className="spike">
-            <p className="spike-state">Scanner state: {scannerState}</p>
+          {result && resultContent ? (
+            <div className="spike-result" aria-live="polite">
+              <p className="spike-state">Matched: {result.parsedId}</p>
+              <h2 className="spike-result-title">{resultContent.title}</h2>
+              {resultContent.period && (
+                <p className="spike-result-period">{resultContent.period}</p>
+              )}
+              <p className="spike-result-summary">{resultContent.summary}</p>
+              <button type="button" className="spike-button" onClick={handleScanAnother}>
+                Scan Another
+              </button>
+            </div>
+          ) : (
+            <div className="spike">
+              <p className="spike-state">Scanner state: {scannerState}</p>
 
-            <div className="spike-video-wrapper">
-              <video
-                ref={videoRef}
-                className="spike-video"
-                playsInline
-                muted
-              />
+              <div className="spike-video-wrapper">
+                <video
+                  ref={videoRef}
+                  className="spike-video"
+                  playsInline
+                  muted
+                />
+                {scannerState === 'idle' && (
+                  <p className="spike-placeholder">Camera off</p>
+                )}
+                {scannerState === 'requesting' && (
+                  <p className="spike-placeholder">Requesting camera…</p>
+                )}
+              </div>
+
               {scannerState === 'idle' && (
-                <p className="spike-placeholder">Camera off</p>
+                <button type="button" className="spike-button" onClick={handleStart}>
+                  Start Camera
+                </button>
               )}
               {scannerState === 'requesting' && (
-                <p className="spike-placeholder">Requesting camera…</p>
+                <button type="button" className="spike-button" disabled>
+                  Starting…
+                </button>
+              )}
+              {scannerState === 'scanning' && (
+                <button type="button" className="spike-button" onClick={handleStop}>
+                  Stop Camera
+                </button>
+              )}
+              {scannerState === 'error' && (
+                <div className="spike-error">
+                  <p>Camera error: {errorMessage}</p>
+                  <button type="button" className="spike-button" onClick={handleStart}>
+                    Try Again
+                  </button>
+                  <button type="button" className="spike-button" onClick={handleStop}>
+                    Cancel
+                  </button>
+                </div>
+              )}
+
+              {decodedText && (
+                <div className="spike-decoded">
+                  <p>Last decoded:</p>
+                  <pre>{decodedText}</pre>
+                </div>
+              )}
+
+              {inlineError && (
+                <p className="spike-inline-error" role="status">
+                  {inlineError.kind === 'unknown-exhibit'
+                    ? 'Unknown exhibit: ' + inlineError.detail + ' — keep scanning'
+                    : 'Invalid code (' + inlineError.kind + ') — keep scanning'}
+                </p>
               )}
             </div>
-
-            {scannerState === 'idle' && (
-              <button type="button" className="spike-button" onClick={handleStart}>
-                Start Camera
-              </button>
-            )}
-            {scannerState === 'requesting' && (
-              <button type="button" className="spike-button" disabled>
-                Starting…
-              </button>
-            )}
-            {scannerState === 'scanning' && (
-              <button type="button" className="spike-button" onClick={handleStop}>
-                Stop Camera
-              </button>
-            )}
-            {scannerState === 'error' && (
-              <div className="spike-error">
-                <p>Camera error: {errorMessage}</p>
-                <button type="button" className="spike-button" onClick={handleStart}>
-                  Try Again
-                </button>
-                <button type="button" className="spike-button" onClick={handleStop}>
-                  Cancel
-                </button>
-              </div>
-            )}
-
-            {decodedText && (
-              <div className="spike-decoded">
-                <p>Last decoded:</p>
-                <pre>{decodedText}</pre>
-              </div>
-            )}
-
-            {inlineError && (
-              <p className="spike-inline-error" role="status">
-                {inlineError.kind === 'unknown-exhibit'
-                  ? 'Unknown exhibit: ' + inlineError.detail + ' — keep scanning'
-                  : 'Invalid code (' + inlineError.kind + ') — keep scanning'}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+        </section>
+      )}
     </AppShell>
   )
 }

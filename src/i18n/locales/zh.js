@@ -16,7 +16,12 @@ export const zh = {
     idFullName: 'Bahasa Indonesia',
     zhFullName: '中文'
   },
-  welcome: {},
+  welcome: {
+    explanation: '扫描任何展品旁边的二维码，揭开它的故事。',
+    cameraNotice: '此体验需要使用您的相机。开始时系统会请求您的许可。',
+    subTagline: '不只是扫描，更是一段穿越文化传承的旅程。',
+    cta: '开始探索'
+  },
   scanner: {},
   result: {},
   exhibit: {},
