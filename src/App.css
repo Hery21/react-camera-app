@@ -5,23 +5,59 @@
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* Per-screen theme wrappers. Each value of screen sets its own bg/fg.
-   Phase 7 will add app--scanner, app--result, app--exhibit following
-   the same pattern. */
 .app--welcome {
   background: var(--color-vermilion-dark);
   color: var(--color-surface);
 }
 
-.app--spike {
-  background: var(--color-warm-ivory);
-  color: var(--color-text);
+.app--scanner {
+  background: var(--color-scanner-bg);
+  color: var(--color-surface);
 }
 
 .app-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-2);
   padding: var(--space-4);
+}
+
+.app-header-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.app-header-center {
   display: flex;
   justify-content: center;
+}
+
+.app-header-right {
+  /* spacer to keep the toggle visually centered */
+}
+
+.app-header-back {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  background: var(--color-surface);
+  color: var(--color-rosewood);
+  border: 1px solid var(--color-antique-gold);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.app-header-back:hover {
+  background: var(--color-warm-ivory);
+}
+
+.app-header-back:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 2px;
 }
 
 .app-main {
@@ -67,7 +103,7 @@
   outline-offset: 2px;
 }
 
-/* Welcome screen — Phase 6.1/6.2, deep-vermilion treatment */
+/* Welcome screen — Phase 6.1/6.2 */
 .welcome-screen {
   display: flex;
   flex-direction: column;
@@ -175,176 +211,169 @@
   outline-offset: 3px;
 }
 
-/* Spike — Phase 4.2/4.3 only, light theme. Replaced by the production
-   scanner in Phase 7 which will adopt the app--scanner dark treatment. */
-.spike-view {
+/* Scanner screen — Phase 7.1. Frame overlay lands in 7.2. */
+.scanner-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-4);
-  width: 100%;
-  max-width: var(--max-width-content);
-}
-
-.spike-back {
-  align-self: flex-start;
-  min-height: 44px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-rosewood);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-rosewood);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.spike-back:hover {
-  background: var(--color-warm-ivory);
-}
-
-.spike-back:focus-visible {
-  outline: 2px solid var(--color-rosewood);
-  outline-offset: 2px;
-}
-
-.spike {
-  display: flex;
-  flex-direction: column;
   gap: var(--space-3);
-  align-items: center;
+  width: 100%;
+  max-width: min(100vw, calc(100dvh * 9 / 16));
 }
 
-.spike-state {
-  font-size: 0.75rem;
-  font-family: monospace;
-  color: var(--color-rosewood);
-  opacity: 0.6;
-  margin: 0;
-}
-
-.spike-video-wrapper {
+.scanner-video-wrapper {
   position: relative;
   width: 100%;
-  max-width: 360px;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 9 / 16;
   background: #000;
   border-radius: var(--radius-md);
   overflow: hidden;
 }
 
-.spike-video {
+.scanner-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.spike-placeholder {
+.scanner-overlay-text {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
   margin: 0;
-  color: #fff;
-  font-size: 0.875rem;
-  background: rgba(0, 0, 0, 0.5);
+  color: var(--color-surface);
+  font-size: 0.95rem;
+  background: rgba(0, 0, 0, 0.55);
 }
 
-.spike-button {
-  min-height: 44px;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-rosewood);
-  border-radius: var(--radius-sm);
-  background: var(--color-rosewood);
+.scanner-instructions {
+  width: 100%;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(26, 18, 16, 0.9);
   color: var(--color-surface);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.scanner-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.scanner-button {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-antique-gold);
+  border-radius: var(--radius-pill);
+  background: var(--color-antique-gold);
+  color: var(--color-rosewood);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
 }
 
-.spike-button:disabled {
+.scanner-button:hover {
+  background: #b5952f;
+  border-color: #b5952f;
+}
+
+.scanner-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.spike-button:focus-visible {
-  outline: 2px solid var(--color-vermilion);
-  outline-offset: 2px;
+.scanner-button:focus-visible {
+  outline: 2px solid var(--color-surface);
+  outline-offset: 3px;
 }
 
-.spike-error {
+.scanner-button-secondary {
+  background: transparent;
+  color: var(--color-surface);
+  border-color: var(--color-surface);
+}
+
+.scanner-button-secondary:hover {
+  background: rgba(255, 250, 240, 0.1);
+  border-color: var(--color-surface);
+}
+
+.scanner-error {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-3);
   border: 1px solid var(--color-error);
-  border-radius: var(--radius-sm);
-  background: #fdeaea;
-  color: var(--color-rosewood);
-  max-width: 360px;
+  border-radius: var(--radius-md);
+  background: rgba(159, 31, 31, 0.15);
+  max-width: 28rem;
 }
 
-.spike-decoded {
-  width: 100%;
-  max-width: 360px;
-  padding: var(--space-3);
-  background: var(--color-surface);
-  border: 1px solid var(--color-antique-gold);
-  border-radius: var(--radius-sm);
-  text-align: left;
-  word-break: break-all;
+.scanner-error-message {
+  margin: 0;
+  color: var(--color-surface);
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-.spike-decoded pre {
-  margin: var(--space-1) 0 0;
-  font-size: 0.75rem;
-  white-space: pre-wrap;
-}
-
-.spike-inline-error {
-  width: 100%;
-  max-width: 360px;
+.scanner-inline-error {
   margin: 0;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-antique-gold);
   border-radius: var(--radius-sm);
-  background: #fff4d6;
-  color: var(--color-rosewood);
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--color-antique-gold);
   font-size: 0.875rem;
-  text-align: left;
+  text-align: center;
 }
 
-.spike-result {
+.scanner-result {
   padding: var(--space-4);
   border: 1px solid var(--color-antique-gold);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   background: var(--color-surface);
+  color: var(--color-text);
   text-align: left;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   width: 100%;
-  max-width: 360px;
+  max-width: 28rem;
 }
 
-.spike-result-title {
+.scanner-result-meta {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: var(--color-rosewood);
+  opacity: 0.6;
+}
+
+.scanner-result-title {
+  margin: 0;
+  font-size: 1.5rem;
   font-family: var(--font-family-display);
   color: var(--color-rosewood);
 }
 
-.spike-result-period {
+.scanner-result-period {
   margin: 0;
   font-size: 0.875rem;
   color: var(--color-rosewood);
   opacity: 0.7;
 }
 
-.spike-result-summary {
+.scanner-result-summary {
   margin: 0;
   font-size: 0.95rem;
   color: var(--color-text);
+  line-height: 1.5;
 }
