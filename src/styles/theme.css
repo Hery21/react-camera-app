@@ -1,6 +1,7 @@
-// Theme tokens for The Storytelling Mirror.
-// Palette is the master-plan starting palette.
-// Font-family tokens match the design reference (Playfair Display + Inter via Google Fonts).
+/* Theme tokens for The Storytelling Mirror.
+   Palette is the master-plan starting palette.
+   Font-family tokens match the design reference (Playfair Display + Inter via Google Fonts).
+   Spacing, radius, and shadow tokens are introduced alongside their first real use. */
 :root {
   /* Palette — from MASTER-PHASE-PLAN.md Phase 5.1 */
   --color-vermilion: #b32222;
