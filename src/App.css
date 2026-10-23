@@ -34,7 +34,6 @@
 }
 
 .app-header-right {
-  /* spacer keeps the toggle visually centered whether or not the back button is present */
 }
 
 .app-header-back {
@@ -113,7 +112,6 @@
   outline-offset: 2px;
 }
 
-/* Welcome screen — Phase 6.1/6.2 */
 .welcome-screen {
   display: flex;
   flex-direction: column;
@@ -221,7 +219,6 @@
   outline-offset: 3px;
 }
 
-/* Scanner screen — Phase 7.1a responsive flex layout, Phase 7.1b width */
 .scanner-screen {
   display: flex;
   flex-direction: column;
@@ -233,10 +230,6 @@
   min-height: 0;
 }
 
-/* On tablet portrait and larger, let the scanner take up more horizontal
-   space so it does not read as a cramped mobile column. 44rem (704px)
-   caps it well below the viewport width on iPad and desktop, keeping the
-   camera as a "viewfinder" rather than a full-screen video. */
 @media (min-width: 640px) {
   .scanner-screen {
     max-width: min(100%, 44rem);
@@ -260,6 +253,28 @@
   display: block;
 }
 
+/* Frame overlay */
+.scanner-frame-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scan-frame-corner {
+  position: absolute;
+  width: 20%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.frame-tl { top: 0; left: 0; }
+.frame-tr { top: 0; right: 0; }
+.frame-bl { bottom: 0; left: 0; }
+.frame-br { bottom: 0; right: 0; }
+
 .scanner-overlay-text {
   position: absolute;
   inset: 0;
@@ -269,6 +284,7 @@
   color: var(--color-surface);
   font-size: 0.95rem;
   background: rgba(0, 0, 0, 0.55);
+  z-index: 20;
 }
 
 .scanner-instructions {

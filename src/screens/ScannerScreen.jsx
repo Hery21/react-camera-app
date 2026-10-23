@@ -3,12 +3,13 @@ import { getTranslation } from '../i18n/getTranslation.js'
 import { createQrScanner } from '../lib/qrScanner.js'
 import { parseQrPayload } from '../lib/qrPayload.js'
 import { getExhibitById } from '../lib/exhibitLookup.js'
+import frameTl from '../assets/frame-tl.png'
+import frameTr from '../assets/frame-tr.png'
+import frameBl from '../assets/frame-bl.png'
+import frameBr from '../assets/frame-br.png'
 
-// Production scanner screen (still inline result view; Phase 8 extracts
-// ScanResultScreen as its own screen). Camera lifecycle, state handling,
-// and cleanup are self-contained here so App.jsx stays a thin router.
-// The mirror-scan-frame.png overlay lands in Phase 7.2 once its
-// transparency is confirmed.
+// Production scanner screen. Camera lifecycle, state handling, and cleanup
+// are self-contained here so App.jsx stays a thin router.
 export function ScannerScreen({ language }) {
   const [scannerState, setScannerState] = useState('idle')
   const [inlineError, setInlineError] = useState(null)
@@ -122,6 +123,14 @@ export function ScannerScreen({ language }) {
           playsInline
           muted
         />
+        
+        <div className="scanner-frame-overlay" aria-hidden="true">
+          <img src={frameTl} alt="" className="scan-frame-corner frame-tl" />
+          <img src={frameTr} alt="" className="scan-frame-corner frame-tr" />
+          <img src={frameBl} alt="" className="scan-frame-corner frame-bl" />
+          <img src={frameBr} alt="" className="scan-frame-corner frame-br" />
+        </div>
+
         {scannerState === 'idle' && (
           <p className="scanner-overlay-text">
             {getTranslation(language, 'scanner.cameraOff')}
