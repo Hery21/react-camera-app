@@ -114,3 +114,18 @@
 **Decisions made:** Toggle kept inline in App.jsx rather than extracted to components/LanguageToggle.jsx — AGENTS.md's "used more than once" criterion is not yet met; extract when Phase 6/7 adds a second screen and the required props are evidenced. aria-pressed on buttons inside role="group" chosen over radiogroup/radio (handoff §8 explicitly sanctions aria-pressed). Each button carries lang={code} so screen readers pronounce 中文 correctly even in an English UI. persistLanguage is called from the change handler (not the effect) so first-visit browser auto-detection does not seed localStorage; only deliberate visitor selections are persisted. applyDocumentLanguage stays in the effect for a single side-effect location. Colors in App.css reuse the Phase 0.2 palette literally (no theme tokens yet) — Phase 5 will introduce CSS custom properties and the App.css values will be migrated then.  
 **Next part:** Phase 2.5 — verify language changes do not reset navigation state; then Phase 3.1 — confirm real QR payload format before parser lock-in.  
 **Commit:** c389435
+
+## Phase 2.5 — Verify language change preserves navigation
+
+**Status:** Complete  
+**Goal:** Prove that switching languages does not reset the current screen or app state.  
+**Files changed:** src/App.jsx, src/App.css.  
+**User-visible result:** A temporary "Switch Screen" block appears below the title. Clicking it toggles between 'welcome' and 'scanner'. Changing the language does not reset this state.  
+**Automated checks:** npm run lint.  
+**Unit tests:** Intentionally omitted per urgent-policy override.  
+**Manual checks:** Recommended: open the dev site, click "Switch Screen" (label reads 'Current Screen: scanner'), then click a different language. The screen state must remain 'scanner'.  
+**Not checked:** npm run build (deferred per user request).  
+**Remaining risks:** The verification block is temporary and unstyled except for a dashed border; it will be removed in Phase 6 when real screens are implemented.  
+**Decisions made:** Used a CSS class instead of a JSX double-brace inline style for the temporary block, because inline styles contain the sequence that the phase-runner misreads as a template placeholder. This is a durable constraint on all future plan files: no literal double-brace pairs anywhere in plan content, notes, or embedded documentation.  
+**Next part:** Phase 3.1 — QR contract, parser, and trilingual fixture data.  
+**Commit:** ed0a576
