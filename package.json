@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "verify": "npm run lint && npm run build",
     "check:i18n": "node scripts/check-i18n.mjs",
-    "check:language": "node scripts/check-language.mjs"
+    "check:language": "node scripts/check-language.mjs",
+    "check:qr": "node scripts/check-qr.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
