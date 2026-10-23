@@ -24,3 +24,18 @@
 **Decisions made:** Keep this phase visually minimal; final theme work remains in Phase 5.  
 **Next part:** Phase 0.3 — project documents and HTML metadata.  
 **Commit:** 4db4171
+
+## Phase 0.3 — Project documents and HTML metadata
+
+**Status:** Complete  
+**Goal:** Ensure the project documentation source-of-truth files exist and the HTML metadata matches the product identity.  
+**Files changed:** index.html.  
+**User-visible result:** The browser tab title, theme color, and page description now identify The Storytelling Mirror instead of the Vite starter placeholder name.  
+**Automated checks:** npm run lint.  
+**Unit tests:** Intentionally omitted for this urgent project.  
+**Manual checks:** Reload the dev site and confirm the tab shows the new title, theme color, and description.  
+**Not checked:** npm run build was deliberately deferred by user request. Camera, QR scanning, localization, and final visual design are not implemented yet.  
+**Remaining risks:** README.md still does not document the HTTPS camera requirement. AGENTS.md, MASTER-PHASE-PLAN.md, plan.md, assets-checklist.md, and this PROGRESS.md were already present and were not rewritten.  
+**Decisions made:** Keep the Phase 0.3 change surface minimal — write only index.html. Defer the HTTPS camera README note to a later phase or explicit request. Defer npm run build. Keep the metadata commit idempotent via allowEmpty so the progress record can reference a real hash even if the file was already correct.  
+**Next part:** Phase 1.1 — confirm lint/formatting conventions without adding a new unit-test framework (per urgent policy override).  
+**Commit:** ea221fb
