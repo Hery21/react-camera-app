@@ -39,3 +39,18 @@
 **Decisions made:** Keep the Phase 0.3 change surface minimal — write only index.html. Defer the HTTPS camera README note to a later phase or explicit request. Defer npm run build. Keep the metadata commit idempotent via allowEmpty so the progress record can reference a real hash even if the file was already correct.  
 **Next part:** Phase 1.1 — confirm lint/formatting conventions without adding a new unit-test framework (per urgent policy override).  
 **Commit:** ea221fb
+
+## Phase 1.1 — Unified verify script
+
+**Status:** Complete  
+**Goal:** Provide a single `npm run verify` entry point that chains `npm run lint` and `npm run build` for later phases. This plan covers the intent of MASTER-PHASE-PLAN Phase 1.1 and 1.3.  
+**Files changed:** package.json.  
+**User-visible result:** None; developer tooling only.  
+**Automated checks:** npm run lint.  
+**Unit tests:** Intentionally omitted for this urgent project (per handoff override of MASTER-PHASE-PLAN.md Phase 1.2). No Vitest, Testing Library, jsdom, or test setup was added.  
+**Manual checks:** None.  
+**Not checked:** npm run build and npm run verify have not been executed yet. The production build baseline remains unconfirmed since the starter was created.  
+**Remaining risks:** If the production build has a latent failure, it will surface the first time verify runs. Confirm at the start of the next phase that executes build, or run npm run build manually before Phase 2.  
+**Decisions made:** Add the verify script now so it is runnable later; defer executing build per current user request. Prettier not added (optional per master plan).  
+**Next part:** Phase 2.1 — translation resources for en and id.  
+**Commit:** dabb75c
