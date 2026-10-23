@@ -142,7 +142,11 @@ function App() {
     : null
 
   return (
-    <AppShell language={language} onLanguageChange={handleLanguageChange}>
+    <AppShell
+      language={language}
+      onLanguageChange={handleLanguageChange}
+      screen={screen}
+    >
       {screen === 'welcome' ? (
         <WelcomeScreen language={language} onStart={handleStartExploring} />
       ) : (
