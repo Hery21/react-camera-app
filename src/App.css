@@ -34,7 +34,7 @@
 }
 
 .app-header-right {
-  /* spacer to keep the toggle visually centered */
+  /* spacer keeps the toggle visually centered whether or not the back button is present */
 }
 
 .app-header-back {
@@ -65,6 +65,18 @@
   display: grid;
   place-items: center;
   padding: var(--space-4);
+}
+
+/* Scanner screen overrides the default centered grid: it must fill the
+   remaining height so the controls stay on screen. See Phase 7.1a. */
+.app--scanner .app-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-3);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .language-toggle {
@@ -211,20 +223,28 @@
   outline-offset: 3px;
 }
 
-/* Scanner screen — Phase 7.1. Frame overlay lands in 7.2. */
+/* Scanner screen — Phase 7.1a.
+   The screen fills available height (flex: 1 1 auto + min-height: 0) so
+   the video area shrinks or grows to fit, and the controls below it are
+   always visible without scrolling. The video wrapper has no fixed
+   aspect-ratio — it takes whatever height remains. object-fit: cover
+   on the <video> handles the arbitrary shape gracefully. */
 .scanner-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  max-width: min(100vw, calc(100dvh * 9 / 16));
+  max-width: 28rem;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .scanner-video-wrapper {
   position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
-  aspect-ratio: 9 / 16;
   background: #000;
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -250,6 +270,7 @@
 
 .scanner-instructions {
   width: 100%;
+  flex: 0 0 auto;
   margin: 0;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
@@ -265,6 +286,7 @@
   align-items: center;
   gap: var(--space-2);
   width: 100%;
+  flex: 0 0 auto;
 }
 
 .scanner-button {
@@ -335,7 +357,12 @@
   text-align: center;
 }
 
+/* Result card (temporary inline view; Phase 8 extracts ScanResultScreen).
+   margin: auto 0 vertically centers safely — collapses to 0 when the
+   card exceeds available height so the parent's overflow-y: auto can
+   still scroll it. */
 .scanner-result {
+  margin: auto 0;
   padding: var(--space-4);
   border: 1px solid var(--color-antique-gold);
   border-radius: var(--radius-md);
