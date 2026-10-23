@@ -129,3 +129,18 @@
 **Decisions made:** Used a CSS class instead of a JSX double-brace inline style for the temporary block, because inline styles contain the sequence that the phase-runner misreads as a template placeholder. This is a durable constraint on all future plan files: no literal double-brace pairs anywhere in plan content, notes, or embedded documentation.  
 **Next part:** Phase 3.1 — QR contract, parser, and trilingual fixture data.  
 **Commit:** ed0a576
+
+## Phase 3.1 — QR contract, parser, and trilingual fixtures
+
+**Status:** Complete  
+**Goal:** Establish a strict, safe QR payload contract and provide representative trilingual (EN/ID/ZH) exhibit data for subsequent phases.  
+**Files changed:** src/lib/qrPayload.js (new), src/data/exhibits.js (new), scripts/check-qr.mjs (new), package.json (adds check:qr script).  
+**User-visible result:** None yet; the parser and fixtures are not wired into the UI.  
+**Automated checks:** npm run lint; npm run check:qr (17 self-check assertions).  
+**Unit tests:** Intentionally omitted per urgent-policy override. Plain Node self-check covers parsing branches and data integrity.  
+**Manual checks:** None applicable.  
+**Not checked:** Real physical QR codes. The contract (EXPO-XXX) is a provisional fixture per the master plan; real payloads must be inspected before production.  
+**Remaining risks:** If the real expo QR codes contain URLs or different prefixes, the parser will reject them as unsupported. This is intentional until real payloads are confirmed. The fixture data uses placeholder images (/images/exhibits/...) which will result in broken image links if rendered until assets are added in Phase 5.  
+**Decisions made:** Strict regex /^EXPO-\d{3}$/i with length guard. Never parses URLs. Case-insensitive input but always returns uppercase ID. Fixtures include two exhibits to test optional fields (EXPO-002 lacks symbolism). All three languages (en, id, zh) are populated in the fixtures as required by the extended scope.  
+**Next part:** Phase 3.2 — exhibit lookup helper (mapping parsed IDs to fixture records).  
+**Commit:** ae47515
