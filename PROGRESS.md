@@ -194,3 +194,18 @@
 
 The MASTER-PHASE-PLAN Phase 3 exit gate is fully satisfied as of Phase 3.4. Run npm run check:phase3 at any time to re-verify. Parts 3.1 through 3.4 together cover: strict EXPO-NNN parsing, exhibit lookup, trilingual fixtures (en/id/zh), optional-section coverage (symbolism present + absent), content validation, and language-independent resolution proof.  
 **Next phase:** Phase 4 — Camera and QR scanner spike.  
+
+## Phase 4.1 — Install @zxing/browser and create scanner adapter
+
+**Status:** Complete (adapter contract only; no camera behavior verified yet)  
+**Goal:** Install the decoder dependency and isolate it behind src/lib/qrScanner.js so screen components depend on our adapter, not on ZXing.  
+**Files changed:** src/lib/qrScanner.js (new), scripts/check-qr-scanner.mjs (new), package.json (adds @zxing/browser dependency and check:scanner script), package-lock.json.  
+**User-visible result:** None — no screen consumes the adapter until Phase 4.2. App.jsx untouched.  
+**Automated checks:** npm run lint; npm run check:scanner (11 contract assertions).  
+**Unit tests:** Intentionally omitted per urgent-policy override. Plain Node self-check verifies the adapter contract but deliberately does NOT test camera behavior — that requires a real browser.  
+**Manual checks:** None at this phase.  
+**Not checked:** npm run build (deferred per user request). Real camera start, rear-camera selection, decode reliability, cleanup-after-success — all deferred to Phase 4.2/4.5 device testing.  
+**Remaining risks:** @zxing/browser bundle is roughly 150 KB gzipped; dynamic import means Vite code-splits it, so the welcome screen does not pay for it but the scanner screen pays it on first mount. Phase 10 performance review should confirm slow expo Wi-Fi is acceptable; a modulepreload hint is the fallback if not. decodeFromConstraints with facingMode 'environment' prefers the rear camera; some older Android browsers may still surface a chooser, which is acceptable. No cross-different-QR lock is implemented — if a visitor rapidly sweeps across two valid exhibits, both onDecode calls fire. The dedupe key is consecutive text only. Phase 7 will add the screen-level accept lock that resolves this.  
+**Decisions made:** Dynamic import inside start() rather than static top-level import so the adapter module is Node-safe (for the self-check) and Vite code-splits ZXing out of the initial bundle. createQrScanner() factory rather than class — matches AGENTS.md JavaScript + hooks preference. Adapter does NOT auto-stop on decode; the screen decides when to accept. This is intentional: an invalid QR payload (URL, random text) decodes successfully and must NOT terminate the scanner, because the visitor still needs to find the right exhibit. facingMode: 'environment' chosen over decodeFromVideoDevice (which picks the first camera and may default to the selfie cam on iOS).  
+**Next part:** Phase 4.2 — first spike UI wired to the adapter for real-device camera verification. This is the first phase that requires physical iOS Safari and Android Chrome testing; do not mark 4.2 as accepted without actual device results.  
+**Commit:** 2cc06bb
