@@ -11,7 +11,8 @@
     "verify": "npm run lint && npm run build",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:language": "node scripts/check-language.mjs",
-    "check:qr": "node scripts/check-qr.mjs"
+    "check:qr": "node scripts/check-qr.mjs",
+    "check:exhibit": "node scripts/check-exhibit-lookup.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
