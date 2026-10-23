@@ -159,3 +159,18 @@
 **Decisions made:** Return shape { ok: true, exhibit } / { ok: false, reason: 'unknown-exhibit' } matches the parser's ok/reason pattern so callers pattern-match once. Failure reason reuses the master-plan canonical label unknown-exhibit rather than a new label such as not-found, so error messaging can be driven off the reason string. find() chosen over a Map built at module load for the 2-item MVP (documented as a shortcut to revisit when exhibit count grows). No localized content helper added at this layer — content[language] || content.en is trivial and will live in the screen that consumes it.  
 **Next part:** Phase 3.3 — content validator (duplicate IDs, required EN/ID/ZH fields, optional section integrity) and a validate:content npm script.  
 **Commit:** cc6f5b3
+
+## Phase 3.3 — Exhibit content validator
+
+**Status:** Complete  
+**Goal:** Provide a pure validator that gates exhibit content integrity so missing translations, duplicate ids, and malformed optional sections are caught before deploy instead of at scan-time.  
+**Files changed:** src/lib/validateExhibits.js (new), scripts/validate-content.mjs (new), scripts/check-validate-exhibits.mjs (new), package.json (adds validate:content and check:validate scripts).  
+**User-visible result:** None yet — no screen consumes the validator until a later phase. Both npm scripts run successfully against the current fixtures.  
+**Automated checks:** npm run lint; npm run validate:content; npm run check:validate (23 self-check assertions).  
+**Unit tests:** Intentionally omitted per urgent-policy override. Plain Node self-check covers every failure branch with synthetic bad data and asserts the real fixtures pass.  
+**Manual checks:** None applicable.  
+**Not checked:** npm run build (deferred per user request). Real exhibit content — fixtures remain provisional. ID format enforcement is coupled to the Phase 3.1 parser contract; if real expo codes deviate from EXPO-NNN both layers must loosen together.  
+**Remaining risks:** The EXPO-NNN id format is enforced by the validator but not yet by anything other than the parser — a future fixture that uses a different prefix would fail validate:content but might still be added by a careless PR; treat the CI gate at Phase 11 deployment as the final enforcement. Gallery item src paths are validated as non-empty strings but not checked against disk; a broken path will 404 at runtime, not at validation time.  
+**Decisions made:** Validator is a pure function (no I/O) so the same logic can later run in a Vite build hook, a CI step, or a dev-mode assert without refactor. Two separate npm scripts chosen over one: validate:content gates the real fixtures (build-time gate) while check:validate is a unit self-check with synthetic bad data (development regression guard). ID format regex is duplicated between parser and validator intentionally — they must stay in sync only if the real expo QR format changes, which is documented in both files. Optional fields (period, symbolism, gallery) are not required and their absence is not an error.  
+**Next part:** Phase 3.4 — verify one QR resolves to one exhibit independent of language via an integration self-check; then Phase 4.1 — install @zxing/browser and create the scanner adapter.  
+**Commit:** 430d28e
