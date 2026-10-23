@@ -1,8 +1,6 @@
 // Theme tokens for The Storytelling Mirror.
 // Palette is the master-plan starting palette.
 // Font-family tokens match the design reference (Playfair Display + Inter via Google Fonts).
-// Spacing, radius, shadow tokens are intentionally absent in Phase 5.1 —
-// they will be introduced in Phase 5.2 alongside their first real use.
 :root {
   /* Palette — from MASTER-PHASE-PLAN.md Phase 5.1 */
   --color-vermilion: #b32222;
@@ -20,4 +18,24 @@
   /* Typography family stacks — loaded via Google Fonts in index.html */
   --font-family-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-family-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(42, 33, 29, 0.1);
+
+  /* Layout constraints */
+  --max-width-content: 32rem;
 }

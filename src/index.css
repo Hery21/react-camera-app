@@ -9,6 +9,9 @@ html {
   font-family: var(--font-family-body);
   background: var(--color-warm-ivory);
   color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -22,4 +25,22 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+/* Global focus ring for keyboard accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-rosewood);
+  outline-offset: 2px;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
