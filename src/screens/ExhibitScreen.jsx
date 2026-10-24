@@ -1,23 +1,113 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { decorativeAssets } from '../data/decorativeAssets.js'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
+import { joinSentenceUnits, segmentArticleText } from '../lib/segmentArticleText.js'
+
+const MIN_USABLE_PAGE_HEIGHT = 48
 
 export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
-    if (content?.symbolism) {
-      available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
-    }
-    if (exhibit.gallery?.length) {
-      available.push({ id: 'gallery', label: getTranslation(language, 'exhibit.gallery') })
-    }
+    if (content?.symbolism) available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
+    if (exhibit.gallery?.length) available.push({ id: 'gallery', label: getTranslation(language, 'exhibit.gallery') })
     return available
   }, [content?.symbolism, exhibit.gallery, language])
+
   const [activeSection, setActiveSection] = useState('story')
+  const [page, setPage] = useState(0)
+  const [pages, setPages] = useState(() => [content?.story || ''])
+  const viewportRef = useRef(null)
+  const measureRef = useRef(null)
+  const cleanupRef = useRef(null)
   const selectedSection = sections.some((section) => section.id === activeSection) ? activeSection : sections[0].id
   const selectedLabel = sections.find((section) => section.id === selectedSection)?.label
+  const isGallery = selectedSection === 'gallery'
+  const articleText = selectedSection === 'symbolism' ? content?.symbolism || '' : content?.story || ''
+
+  const buildEmergencyPages = useCallback(
+    (unit, measure, pageHeight) => {
+      const segmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(language, { granularity: 'word' }) : null
+      const parts = segmenter ? Array.from(segmenter.segment(unit.text), (entry) => entry.segment) : Array.from(unit.text)
+      const emergencyPages = []
+      let candidate = ''
+
+      for (const part of parts) {
+        const next = candidate + part
+        measure.textContent = next
+        if (candidate && measure.scrollHeight > pageHeight) {
+          emergencyPages.push(candidate.trim())
+          candidate = part
+        } else {
+          candidate = next
+        }
+      }
+
+      if (candidate.trim()) emergencyPages.push(candidate.trim())
+      return emergencyPages
+    },
+    [language],
+  )
+
+  const repaginate = useCallback(() => {
+    const viewport = viewportRef.current
+    const measure = measureRef.current
+    if (!viewport || !measure || isGallery) return
+
+    const pageWidth = viewport.clientWidth
+    const pageHeight = viewport.clientHeight
+    if (!pageWidth || pageHeight < MIN_USABLE_PAGE_HEIGHT) return
+
+    measure.style.width = pageWidth + 'px'
+    const units = segmentArticleText(articleText, language)
+    const nextPages = []
+    let currentUnits = []
+
+    for (const unit of units) {
+      const candidateUnits = [...currentUnits, unit]
+      measure.textContent = joinSentenceUnits(candidateUnits)
+      if (measure.scrollHeight <= pageHeight) {
+        currentUnits = candidateUnits
+        continue
+      }
+
+      if (currentUnits.length) nextPages.push(joinSentenceUnits(currentUnits))
+      measure.textContent = unit.text
+      if (measure.scrollHeight <= pageHeight) {
+        currentUnits = [unit]
+      } else {
+        nextPages.push(...buildEmergencyPages(unit, measure, pageHeight))
+        currentUnits = []
+      }
+    }
+
+    if (currentUnits.length) nextPages.push(joinSentenceUnits(currentUnits))
+    if (!nextPages.length) nextPages.push(articleText)
+    setPages(nextPages)
+    setPage((current) => Math.min(current, nextPages.length - 1))
+  }, [articleText, buildEmergencyPages, isGallery, language])
+
+  const setViewportRef = useCallback(
+    (node) => {
+      if (cleanupRef.current) cleanupRef.current()
+      cleanupRef.current = null
+      viewportRef.current = node
+      if (!node || isGallery) return
+
+      const observer = new ResizeObserver(() => requestAnimationFrame(repaginate))
+      observer.observe(node)
+      cleanupRef.current = () => observer.disconnect()
+      requestAnimationFrame(repaginate)
+    },
+    [isGallery, repaginate],
+  )
+
+  function handleSectionChange(sectionId) {
+    setActiveSection(sectionId)
+    setPage(0)
+    setPages([sectionId === 'symbolism' ? content?.symbolism || '' : content?.story || ''])
+  }
 
   return (
     <article className="exhibit-screen" aria-labelledby="exhibit-title">
@@ -55,7 +145,7 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
               type="button"
               className="exhibit-tab"
               aria-pressed={selectedSection === section.id}
-              onClick={() => setActiveSection(section.id)}
+              onClick={() => handleSectionChange(section.id)}
             >
               {section.label}
             </button>
@@ -63,30 +153,56 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
         </nav>
       )}
 
-      <section className="exhibit-reading-panel" aria-labelledby="exhibit-section-title">
+      <section className="exhibit-reader" aria-labelledby="exhibit-section-title">
         <div className="exhibit-section-heading">
-          <img src={decorativeAssets.article.knot} alt="" className="exhibit-section-knot" aria-hidden="true" />
           <h2 id="exhibit-section-title">{selectedLabel}</h2>
         </div>
 
-        <div className="exhibit-reading-scroll">
-          {selectedSection === 'gallery' ? (
-            <div className="exhibit-gallery">
-              {exhibit.gallery.map((image) => {
-                const imageContent = image.content?.[language] || image.content?.id || image.content?.en || {}
-                return (
-                  <figure className="exhibit-gallery-item" key={image.src}>
-                    <img className="exhibit-gallery-image" src={image.src} alt={imageContent.alt || ''} loading="lazy" />
-                    {imageContent.caption && <figcaption>{imageContent.caption}</figcaption>}
-                  </figure>
-                )
-              })}
-            </div>
-          ) : (
-            <p className="exhibit-article-text">{selectedSection === 'symbolism' ? content?.symbolism : content?.story}</p>
-          )}
-        </div>
+        {isGallery ? (
+          <div className="exhibit-gallery">
+            {exhibit.gallery.map((image) => {
+              const imageContent = image.content?.[language] || image.content?.id || image.content?.en || {}
+              return (
+                <figure className="exhibit-gallery-item" key={image.src}>
+                  <img className="exhibit-gallery-image" src={image.src} alt={imageContent.alt || ''} loading="lazy" />
+                  {imageContent.caption && <figcaption>{imageContent.caption}</figcaption>}
+                </figure>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="exhibit-page-viewport" ref={setViewportRef}>
+            <p className="exhibit-page-text">{pages[page]}</p>
+            <div className="exhibit-page-measure" ref={measureRef} aria-hidden="true" />
+          </div>
+        )}
       </section>
+
+      {!isGallery && (
+        <nav className="exhibit-page-navigation" aria-label={getTranslation(language, 'exhibit.sections')}>
+          <button
+            type="button"
+            className="exhibit-page-arrow"
+            onClick={() => setPage((current) => Math.max(0, current - 1))}
+            disabled={page === 0}
+            aria-label={getTranslation(language, 'exhibit.previous')}
+          >
+            <img src={decorativeAssets.gallery.previous} alt="" />
+          </button>
+          <p className="exhibit-page-status" aria-live="polite">
+            {page + 1} / {pages.length}
+          </p>
+          <button
+            type="button"
+            className="exhibit-page-arrow"
+            onClick={() => setPage((current) => Math.min(pages.length - 1, current + 1))}
+            disabled={page === pages.length - 1}
+            aria-label={getTranslation(language, 'exhibit.next')}
+          >
+            <img src={decorativeAssets.gallery.next} alt="" />
+          </button>
+        </nav>
+      )}
 
       <img src={decorativeAssets.article.floralBottom} alt="" className="exhibit-floral-bottom" aria-hidden="true" />
 

@@ -50,10 +50,21 @@ if (result.includes('onViewDetails') && result.includes('onScanAgain')) {
   fail('Scan Result action contract missing')
 }
 
-if (exhibit.includes("id: 'gallery'") && exhibit.includes('exhibit-reading-panel') && exhibit.includes('exhibit-reading-scroll')) {
-  pass('Exhibit retains Gallery and bounded reader controls')
+if (
+  exhibit.includes("id: 'gallery'") &&
+  exhibit.includes('exhibit-reader') &&
+  exhibit.includes('exhibit-page-viewport') &&
+  exhibit.includes('exhibit-page-navigation')
+) {
+  pass('Exhibit retains Gallery and paged reader controls')
 } else {
-  fail('Exhibit retains Gallery and reader controls')
+  fail('Exhibit Gallery or paged reader contract missing')
+}
+
+if (exhibit.includes('decorativeAssets.gallery.previous') && exhibit.includes('decorativeAssets.gallery.next')) {
+  pass('Exhibit paged reader uses decorative arrow assets')
+} else {
+  fail('Exhibit paged reader arrow assets missing')
 }
 
 if (exhibit.includes('onScanNext') && exhibit.includes('onBackToResult')) {
