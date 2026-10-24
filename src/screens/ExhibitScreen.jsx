@@ -3,7 +3,7 @@ import { decorativeAssets } from '../data/decorativeAssets.js'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
-export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
+export function ExhibitScreen({ language, exhibit, onBackToResult }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
 
   const sections = useMemo(() => {
@@ -138,7 +138,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
       <img src={decorativeAssets.article.floralBottom} alt="" className="exhibit-floral-bottom" aria-hidden="true" />
 
       <footer className="exhibit-actions">
-        <button type="button" className="exhibit-primary" onClick={onScanNext}>{getTranslation(language, 'exhibit.scanNext')}</button>
         <button type="button" className="exhibit-secondary" onClick={onBackToResult}>{getTranslation(language, 'exhibit.backToResult')}</button>
       </footer>
     </article>
