@@ -376,44 +376,26 @@
   padding: clamp(1rem, 2.2dvh, 1.35rem) clamp(1.35rem, 5.5vw, 2.25rem) clamp(1.15rem, 2.5dvh, 1.5rem);
 }
 
-.exhibit-page-text,
-.exhibit-page-measure {
+.exhibit-page-text {
   margin: 0;
   color: #4a2e26;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(0.82rem, 1.62dvh, 1rem);
   line-height: 1.58;
   letter-spacing: 0.008em;
-  white-space: pre-line;
-}
-
-.exhibit-page-text {
   text-wrap: pretty;
 }
 
-.exhibit-text-size-0 .exhibit-page-text,
-.exhibit-text-size-0 .exhibit-page-measure {
+.exhibit-text-size-0 .exhibit-page-text {
   font-size: clamp(0.74rem, 1.42dvh, 0.9rem);
 }
 
-.exhibit-text-size-1 .exhibit-page-text,
-.exhibit-text-size-1 .exhibit-page-measure {
+.exhibit-text-size-1 .exhibit-page-text {
   font-size: clamp(0.82rem, 1.62dvh, 1rem);
 }
 
-.exhibit-text-size-2 .exhibit-page-text,
-.exhibit-text-size-2 .exhibit-page-measure {
+.exhibit-text-size-2 .exhibit-page-text {
   font-size: clamp(0.92rem, 1.85dvh, 1.12rem);
-}
-
-.exhibit-page-measure {
-  position: absolute;
-  top: 0;
-  left: -9999px;
-  box-sizing: border-box;
-  padding-inline: clamp(1.35rem, 5.5vw, 2.25rem);
-  visibility: hidden;
-  pointer-events: none;
 }
 
 .exhibit-page-navigation {

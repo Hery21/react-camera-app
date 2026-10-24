@@ -1,15 +1,11 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useState, useMemo } from 'react'
 import { decorativeAssets } from '../data/decorativeAssets.js'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
-import { joinSentenceUnits, segmentArticleText } from '../lib/segmentArticleText.js'
-
-const MIN_USABLE_PAGE_HEIGHT = 48
-const INLINE_IMAGE_HEIGHT = 200
-const INLINE_IMAGE_MARGIN = 16
 
 export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
+
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
     if (content?.symbolism) available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
@@ -18,128 +14,34 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
   }, [content?.symbolism, exhibit.gallery, language])
 
   const [activeSection, setActiveSection] = useState('story')
-  const [textSize, setTextSize] = useState(1)
   const [page, setPage] = useState(0)
-  const [pages, setPages] = useState(() => [{ type: 'text', text: content?.story || '' }])
-  const viewportRef = useRef(null)
-  const measureRef = useRef(null)
-  const cleanupRef = useRef(null)
+  const [textSize, setTextSize] = useState(1)
+
   const selectedSection = sections.some((section) => section.id === activeSection) ? activeSection : sections[0].id
   const selectedLabel = sections.find((section) => section.id === selectedSection)?.label
   const isGallery = selectedSection === 'gallery'
 
-  const articleText = selectedSection === 'symbolism' ? content?.symbolism || '' : content?.story || ''
-  const inlineImages = useMemo(() => {
-    return selectedSection === 'story' ? content?.inlineImages || [] : []
-  }, [selectedSection, content?.inlineImages])
-
-  const buildEmergencyPages = useCallback(
-    (unit, measure, pageHeight) => {
-      const segmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(language, { granularity: 'word' }) : null
-      const parts = segmenter ? Array.from(segmenter.segment(unit.text), (entry) => entry.segment) : Array.from(unit.text)
-      const emergencyPages = []
-      let candidate = ''
-
-      for (const part of parts) {
-        const next = candidate + part
-        measure.textContent = next
-        if (candidate && measure.scrollHeight > pageHeight) {
-          emergencyPages.push({ type: 'text', text: candidate.trim(), image: unit.image })
-          candidate = part
-        } else {
-          candidate = next
-        }
-      }
-
-      if (candidate.trim()) emergencyPages.push({ type: 'text', text: candidate.trim(), image: unit.image })
-      return emergencyPages
-    },
-    [language],
-  )
-
-  const repaginate = useCallback(() => {
-    const viewport = viewportRef.current
-    const measure = measureRef.current
-    if (!viewport || !measure || isGallery) return
-
-    const pageWidth = viewport.clientWidth
-    const pageHeight = viewport.clientHeight
-    if (!pageWidth || pageHeight < MIN_USABLE_PAGE_HEIGHT) return
-
-    measure.style.width = pageWidth + 'px'
-    const blocks = segmentArticleText(articleText, language, inlineImages)
-    const nextPages = []
-    let currentUnits = []
-    let currentImage = null
-
-    for (const block of blocks) {
-      const imageHeight = currentImage ? INLINE_IMAGE_HEIGHT + INLINE_IMAGE_MARGIN : 0
-      const availableHeight = pageHeight - imageHeight
-
-      const candidateUnits = [...currentUnits, block]
-      measure.textContent = joinSentenceUnits(candidateUnits)
-
-      if (measure.scrollHeight <= availableHeight) {
-        currentUnits = candidateUnits
-      } else {
-        if (currentUnits.length) {
-          nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits), image: currentImage })
-        }
-        measure.textContent = block.text
-        currentImage = block.image
-
-        const newImageHeight = currentImage ? INLINE_IMAGE_HEIGHT + INLINE_IMAGE_MARGIN : 0
-        if (measure.scrollHeight <= pageHeight - newImageHeight) {
-          currentUnits = [block]
-        } else {
-          const emergency = buildEmergencyPages(block, measure, pageHeight - newImageHeight)
-          emergency.forEach((ep) => {
-            nextPages.push(ep)
-            currentImage = null
-          })
-          currentUnits = []
-        }
-      }
+  const pages = useMemo(() => {
+    if (selectedSection === 'symbolism') {
+      return [{ text: content?.symbolism || '' }]
     }
-
-    if (currentUnits.length) {
-      nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits), image: currentImage })
+    if (content?.pages?.length) {
+      return content.pages
     }
-    if (!nextPages.length) {
-      nextPages.push({ type: 'text', text: articleText, image: null })
-    }
-
-    setPages(nextPages)
-    setPage((current) => Math.min(current, nextPages.length - 1))
-  }, [articleText, inlineImages, buildEmergencyPages, isGallery, language])
-
-  const setViewportRef = useCallback(
-    (node) => {
-      if (cleanupRef.current) cleanupRef.current()
-      cleanupRef.current = null
-      viewportRef.current = node
-      if (!node || isGallery) return
-
-      const observer = new ResizeObserver(() => requestAnimationFrame(repaginate))
-      observer.observe(node)
-      cleanupRef.current = () => observer.disconnect()
-      requestAnimationFrame(repaginate)
-    },
-    [isGallery, repaginate],
-  )
+    return [{ text: content?.story || '' }]
+  }, [content, selectedSection])
 
   function handleSectionChange(sectionId) {
     setActiveSection(sectionId)
     setPage(0)
-    setPages([{ type: 'text', text: sectionId === 'symbolism' ? content?.symbolism || '' : content?.story || '' }])
   }
 
   function handleTextSizeChange(nextSize) {
     setTextSize(nextSize)
-    setPage(0)
-    setPages([{ type: 'text', text: articleText }])
-    requestAnimationFrame(repaginate)
   }
+
+  const currentPage = pages[page] || {}
+  const paragraphs = currentPage.text ? currentPage.text.split('\n') : []
 
   return (
     <article className={'exhibit-screen exhibit-text-size-' + textSize} aria-labelledby="exhibit-title">
@@ -206,12 +108,17 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
             })}
           </div>
         ) : (
-          <div className="exhibit-page-viewport" ref={setViewportRef}>
-            {pages[page]?.image && (
-              <img className="exhibit-page-image" src={pages[page].image.src} alt={pages[page].image.alt || ''} />
-            )}
-            {pages[page]?.text && <p className="exhibit-page-text">{pages[page].text}</p>}
-            <div className="exhibit-page-measure" ref={measureRef} aria-hidden="true" />
+          <div className="exhibit-page-viewport">
+            <div className="exhibit-page-scroll-area">
+              {currentPage.image?.src && (
+                <img className="exhibit-page-image" src={currentPage.image.src} alt={currentPage.image.alt || ''} />
+              )}
+              {paragraphs.length > 0 && (
+                <div className="exhibit-page-text">
+                  {paragraphs.map((para, i) => <p key={i}>{para}</p>)}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </section>

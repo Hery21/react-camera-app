@@ -91,6 +91,11 @@
   border: 1px solid var(--color-rosewood);
 }
 
+.admin-btn-small {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+}
+
 .dev-admin-trigger {
   position: fixed;
   bottom: 80px;
@@ -114,6 +119,27 @@
   gap: var(--space-4);
 }
 
+.admin-lang-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.admin-lang-tab {
+  padding: 8px 16px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-lang-tab.active {
+  background: var(--color-rosewood);
+  color: var(--color-surface);
+  border-color: var(--color-rosewood);
+}
+
 .admin-fieldset {
   border: 1px solid #ccc;
   border-radius: var(--radius-sm);
@@ -124,12 +150,6 @@
 .admin-fieldset legend {
   font-weight: 700;
   padding: 0 8px;
-}
-
-.admin-fieldset-help {
-  font-size: 0.8rem;
-  margin: 0 0 var(--space-2);
-  color: #555;
 }
 
 .admin-form label {
@@ -154,6 +174,34 @@
   resize: vertical;
 }
 
+.admin-pages-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--space-4) 0 var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-pages-header h3 {
+  margin: 0;
+}
+
+.admin-page-block {
+  border: 1px solid #eee;
+  background: #fafafa;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+}
+
+.admin-page-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
 .admin-save-status {
   margin: 0 0 var(--space-3);
   padding: var(--space-2) var(--space-3);
@@ -174,12 +222,21 @@
   border: 1px solid #f5c6cb;
 }
 
+/* Reader Scroll Area */
+.exhibit-page-scroll-area {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.exhibit-page-scroll-area p {
+  margin: 0 0 1em 0;
+}
+
 .exhibit-page-image {
   display: block;
   width: 100%;
-  height: 200px;
-  margin: 0 0 16px;
-  object-fit: contain;
+  margin: 0 auto 1rem;
   border-radius: var(--radius-sm);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

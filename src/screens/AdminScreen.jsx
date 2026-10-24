@@ -4,11 +4,19 @@ import { exhibits } from '../data/exhibits.js'
 export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
   const [formData, setFormData] = useState(null)
   const [saveStatus, setSaveStatus] = useState(null)
+  const [activeLang, setActiveLang] = useState('en')
 
   const editingExhibit = editingExhibitId ? exhibits.find((ex) => ex.id === editingExhibitId) : null
 
   if (editingExhibit && !formData) {
-    setFormData(JSON.parse(JSON.stringify(editingExhibit)))
+    const copy = JSON.parse(JSON.stringify(editingExhibit))
+    // Initialize pages array for each language if missing
+    ;['en', 'id', 'zh'].forEach(lang => {
+      if (copy.content[lang] && !copy.content[lang].pages) {
+        copy.content[lang].pages = [{ text: copy.content[lang].story || '' }]
+      }
+    })
+    setFormData(copy)
   }
 
   function handleChange(e) {
@@ -26,19 +34,47 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
     }))
   }
 
-  function handleImagesChange(e) {
-    try {
-      const parsed = JSON.parse(e.target.value)
-      setFormData((prev) => ({
+  function handlePageChange(lang, pageIndex, field, value) {
+    setFormData((prev) => {
+      const newPages = [...prev.content[lang].pages]
+      if (field === 'image.src' || field === 'image.alt') {
+        const imgField = field.split('.')[1]
+        newPages[pageIndex].image = { ...(newPages[pageIndex].image || {}), [imgField]: value }
+      } else {
+        newPages[pageIndex][field] = value
+      }
+      return {
         ...prev,
         content: {
           ...prev.content,
-          en: { ...prev.content.en, inlineImages: parsed },
-        },
-      }))
-    } catch {
-      // Ignore invalid JSON while typing
-    }
+          [lang]: { ...prev.content[lang], pages: newPages }
+        }
+      }
+    })
+  }
+
+  function addPage(lang) {
+    setFormData((prev) => ({
+      ...prev,
+      content: {
+        ...prev.content,
+        [lang]: { ...prev.content[lang], pages: [...(prev.content[lang].pages || []), { text: '' }] }
+      }
+    }))
+  }
+
+  function removePage(lang, index) {
+    setFormData((prev) => {
+      const newPages = [...prev.content[lang].pages]
+      newPages.splice(index, 1)
+      return {
+        ...prev,
+        content: {
+          ...prev.content,
+          [lang]: { ...prev.content[lang], pages: newPages }
+        }
+      }
+    })
   }
 
   async function handleSave() {
@@ -89,34 +125,57 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
             <input type="text" name="coverImage" value={formData.coverImage || ''} onChange={handleChange} />
           </label>
 
-          {['en', 'id', 'zh'].map((lang) => (
-            <fieldset key={lang} className="admin-fieldset">
-              <legend>{lang.toUpperCase()}</legend>
-              <label>
-                Title
-                <input type="text" value={formData.content[lang]?.title || ''} onChange={(e) => handleLangChange(lang, 'title', e.target.value)} />
-              </label>
-              <label>
-                Summary
-                <textarea rows={2} value={formData.content[lang]?.summary || ''} onChange={(e) => handleLangChange(lang, 'summary', e.target.value)} />
-              </label>
-              <label>
-                Story (Plain Text)
-                <textarea rows={8} value={formData.content[lang]?.story || ''} onChange={(e) => handleLangChange(lang, 'story', e.target.value)} />
-              </label>
-            </fieldset>
-          ))}
+          <div className="admin-lang-tabs">
+            {['en', 'id', 'zh'].map(lang => (
+              <button 
+                key={lang} 
+                type="button" 
+                className={'admin-lang-tab ' + (activeLang === lang ? 'active' : '')}
+                onClick={() => setActiveLang(lang)}
+              >
+                {lang.toUpperCase()}
+              </button>
+            ))}
+          </div>
 
           <fieldset className="admin-fieldset">
-            <legend>Inline Images JSON (Applies to all languages)</legend>
-            <p className="admin-fieldset-help">
-              Format: array of objects with paragraphIndex (number, 0-based), src (string), alt (string). The image renders at the top of the page that starts with that paragraph.
-            </p>
-            <textarea
-              rows={5}
-              defaultValue={JSON.stringify(formData.content.en?.inlineImages || [], null, 2)}
-              onChange={handleImagesChange}
-            />
+            <legend>{activeLang.toUpperCase()} Content</legend>
+            
+            <label>
+              Title
+              <input type="text" value={formData.content[activeLang]?.title || ''} onChange={(e) => handleLangChange(activeLang, 'title', e.target.value)} />
+            </label>
+            <label>
+              Summary
+              <textarea rows={2} value={formData.content[activeLang]?.summary || ''} onChange={(e) => handleLangChange(activeLang, 'summary', e.target.value)} />
+            </label>
+
+            <div className="admin-pages-header">
+              <h3>Pages</h3>
+              <button type="button" className="admin-btn-secondary" onClick={() => addPage(activeLang)}>+ Add Page</button>
+            </div>
+
+            {formData.content[activeLang]?.pages?.map((page, i) => (
+              <div key={i} className="admin-page-block">
+                <div className="admin-page-block-header">
+                  <strong>Page {i + 1}</strong>
+                  <button type="button" className="admin-btn-secondary admin-btn-small" onClick={() => removePage(activeLang, i)}>Remove</button>
+                </div>
+                
+                <label>
+                  Image Path (optional)
+                  <input type="text" value={page.image?.src || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.src', e.target.value)} />
+                </label>
+                <label>
+                  Image Alt
+                  <input type="text" value={page.image?.alt || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.alt', e.target.value)} />
+                </label>
+                <label>
+                  Text Content (Leave empty if image only)
+                  <textarea rows={4} value={page.text || ''} onChange={(e) => handlePageChange(activeLang, i, 'text', e.target.value)} />
+                </label>
+              </div>
+            ))}
           </fieldset>
         </div>
       </section>
