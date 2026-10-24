@@ -48,6 +48,11 @@ function App() {
     setScreen('welcome')
   }
 
+  function handleBackToMenu() {
+    setSelectedExhibit(null)
+    setScreen('menu')
+  }
+
   function handleMenuBack() {
     setScreen('welcome')
   }
@@ -92,9 +97,9 @@ function App() {
         screen === 'exhibit'
           ? handleBackToResult
           : screen === 'scan-result'
-            ? handleScanAgain
+            ? handleBackToMenu
             : screen === 'scanner'
-              ? handleBackToWelcome
+              ? handleBackToMenu
               : screen === 'menu'
                 ? handleMenuBack
                 : screen === 'admin'

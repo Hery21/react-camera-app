@@ -1,23 +1,30 @@
 import { useState } from 'react'
 import { exhibits } from '../data/exhibits.js'
 
-export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
-  const [formData, setFormData] = useState(null)
-  const [saveStatus, setSaveStatus] = useState(null)
-  const [activeLang, setActiveLang] = useState('en')
-
-  const editingExhibit = editingExhibitId ? exhibits.find((ex) => ex.id === editingExhibitId) : null
-
-  if (editingExhibit && !formData) {
-    const copy = JSON.parse(JSON.stringify(editingExhibit))
-    // Initialize pages array for each language if missing
-    ;['en', 'id', 'zh'].forEach(lang => {
+function buildInitialFormData(exhibitId) {
+  const existing = exhibits.find((ex) => ex.id === exhibitId)
+  if (existing) {
+    const copy = JSON.parse(JSON.stringify(existing))
+    ;['en', 'id', 'zh'].forEach((lang) => {
       if (copy.content[lang] && !copy.content[lang].pages) {
         copy.content[lang].pages = [{ text: copy.content[lang].story || '' }]
       }
     })
-    setFormData(copy)
+    return copy
   }
+  const blank = () => ({ title: '', summary: '', story: '', period: '', coverAlt: '', pages: [{ text: '' }] })
+  return {
+    id: exhibitId,
+    coverImage: '',
+    content: { en: blank(), id: blank(), zh: blank() }
+  }
+}
+
+function AdminEditForm({ exhibitId, onDone }) {
+  const [formData, setFormData] = useState(() => buildInitialFormData(exhibitId))
+  const [saveStatus, setSaveStatus] = useState(null)
+  const [activeLang, setActiveLang] = useState('en')
+  const isNew = !exhibits.some((ex) => ex.id === exhibitId)
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -29,8 +36,8 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
       ...prev,
       content: {
         ...prev.content,
-        [lang]: { ...prev.content[lang], [field]: value },
-      },
+        [lang]: { ...prev.content[lang], [field]: value }
+      }
     }))
   }
 
@@ -83,7 +90,7 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
       const res = await fetch('/api/admin/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ exhibit: formData }),
+        body: JSON.stringify({ exhibit: formData })
       })
       if (!res.ok) {
         throw new Error('Save failed with status ' + res.status)
@@ -97,96 +104,107 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
     }
   }
 
-  function handleDone() {
-    setFormData(null)
-    setSaveStatus(null)
-    onDone()
-  }
+  return (
+    <section className="admin-screen">
+      <header className="admin-header">
+        <h1>{isNew ? 'New ' + exhibitId : 'Editing ' + exhibitId}</h1>
+        <div className="admin-header-actions">
+          <button type="button" onClick={handleSave} className="admin-btn-primary" disabled={saveStatus === 'saving'}>
+            {saveStatus === 'saving' ? 'Saving...' : 'Save'}
+          </button>
+          <button type="button" onClick={onDone} className="admin-btn-secondary">Done</button>
+        </div>
+      </header>
 
-  if (editingExhibitId && formData) {
-    return (
-      <section className="admin-screen">
-        <header className="admin-header">
-          <h1>Editing {editingExhibitId}</h1>
-          <div className="admin-header-actions">
-            <button type="button" onClick={handleSave} className="admin-btn-primary" disabled={saveStatus === 'saving'}>
-              {saveStatus === 'saving' ? 'Saving...' : 'Save'}
+      {saveStatus === 'saved' && <p className="admin-save-status admin-save-status-ok">Saved. Reloading to reflect source change...</p>}
+      {saveStatus && saveStatus.startsWith('error') && <p className="admin-save-status admin-save-status-err">{saveStatus}</p>}
+
+      <div className="admin-form">
+        <label>
+          Cover Image Path
+          <input type="text" name="coverImage" value={formData.coverImage || ''} onChange={handleChange} />
+        </label>
+
+        <div className="admin-lang-tabs">
+          {['en', 'id', 'zh'].map((lang) => (
+            <button
+              key={lang}
+              type="button"
+              className={'admin-lang-tab ' + (activeLang === lang ? 'active' : '')}
+              onClick={() => setActiveLang(lang)}
+            >
+              {lang.toUpperCase()}
             </button>
-            <button type="button" onClick={handleDone} className="admin-btn-secondary">Done</button>
-          </div>
-        </header>
+          ))}
+        </div>
 
-        {saveStatus === 'saved' && <p className="admin-save-status admin-save-status-ok">Saved. Reloading to reflect source change...</p>}
-        {saveStatus && saveStatus.startsWith('error') && <p className="admin-save-status admin-save-status-err">{saveStatus}</p>}
+        <fieldset className="admin-fieldset">
+          <legend>{activeLang.toUpperCase()} Content</legend>
 
-        <div className="admin-form">
           <label>
-            Cover Image Path
-            <input type="text" name="coverImage" value={formData.coverImage || ''} onChange={handleChange} />
+            Title
+            <input type="text" value={formData.content[activeLang]?.title || ''} onChange={(e) => handleLangChange(activeLang, 'title', e.target.value)} />
+          </label>
+          <label>
+            Period (optional)
+            <input type="text" value={formData.content[activeLang]?.period || ''} onChange={(e) => handleLangChange(activeLang, 'period', e.target.value)} />
+          </label>
+          <label>
+            Summary
+            <textarea rows={2} value={formData.content[activeLang]?.summary || ''} onChange={(e) => handleLangChange(activeLang, 'summary', e.target.value)} />
           </label>
 
-          <div className="admin-lang-tabs">
-            {['en', 'id', 'zh'].map(lang => (
-              <button 
-                key={lang} 
-                type="button" 
-                className={'admin-lang-tab ' + (activeLang === lang ? 'active' : '')}
-                onClick={() => setActiveLang(lang)}
-              >
-                {lang.toUpperCase()}
-              </button>
-            ))}
+          <div className="admin-pages-header">
+            <h3>Pages</h3>
+            <button type="button" className="admin-btn-secondary" onClick={() => addPage(activeLang)}>+ Add Page</button>
           </div>
 
-          <fieldset className="admin-fieldset">
-            <legend>{activeLang.toUpperCase()} Content</legend>
-            
-            <label>
-              Title
-              <input type="text" value={formData.content[activeLang]?.title || ''} onChange={(e) => handleLangChange(activeLang, 'title', e.target.value)} />
-            </label>
-            <label>
-              Summary
-              <textarea rows={2} value={formData.content[activeLang]?.summary || ''} onChange={(e) => handleLangChange(activeLang, 'summary', e.target.value)} />
-            </label>
-
-            <div className="admin-pages-header">
-              <h3>Pages</h3>
-              <button type="button" className="admin-btn-secondary" onClick={() => addPage(activeLang)}>+ Add Page</button>
-            </div>
-
-            {formData.content[activeLang]?.pages?.map((page, i) => (
-              <div key={i} className="admin-page-block">
-                <div className="admin-page-block-header">
-                  <strong>Page {i + 1}</strong>
-                  <button type="button" className="admin-btn-secondary admin-btn-small" onClick={() => removePage(activeLang, i)}>Remove</button>
-                </div>
-                
-                <label>
-                  Image Path (optional)
-                  <input type="text" value={page.image?.src || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.src', e.target.value)} />
-                </label>
-                <label>
-                  Image Alt
-                  <input type="text" value={page.image?.alt || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.alt', e.target.value)} />
-                </label>
-                <label>
-                  Text Content (Leave empty if image only)
-                  <textarea rows={4} value={page.text || ''} onChange={(e) => handlePageChange(activeLang, i, 'text', e.target.value)} />
-                </label>
+          {formData.content[activeLang]?.pages?.map((page, i) => (
+            <div key={i} className="admin-page-block">
+              <div className="admin-page-block-header">
+                <strong>Page {i + 1}</strong>
+                <button type="button" className="admin-btn-secondary admin-btn-small" onClick={() => removePage(activeLang, i)}>Remove</button>
               </div>
-            ))}
-          </fieldset>
-        </div>
-      </section>
-    )
+
+              <label>
+                Image Path (optional)
+                <input type="text" value={page.image?.src || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.src', e.target.value)} />
+              </label>
+              <label>
+                Image Alt
+                <input type="text" value={page.image?.alt || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.alt', e.target.value)} />
+              </label>
+              <label>
+                Text Content (Leave empty if image only)
+                <textarea rows={4} value={page.text || ''} onChange={(e) => handlePageChange(activeLang, i, 'text', e.target.value)} />
+              </label>
+            </div>
+          ))}
+        </fieldset>
+      </div>
+    </section>
+  )
+}
+
+function AdminDashboard({ onEdit, onBack }) {
+  function getNextExhibitId() {
+    const maxNum = exhibits.reduce((max, ex) => {
+      const match = /^PSBIKT-(\d+)$/.exec(ex.id)
+      return match ? Math.max(max, parseInt(match[1], 10)) : max
+    }, 0)
+    return 'PSBIKT-' + String(maxNum + 1).padStart(3, '0')
   }
 
   return (
     <section className="admin-screen">
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
-        <button type="button" onClick={onBack} className="admin-btn-secondary">Exit Admin</button>
+        <div className="admin-header-actions">
+          <button type="button" onClick={() => onEdit(getNextExhibitId())} className="admin-btn-primary">
+            + Add New Exhibit
+          </button>
+          <button type="button" onClick={onBack} className="admin-btn-secondary">Exit Admin</button>
+        </div>
       </header>
 
       <div className="admin-list">
@@ -208,4 +226,11 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
       </div>
     </section>
   )
+}
+
+export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
+  if (editingExhibitId) {
+    return <AdminEditForm key={editingExhibitId} exhibitId={editingExhibitId} onDone={onDone} />
+  }
+  return <AdminDashboard onEdit={onEdit} onBack={onBack} />
 }
