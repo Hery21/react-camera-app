@@ -28,7 +28,7 @@ export function ExhibitScreen({ language, exhibit }) {
   const screenClassName = 'exhibit-screen exhibit-text-size-' + textSize
 
   const buildEmergencyPages = useCallback(
-    (unit, measure) => {
+    (unit, measure, pageHeight) => {
       const segmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter(language, { granularity: 'word' }) : null
       const parts = segmenter ? Array.from(segmenter.segment(unit.text), (entry) => entry.segment) : Array.from(unit.text)
       const emergencyPages = []
@@ -37,7 +37,7 @@ export function ExhibitScreen({ language, exhibit }) {
       for (const part of parts) {
         const next = candidate + part
         measure.textContent = next
-        if (candidate && measure.scrollHeight > measure.clientHeight) {
+        if (candidate && measure.scrollHeight > pageHeight) {
           emergencyPages.push(candidate.trim())
           candidate = part
         } else {
@@ -56,36 +56,42 @@ export function ExhibitScreen({ language, exhibit }) {
     const measure = measureRef.current
     if (!viewport || !measure || isGallery) return
 
-    measure.style.width = viewport.clientWidth + 'px'
-    measure.style.height = viewport.clientHeight + 'px'
+    const pageWidth = viewport.clientWidth
+    const pageHeight = viewport.clientHeight
+    if (!pageWidth || !pageHeight) return
+
+    measure.style.width = pageWidth + 'px'
+    measure.style.height = 'auto'
+
     const units = segmentArticleText(articleText, language)
     const nextPages = []
     let currentUnits = []
 
     for (const unit of units) {
       const candidateUnits = [...currentUnits, unit]
-      const candidateText = joinSentenceUnits(candidateUnits)
-      measure.textContent = candidateText
+      measure.textContent = joinSentenceUnits(candidateUnits)
 
-      if (currentUnits.length > 0 && measure.scrollHeight > measure.clientHeight) {
-        nextPages.push(joinSentenceUnits(currentUnits))
-        currentUnits = [unit]
-        measure.textContent = joinSentenceUnits(currentUnits)
-
-        if (measure.scrollHeight > measure.clientHeight) {
-          nextPages.push(...buildEmergencyPages(unit, measure))
-          currentUnits = []
-        }
-      } else if (currentUnits.length === 0 && measure.scrollHeight > measure.clientHeight) {
-        nextPages.push(...buildEmergencyPages(unit, measure))
-        currentUnits = []
-      } else {
+      if (measure.scrollHeight <= pageHeight) {
         currentUnits = candidateUnits
+        continue
+      }
+
+      if (currentUnits.length > 0) {
+        nextPages.push(joinSentenceUnits(currentUnits))
+      }
+
+      measure.textContent = unit.text
+      if (measure.scrollHeight <= pageHeight) {
+        currentUnits = [unit]
+      } else {
+        nextPages.push(...buildEmergencyPages(unit, measure, pageHeight))
+        currentUnits = []
       }
     }
 
     if (currentUnits.length) nextPages.push(joinSentenceUnits(currentUnits))
     if (!nextPages.length) nextPages.push('')
+
     setPages(nextPages)
     setPage((current) => Math.min(current, nextPages.length - 1))
   }, [articleText, buildEmergencyPages, isGallery, language])
