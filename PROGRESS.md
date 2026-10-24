@@ -937,3 +937,19 @@ Using Tab and Enter only.
 **Decisions made:** Chose the import-based fix matching MenuScreen/ScannerScreen rather than moving frame-*.webp to public/. Import-based lets Vite hash and optimize the assets and drop unused ones. Added check:vite-assets because this class of bug fails silently (no console error, empty alt hides the broken image), so a grep-based self-check is the only realistic guard. Also updated check-mvp-integrity.mjs because its assertions had drifted from the current source — the pattern of "self-check expects string X, source uses Y after refactor" has caused three failed runs in this session, so updating the check alongside the code that moved is the durable fix.
 **Next part:** Rebuild and verify on production preview. Optionally add check:vite-assets and check:scanner-stability to the verify:dev chain for CI integration.
 **Commit:** 01e70fb
+
+## Style — Exhibit typography and controls refinement
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Make the A-/A+ font controls larger and easier to tap, default the reader text size to the smallest option, remove the "Exhibit" eyebrow line above the title, and change the exhibit title color to red maroon.
+**Files changed:** src/screens/ExhibitScreen.jsx (textSize default 1 -> 0; removed exhibit-eyebrow paragraph from the heading block), src/styles/exhibit.css (.exhibit-top-font-controls button min-size 38x40 -> 48x48 and font 0.82rem -> 1.05rem with line-height 1; .exhibit-heading h1 color rosewood -> vermilion-dark; removed orphaned .exhibit-eyebrow rule), scripts/check-responsive-baseline.mjs (updated scanner-cleanup assertion to accept the releaseCamera helper introduced in camera-leak-fix).
+**User-visible result:** The A-/A+ font size buttons on the Exhibit screen are now 48x48px tap targets with 1.05rem Playfair Display labels. The reader loads at the smallest text size. The "Exhibit" / "Pameran" / "展品" line above the title is gone. The exhibit title is deep red maroon (#861818).
+**Automated checks:** npm run lint; npm run check:flow; npm run check:mvp; npm run check:responsive; npm run check:scanner-stability; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open any exhibit article; (2) verify A-/A+ buttons are visibly larger; (3) verify A- is disabled on first load (at smallest size); (4) tap A+ twice to confirm all three sizes work; (5) verify no "Exhibit" eyebrow line above the title; (6) verify title is red maroon.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The exhibit.articleLabel translation key remains in the locale files even though the eyebrow element is removed — unused keys are harmless and removing them means a locale file edit if the eyebrow ever returns. If A-/A+ are still too small on your device, the min-width/min-height can be bumped to 56px, but 48px already exceeds WCAG AA.
+**Decisions made:** Used --color-vermilion-dark (#861818) for "red maroon" rather than the brighter --color-vermilion (#b32222). Removed the orphaned .exhibit-eyebrow CSS rule entirely. Kept the exhibit.articleLabel translation key. Added line-height: 1 to the font control buttons so A-/A+ characters center vertically. Updated the responsive check to match the releaseCamera helper — this is the fifth stale assertion that has blocked a run (after check:flow and check:mvp each needed the same kind of fix). Both check:responsive and check:scanner-stability now accept the current cleanup pattern, though check:scanner-stability is the more thorough guard for camera lifecycle.
+**Next part:** User visual verification. Then proceed to the next roadmap item.
+**Commit:** 97998a6
