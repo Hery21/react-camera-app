@@ -3,7 +3,7 @@
 **Project type:** Mobile-first web application for a cultural expo  
 **Chosen stack:** React + Vite + JavaScript/JSX + plain CSS  
 **Primary devices:** Mobile browsers, especially iOS Safari and Android Chrome  
-**Languages:** English (`en`) and Bahasa Indonesia (`id`)  
+**Languages:** English (`en`), Bahasa Indonesia (`id`), and Mandarin Chinese (`zh`)  
 **Core experience:** Welcome → Scan QR → Confirm exhibit → Read story → Scan another exhibit  
 **Design direction:** An ornate Peranakan-inspired storytelling hand mirror, not a Game Boy, console, or generic camera utility  
 **Document role:** This is the durable implementation source of truth. Complete one part at a time, verify it, record the result, and only then advance.
@@ -1420,3 +1420,100 @@ Current known state:
 - Real QR payloads and approved bilingual exhibit content still need confirmation.
 
 Start with **Phase 0.1**. Do not install the scanner package or build the ornamented screens until the baseline and quality gates are complete. After Phase 1, implement localization before QR content and camera work so every subsequent screen is bilingual by construction.
+
+
+---
+
+# 11. Roadmap amendment — accepted October 2026
+
+This amendment supersedes conflicting earlier Phase 8/9 wording. It records decisions proven by the implemented scanner and the approved design proposal.
+
+## A. Trilingual scope
+
+The MVP supports English (`en`), Bahasa Indonesia (`id`), and Mandarin Chinese (`zh`). QR IDs remain language-neutral. Changing language must preserve the current screen, selected exhibit, and active article section where that section exists.
+
+## B. Accepted scanner baseline
+
+Phase 7.2b established and the user manually accepted a camera-first, full-viewport scanner. The live camera is the visual surface. Back and language controls float above it, floral corner PNGs are decorative, CSS gold brackets indicate the functional scan target, and bottom controls/statuses float over a gradient. Do not return to a bounded camera panel.
+
+Phase 7.3 established localized scanner recovery. Invalid QR and valid-format unknown-exhibit detections keep scanning. A valid known exhibit stops the camera before leaving the scanner.
+
+## C. Post-scan architecture
+
+The temporary successful-result card embedded inside `ScannerScreen` is development scaffolding and must be removed. Successful scans transition out of `ScannerScreen` through application-owned state.
+
+Target journey:
+
+```text
+Welcome
+  -> Scanner
+  -> Scan Result
+  -> Exhibit Article
+       -> Story
+       -> Symbolism, when present
+       -> Gallery, when present
+  -> Scan Next Exhibit
+  -> fresh Scanner session
+```
+
+`App.jsx` becomes responsible for the selected exhibit and high-level screen. `ScannerScreen` owns only scanning, scanner status/error UI, and camera cleanup.
+
+## D. Revised Phase 8
+
+### Phase 8.1 — Lift successful scan state into App
+
+- Add `scan-result` and `exhibit` application screens.
+- Add application-owned selected exhibit identity.
+- `ScannerScreen` reports a valid recognized exhibit via a callback instead of rendering exhibit details itself.
+- Scanner stops before the callback.
+- Remove the temporary inline successful-result card.
+- Preserve all Phase 7.3 invalid/unknown/error recovery behavior.
+- Language changes must not lose the selected exhibit.
+
+### Phase 8.2 — Dedicated ScanResultScreen
+
+- Create `src/screens/ScanResultScreen.jsx`.
+- Show recognized exhibit image when a real/available image exists, localized title, optional period/metadata, and localized detected confirmation.
+- Primary action: View Details.
+- Secondary action: Scan Again.
+- Do not auto-advance on a timer.
+- Result screen uses article/result styling rather than the full-screen camera styling.
+
+### Phase 8.3 — Exhibit article foundation
+
+- Create `src/screens/ExhibitScreen.jsx`.
+- Render a readable warm-ivory article surface.
+- Render localized title/metadata and long-form Story.
+- Render Symbolism only when present.
+- Use normal document scrolling, not an internal fixed-height article scrollbar.
+- Keep the language toggle available without overlapping article content.
+
+### Phase 8.4 — Gallery section
+
+- Render Gallery only when gallery data exists.
+- Use a simple responsive image grid before considering a carousel dependency.
+- Use selected-language alt text and captions.
+- Image failures must not collapse the article.
+
+### Phase 8.5 — Scan Next Exhibit lifecycle
+
+- Article action returns to a fresh scanner session.
+- Previous camera stream must already be stopped.
+- Clear/reset selected exhibit only at a point that does not cause an intermediate invalid render.
+- Scan Again from Scan Result also starts a fresh scanner session.
+
+### Phase 8.6 — Responsive/article polish and acceptance
+
+- Verify EN/ID/ZH on result and article screens.
+- Verify long titles/content at narrow mobile widths and 200% zoom.
+- Verify conditional Story/Symbolism/Gallery navigation.
+- Verify Back behavior and scan-next behavior.
+- Confirm the fixed/floating scanner header treatment does not leak into result/article layouts.
+
+## E. Revised Phase 9
+
+Phase 9 is now **real exhibit content and asset integration**, not initial article construction. Replace fixture content and placeholder image paths with approved expo content/assets, verify all three languages, confirm actual QR mappings, credits, rights, and optional-section completeness. Do not fabricate missing cultural content.
+
+## F. Testing policy
+
+The urgent-project override remains active: do not introduce a unit-test framework. Use existing Node self-checks for branchy pure logic, `npm run lint`, CSS diagnostics for CSS changes, `npm run build`, and explicit manual browser/device acceptance where behavior requires a real camera or visual inspection.
