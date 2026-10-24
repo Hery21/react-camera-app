@@ -380,7 +380,7 @@
   box-sizing: border-box;
   color: #4a2e26;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.82rem, 1.62dvh, 1rem);
+  font-size: clamp(0.95rem, 1.85dvh, 1.15rem);
   line-height: 1.58;
   letter-spacing: 0.008em;
   overflow-wrap: break-word;
@@ -402,9 +402,9 @@
   margin-bottom: 0;
 }
 
-.exhibit-text-size-0 .exhibit-page-text { font-size: clamp(0.74rem, 1.42dvh, 0.9rem); }
-.exhibit-text-size-1 .exhibit-page-text { font-size: clamp(0.82rem, 1.62dvh, 1rem); }
-.exhibit-text-size-2 .exhibit-page-text { font-size: clamp(0.92rem, 1.85dvh, 1.12rem); }
+.exhibit-text-size-0 .exhibit-page-text { font-size: clamp(0.95rem, 1.85dvh, 1.15rem); }
+.exhibit-text-size-1 .exhibit-page-text { font-size: clamp(1.1rem, 2.15dvh, 1.35rem); }
+.exhibit-text-size-2 .exhibit-page-text { font-size: clamp(1.28rem, 2.5dvh, 1.6rem); }
 
 .exhibit-page-image {
   display: block;

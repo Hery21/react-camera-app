@@ -128,7 +128,7 @@ function App() {
       )}
       {screen === 'exhibit' && selectedExhibit && (
         <ExhibitScreen
-          key={selectedExhibit.id + '-' + language}
+          key={selectedExhibit.id}
           language={language}
           exhibit={selectedExhibit}
           onBackToResult={handleBackToResult}

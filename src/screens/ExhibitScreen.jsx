@@ -44,7 +44,12 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
     setTextSize(nextSize)
   }
 
-  const currentPage = pages[page] || {}
+  // Clamp displayed page index to the current language's page count so
+  // switching languages (which can change pages.length) does not show an
+  // out-of-range page. State may drift higher than length, but the next
+  // prev/next click corrects it because handlers use safePage as the base.
+  const safePage = Math.min(page, pages.length - 1)
+  const currentPage = pages[safePage] || {}
   const paragraphs = currentPage.text ? currentPage.text.split('\n') : []
 
   return (
@@ -128,11 +133,11 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
 
       {!isGallery && (
         <nav className="exhibit-page-navigation" aria-label={getTranslation(language, 'exhibit.sections')}>
-          <button type="button" className="exhibit-page-arrow" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label={getTranslation(language, 'exhibit.previous')}>
+          <button type="button" className="exhibit-page-arrow" onClick={() => setPage(Math.max(0, safePage - 1))} disabled={safePage === 0} aria-label={getTranslation(language, 'exhibit.previous')}>
             <img src={decorativeAssets.gallery.previous} alt="" />
           </button>
-          <p className="exhibit-page-status" aria-live="polite">{page + 1} / {pages.length}</p>
-          <button type="button" className="exhibit-page-arrow" onClick={() => setPage((current) => Math.min(pages.length - 1, current + 1))} disabled={page === pages.length - 1} aria-label={getTranslation(language, 'exhibit.next')}>
+          <p className="exhibit-page-status" aria-live="polite">{safePage + 1} / {pages.length}</p>
+          <button type="button" className="exhibit-page-arrow" onClick={() => setPage(Math.min(pages.length - 1, safePage + 1))} disabled={safePage === pages.length - 1} aria-label={getTranslation(language, 'exhibit.next')}>
             <img src={decorativeAssets.gallery.next} alt="" />
           </button>
         </nav>
