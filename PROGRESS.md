@@ -387,3 +387,109 @@ The Phase 4 exit gate is satisfied on iOS Safari + desktop webcam. Android Chrom
 **Decisions made:** Container queries (cqw) over viewport units (vw) because the mirror is not the viewport — using vw would make text drift outside the mirror face when the browser is zoomed or when the mirror hits its 40rem cap on wide screens. Container queries tie text directly to mirror width, which is the invariant we care about. Semi-transparent rosewood pill for the toggle rather than fully transparent — cream text alone would not contrast against the bright gold florals in the mirror crown; the semi-transparent dark fill with backdrop blur gives reliable contrast while still letting the brocade texturate through. Header floats with position absolute rather than stacking in the flex column so the mirror can be taller and the toggle sits visually inside the mirror composition, not above it. CTA kept at width: 34% of the stage rather than auto-sizing to content — this gives a consistent width across languages (Start Exploring / Mulai Menjelajah / 开始探索) and reads as part of the mirror design rather than as a floating button.  
 **Next part:** User visual verification of the refactor. If adjustments are needed (mirror ratio, text anchor percentages, toggle opacity), address them in a Phase 6.2c follow-up. Otherwise proceed with remaining backlog (Phase 11 deployment, or requested feature work).  
 **Commit:** 7c8c732
+
+## Phase 9.4 — Article Reader Refinements
+
+**Status:** Complete
+**Goal:** Refine the paged article reader layout, typography, and font controls.
+**Files changed:** src/screens/ExhibitScreen.jsx, src/styles/exhibit.css, src/styles/exhibit-navigation.css, src/styles/exhibit-viewport.css, src/styles/exhibit-reader-controls.css, src/styles/exhibit-sentence-pagination.css, src/styles/exhibit-layout.css, src/styles/exhibit-controls.css.
+**User-visible result:** The article reader now uses a paginated view with clear Previous/Next arrows. Font controls (A- / A+) are positioned in the top-right header and repaginate the text when changed.
+**Automated checks:** npm run lint; node scripts/check-article-pagination.mjs; node scripts/check-article-controls.mjs; node scripts/check-article-layout.mjs; node scripts/check-reader-font-controls.mjs.
+**Manual checks:** Verified pagination on text size changes and viewport resizes. Confirmed arrows function correctly.
+**Decisions made:** Uses ResizeObserver and Intl.Segmenter to dynamically pack sentences into the available viewport height, avoiding scrollbars.
+**Commits:** 0543c00, 7faa883, f0dcd4c
+
+## Phase 9.5 — Scan Progress Tracking
+
+**Status:** Complete
+**Goal:** Track which exhibits the visitor has scanned during their session.
+**Files changed:** src/lib/scanProgress.js, src/components/ScanProgress.jsx, src/styles/scan-progress.css, src/App.jsx.
+**User-visible result:** A progress dock appears at the bottom center of the screen, displaying a QR icon and a count (e.g., 3/8). It survives same-tab reloads but clears when the page session ends.
+**Automated checks:** npm run check:scan-progress.
+**Manual checks:** Confirmed duplicates do not increase the count. Invalid/unknown scans do not count.
+**Decisions made:** Uses sessionStorage with a stable versioned key (storytelling-mirror.scanned-exhibit-ids.v1) to avoid polluting permanent localStorage.
+**Commit:** d8089c1
+
+## Phase 9.6 — Progress Dock Layout Reservation
+
+**Status:** Complete
+**Goal:** Ensure the floating scan progress dock does not overlap bottom UI elements across all screens.
+**Files changed:** src/styles/app-shell.css, src/styles/welcome.css, src/styles/scanner.css, src/styles/scan-result.css, src/styles/exhibit.css, src/styles/scan-progress.css.
+**User-visible result:** Added a global CSS variable (--progress-dock-height) and used it to add padding/margin to the bottom of every screen. The Welcome CTA, Scanner controls, Scan Result actions, and Exhibit footer now sit cleanly above the progress dock.
+**Automated checks:** npm run check:progress-layout.
+**Manual checks:** Visually verified on iPhone Safari and desktop that the dock never covers any interactive buttons.
+**Commit:** 5cc9f63
+
+## Handoff Documentation
+
+**Status:** Complete
+**Goal:** Prepare the repository for a seamless switch to a new AI assistant.
+**Files changed:** DEEPSEEK-HANDOFF.md (new).
+**Commit:** d00b151
+
+# Future Roadmap
+
+## Phase 10.4: Gallery styling
+- Preserve Gallery as Exhibit tab.
+- Use motif-lattice.webp sparingly.
+- Keep localized alt/captions.
+- Do not disturb paged Story/Symbolism reader.
+- Do not add carousel until a real lightbox exists.
+
+## Phase 10.5: responsive/accessibility acceptance
+Test:
+- 320x568
+- 360x640
+- 390x844
+- 430x932
+- portrait primary
+- landscape safe
+- focus styles
+- touch targets
+- camera cleanup
+- all three reader font sizes
+- language changes without layout jumps
+- progress dock without overlap
+
+## Dev-only admin/content authoring
+The user wants an Admin page protected by PIN 6767 for development authoring.
+- Gate with import.meta.env.DEV.
+- Never expose in normal Vercel production build.
+- Export JSON and use a Node import script to update source files.
+
+### Phase 11.1: canonical content schema
+### Phase 11.2: dev-only Admin route + PIN
+### Phase 11.3: Admin exhibit dashboard
+### Phase 11.4: Admin edit/add form
+### Phase 11.5: export
+### Phase 11.6: Node import script
+### Phase 11.7: Admin acceptance
+
+## Selection Menu / hub
+Welcome CTA should become Start, then navigate to a menu:
+Tour, Extra Information, Quiz, Photo & Collage.
+### Phase 12.1: state/navigation foundation
+### Phase 12.2: menu design
+### Phase 12.3: Tour integration
+
+## Extra Information module
+### Phase 13.1: schema
+### Phase 13.2: index
+### Phase 13.3: reader
+### Phase 13.4: Admin support
+
+## Quiz module
+### Phase 14.1: schema
+### Phase 14.2: lobby
+### Phase 14.3: gameplay
+### Phase 14.4: results
+### Phase 14.5: Admin authoring
+
+## Photo and Instagram collage module
+### Phase 15.1: capture
+### Phase 15.2: template model
+### Phase 15.3: collage editor
+### Phase 15.4: export/share
+### Phase 15.5: privacy/cleanup
+### Phase 15.6: optional dev template admin
+
