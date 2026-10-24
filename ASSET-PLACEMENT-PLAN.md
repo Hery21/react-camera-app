@@ -5,9 +5,11 @@
 ## 1. Visual system by screen
 
 ### Welcome
+
 Primary visual identity: immersive red brocade + large wall mirror.
 
 Layer order:
+
 1. `red-brocade-bg.webp` — full viewport background.
 2. `mirror.webp` — dominant wall-mirror composition, reaching or slightly exceeding the smaller viewport dimension.
 3. HTML title/copy positioned inside the mirror opening.
@@ -18,11 +20,13 @@ Layer order:
 Do not add the other decorative assets here unless the final mirror composition has an obvious empty region. The mirror already carries substantial ornament.
 
 ### Scanner
+
 Primary visual identity: live camera with restrained ornamental guidance.
 
 Keep the already accepted scanner-corner frame assets for the camera overlay. Do not replace the functional QR brackets with decorative assets.
 
 Optional additions only if they do not obstruct camera content:
+
 - `floral-corner.webp` — not recommended by default because the scanner already has four dedicated frame-corner assets.
 - `motif-cloud.webp` — do not use by default.
 - `motif-knot.webp` — do not use by default.
@@ -30,9 +34,11 @@ Optional additions only if they do not obstruct camera content:
 Scanner priority remains camera visibility and QR recognition.
 
 ### Scan Result
+
 Primary visual identity: compact recognition/confirmation card.
 
 Recommended assets:
+
 - `paper-bg.webp` — page/card surface texture.
 - `artifact-medallion.webp` — circular decorative surround for the recognized exhibit image when a cover image exists.
 - `artifact-pedestal.webp` — beneath the exhibit/medallion to make the recognized object presentation feel intentional.
@@ -41,13 +47,16 @@ Recommended assets:
 - `floral-corner.webp` — one restrained corner decoration, preferably top-right or bottom-left, with mirrored CSS transform for the opposite corner only if needed.
 
 Avoid:
+
 - `article-crown.webp` here. Reserve it for the article.
 - `article-floral-bottom.webp` here. Reserve it for the article ending.
 
 ### Exhibit Article
+
 Primary visual identity: readable antique-paper article with decorative top/bottom framing.
 
 Recommended layer order:
+
 1. `paper-bg.webp` — repeating/cover article background texture behind the content surface.
 2. `article-crown.webp` — article header ornament above/behind exhibit heading.
 3. Exhibit cover image — content asset, not decorative.
@@ -58,6 +67,7 @@ Recommended layer order:
 8. Scan Next Exhibit / Back to Result buttons.
 
 Secondary motifs:
+
 - `motif-cloud.webp` — small low-opacity decorative accent near Story section headings or article margins.
 - `motif-knot.webp` — small symbolic accent near an article metadata/divider area, used once rather than repeated heavily.
 - `motif-lattice.webp` — subtle repeat/border treatment for tab/navigation or gallery framing, not behind body text.
@@ -65,9 +75,11 @@ Secondary motifs:
 - `floral-corner.webp` — optional article-card corner ornament on wide/tablet layouts; suppress on narrow phones if it crowds text.
 
 ### Gallery
+
 Gallery remains part of `ExhibitScreen`, not a new route.
 
 Recommended assets:
+
 - `paper-bg.webp` — inherited from article surface.
 - `motif-lattice.webp` — preferred ornamental treatment around gallery tiles or gallery-section boundary.
 - `divider-gold.webp` — section separator above Gallery if needed.
@@ -75,32 +87,33 @@ Recommended assets:
 - `floral-corner.webp` — optional single decorative accent around the gallery section, not on every tile.
 
 ### Article/gallery lightbox — only if added
+
 - `arrow-left.webp` — previous image control.
 - `arrow-right.webp` — next image control.
 - `icons.svg` — use only after inspecting the actual sprite contents and mapping named symbols. Do not guess symbol IDs.
 
 ## 2. Asset-by-asset ownership
 
-| Asset | Primary owner | Secondary use | Do not use for |
-|---|---|---|---|
-| `mirror.webp` | Welcome | None | Scanner/result/article frame |
-| `red-brocade-bg.webp` | Welcome | Potential scanner error background only if ever needed | Article reading surface |
-| `paper-bg.webp` | Result + Exhibit | Gallery inherited surface | Camera screen |
-| `artifact-medallion.webp` | Scan Result | Potential exhibit article hero frame | Welcome |
-| `artifact-pedestal.webp` | Scan Result | Optional article hero decoration on wide layouts | Scanner |
-| `article-crown.webp` | Exhibit header | None by default | Welcome/Scanner |
-| `article-floral-bottom.webp` | Exhibit ending | Gallery ending only if article and gallery share ending | Scanner |
-| `divider-gold.webp` | Exhibit | Scan Result | Repeated after every paragraph |
-| `floral-corner.webp` | Result/Article accent | Gallery | Repeated on all four corners of every component |
-| `motif-cloud.webp` | Article accent | Small empty states | Large backgrounds |
-| `motif-knot.webp` | Article metadata/accent | Result accent | Repeated pattern |
-| `motif-lattice.webp` | Gallery/tab framing | Article edge pattern | Body-text background at normal opacity |
-| `motif.webp` | Generic fallback decoration | Small section accent | Automatic use when another asset already serves the role |
-| `button-flourish.webp` | Result/Article primary action decoration | Welcome only if later explicitly requested | Click target by itself |
-| `arrow-left.webp` | Gallery lightbox previous | Future carousel | App-shell Back button unless intentionally redesigned |
-| `arrow-right.webp` | Gallery lightbox next | Future carousel | App-shell navigation |
-| `icons.svg` | Shared icon sprite after inspection | Buttons/status | Guessing undocumented sprite IDs |
-| `favicon.svg` | Browser favicon | None | In-page decorative emblem |
+| Asset                        | Primary owner                            | Secondary use                                           | Do not use for                                           |
+| ---------------------------- | ---------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------- |
+| `mirror.webp`                | Welcome                                  | None                                                    | Scanner/result/article frame                             |
+| `red-brocade-bg.webp`        | Welcome                                  | Potential scanner error background only if ever needed  | Article reading surface                                  |
+| `paper-bg.webp`              | Result + Exhibit                         | Gallery inherited surface                               | Camera screen                                            |
+| `artifact-medallion.webp`    | Scan Result                              | Potential exhibit article hero frame                    | Welcome                                                  |
+| `artifact-pedestal.webp`     | Scan Result                              | Optional article hero decoration on wide layouts        | Scanner                                                  |
+| `article-crown.webp`         | Exhibit header                           | None by default                                         | Welcome/Scanner                                          |
+| `article-floral-bottom.webp` | Exhibit ending                           | Gallery ending only if article and gallery share ending | Scanner                                                  |
+| `divider-gold.webp`          | Exhibit                                  | Scan Result                                             | Repeated after every paragraph                           |
+| `floral-corner.webp`         | Result/Article accent                    | Gallery                                                 | Repeated on all four corners of every component          |
+| `motif-cloud.webp`           | Article accent                           | Small empty states                                      | Large backgrounds                                        |
+| `motif-knot.webp`            | Article metadata/accent                  | Result accent                                           | Repeated pattern                                         |
+| `motif-lattice.webp`         | Gallery/tab framing                      | Article edge pattern                                    | Body-text background at normal opacity                   |
+| `motif.webp`                 | Generic fallback decoration              | Small section accent                                    | Automatic use when another asset already serves the role |
+| `button-flourish.webp`       | Result/Article primary action decoration | Welcome only if later explicitly requested              | Click target by itself                                   |
+| `arrow-left.webp`            | Gallery lightbox previous                | Future carousel                                         | App-shell Back button unless intentionally redesigned    |
+| `arrow-right.webp`           | Gallery lightbox next                    | Future carousel                                         | App-shell navigation                                     |
+| `icons.svg`                  | Shared icon sprite after inspection      | Buttons/status                                          | Guessing undocumented sprite IDs                         |
+| `favicon.svg`                | Browser favicon                          | None                                                    | In-page decorative emblem                                |
 
 ## 3. Asset hierarchy rules
 
@@ -172,6 +185,7 @@ If moving public files creates unnecessary churn this late, keep the current fla
 ## 6. Refactor phases
 
 ### Phase 10.2A — Asset inventory and path contract
+
 - Verify every listed file exists.
 - Inspect `icons.svg` to learn actual symbol IDs before using it.
 - Decide whether to keep public paths flat for MVP or reorganize.
@@ -179,6 +193,7 @@ If moving public files creates unnecessary churn this late, keep the current fla
 - No visible styling change.
 
 ### Phase 10.2B — Scan Result visual refactor
+
 - Apply `paper-bg.webp`.
 - Add `artifact-medallion.webp` around/behind real exhibit covers.
 - Add `artifact-pedestal.webp` beneath the artifact area.
@@ -187,6 +202,7 @@ If moving public files creates unnecessary churn this late, keep the current fla
 - Preserve all result actions and language behavior.
 
 ### Phase 10.2C — Exhibit Article visual refactor
+
 - Apply paper texture.
 - Add `article-crown.webp` to heading area.
 - Use `divider-gold.webp` sparingly.
@@ -195,12 +211,14 @@ If moving public files creates unnecessary churn this late, keep the current fla
 - Maintain a clean readable text column.
 
 ### Phase 10.2D — Gallery visual refactor
+
 - Move Gallery-specific CSS to `gallery.css`.
 - Add lattice treatment around the gallery region/tiles.
 - Keep the initial gallery as a simple responsive grid.
 - Do not add arrow assets until an actual lightbox/carousel interaction exists.
 
 ### Phase 10.2E — Shared responsive/accessibility polish
+
 - Check ornament collisions at 320, 360, 390, and 430 CSS px widths.
 - Check landscape.
 - Check 200% article zoom.
