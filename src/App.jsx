@@ -56,7 +56,13 @@ function App() {
       onLanguageChange={handleLanguageChange}
       screen={screen}
       onBack={
-        screen === 'exhibit' ? handleBackToResult : screen === 'scanner' || screen === 'scan-result' ? handleBackToWelcome : undefined
+        screen === 'exhibit'
+          ? handleBackToResult
+          : screen === 'scan-result'
+            ? handleScanAgain
+            : screen === 'scanner'
+              ? handleBackToWelcome
+              : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >

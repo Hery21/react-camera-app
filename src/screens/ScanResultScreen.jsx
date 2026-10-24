@@ -11,7 +11,7 @@ export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain
 
       <div className="scan-result-card">
         <div className="scan-result-artifact-area">
-          <img src={decorativeAssets.result.medallion} alt="" className="scan-result-medallion" aria-hidden="true" />
+          <div className="scan-result-artifact-glow" aria-hidden="true" />
 
           {exhibit.coverImage ? (
             <img className="scan-result-image" src={exhibit.coverImage} alt={content?.coverAlt || ''} />
@@ -20,8 +20,6 @@ export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain
               <span>{exhibit.id}</span>
             </div>
           )}
-
-          <img src={decorativeAssets.result.pedestal} alt="" className="scan-result-pedestal" aria-hidden="true" />
         </div>
 
         <div className="scan-result-copy">
