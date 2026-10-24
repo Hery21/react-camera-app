@@ -376,25 +376,50 @@
   padding: clamp(1rem, 2.2dvh, 1.35rem) clamp(1.35rem, 5.5vw, 2.25rem) clamp(1.15rem, 2.5dvh, 1.5rem);
 }
 
+.exhibit-page-scroll-area {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
 .exhibit-page-text {
+  box-sizing: border-box;
+  max-width: 100%;
   margin: 0;
   color: #4a2e26;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(0.82rem, 1.62dvh, 1rem);
   line-height: 1.58;
   letter-spacing: 0.008em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   text-wrap: pretty;
 }
 
-.exhibit-text-size-0 .exhibit-page-text {
+.exhibit-page-text p {
+  margin: 0 0 0.85em;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.exhibit-page-text p:last-child {
+  margin-bottom: 0;
+}
+
+.exhibit-text-size-0 .exhibit-page-text,
+.exhibit-text-size-0 .exhibit-page-text p {
   font-size: clamp(0.74rem, 1.42dvh, 0.9rem);
 }
 
-.exhibit-text-size-1 .exhibit-page-text {
+.exhibit-text-size-1 .exhibit-page-text,
+.exhibit-text-size-1 .exhibit-page-text p {
   font-size: clamp(0.82rem, 1.62dvh, 1rem);
 }
 
-.exhibit-text-size-2 .exhibit-page-text {
+.exhibit-text-size-2 .exhibit-page-text,
+.exhibit-text-size-2 .exhibit-page-text p {
   font-size: clamp(0.92rem, 1.85dvh, 1.12rem);
 }
 
@@ -411,8 +436,8 @@
 .exhibit-page-arrow {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -421,9 +446,13 @@
 
 .exhibit-page-arrow img {
   display: block;
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   object-fit: contain;
+}
+
+.exhibit-page-navigation {
+  grid-template-columns: 48px 1fr 48px;
 }
 
 .exhibit-page-arrow:disabled {
