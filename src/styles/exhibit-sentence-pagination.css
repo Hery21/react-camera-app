@@ -1,8 +1,3 @@
-/* Legacy file from auto-pagination era. The reader now uses manual pages
-   with a scrollable area inside .exhibit-page-scroll-area. Font sizing is
-   handled by .exhibit-text-size-* rules in exhibit.css. This file is kept
-   for import-order stability but contains no rules that affect layout. */
-
-.exhibit-page-text {
-  margin: 0;
-}
+/* Deprecated. The auto-pagination system was removed when the
+   reader switched to manual pages with a scrollable area.
+   All relevant styles live in exhibit.css. */

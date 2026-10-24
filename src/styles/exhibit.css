@@ -136,15 +136,20 @@
   background: transparent;
 }
 
+/* ---------- Screen: flex column so layout adapts to conditional children ---------- */
 .exhibit-screen {
   position: relative;
-  display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto auto;
+  display: flex;
+  flex-direction: column;
   width: min(100%, 44rem);
   height: 100%;
   min-height: 0;
   margin: 0 auto;
   overflow: hidden;
+}
+
+.exhibit-screen > * {
+  flex: 0 0 auto;
 }
 
 .exhibit-crown {
@@ -240,7 +245,6 @@
 .exhibit-language-notice {
   position: relative;
   z-index: 2;
-  width: auto;
   margin: 0 var(--space-4) var(--space-1);
   padding: var(--space-1) var(--space-2);
   border: 1px solid rgba(212, 175, 55, 0.68);
@@ -293,12 +297,14 @@
   color: var(--color-surface);
 }
 
+/* ---------- Reader: fills remaining space, flex column inside ---------- */
 .exhibit-reader {
   position: relative;
   z-index: 3;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  min-height: 0;
+  flex: 1 1 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
   margin: 0 var(--space-3);
   overflow: hidden;
   border: 1px solid rgba(212, 175, 55, 0.52);
@@ -335,6 +341,7 @@
 .exhibit-section-heading {
   position: relative;
   z-index: 2;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
   min-height: 2.6rem;
@@ -350,24 +357,34 @@
   letter-spacing: 0.015em;
 }
 
+/* ---------- Viewport: fills remaining reader space, scroll area inside ---------- */
 .exhibit-page-viewport {
   position: relative;
   z-index: 2;
-  min-height: 0;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: block !important;
   margin: 0 clamp(0.9rem, 3.5vw, 1.4rem) clamp(0.8rem, 1.8dvh, 1.15rem);
-  overflow: hidden;
+  padding: clamp(1rem, 2.5dvh, 1.5rem) clamp(1.5rem, 7vw, 2.5rem) !important;
+  overflow: hidden !important;
   border-radius: 0.85rem;
   background: rgba(255, 250, 240, 0.2);
 }
 
 .exhibit-page-scroll-area {
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   box-sizing: border-box;
+  padding-right: 4px;
 }
 
 .exhibit-page-text {
+  position: static !important;
+  inset: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  max-height: none !important;
   box-sizing: border-box;
   color: #4a2e26;
   font-family: Georgia, 'Times New Roman', serif;
@@ -377,12 +394,14 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  text-wrap: pretty;
 }
 
 .exhibit-page-text p {
   margin: 0 0 0.85em;
   max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .exhibit-page-text p:last-child {
@@ -401,21 +420,22 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* ---------- Navigation with large ornate arrows ---------- */
 .exhibit-page-navigation {
   position: relative;
   z-index: 4;
   display: grid;
-  grid-template-columns: 88px 1fr 88px;
+  grid-template-columns: 100px 1fr 100px;
   align-items: center;
-  min-height: 4rem;
+  min-height: 4.5rem;
   padding: 0 var(--space-3);
 }
 
 .exhibit-page-arrow {
   display: grid;
   place-items: center;
-  width: 88px;
-  height: 56px;
+  width: 100px;
+  height: 60px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -424,9 +444,9 @@
 
 .exhibit-page-arrow img {
   display: block;
-  width: 80px;
+  width: 100px;
   height: auto;
-  max-height: 48px;
+  max-height: 56px;
   object-fit: contain;
 }
 
@@ -444,6 +464,7 @@
 }
 
 .exhibit-gallery {
+  flex: 1 1 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
@@ -496,7 +517,6 @@
   padding: 0 var(--space-3) clamp(var(--space-2), 1.1dvh, var(--space-3));
 }
 
-.exhibit-primary,
 .exhibit-secondary {
   min-height: 44px;
   padding: var(--space-1) var(--space-6);
@@ -505,71 +525,9 @@
   font-size: clamp(0.72rem, 1.45dvh, 0.88rem);
   font-weight: 700;
   cursor: pointer;
-}
-
-.exhibit-primary {
-  border: 1px solid var(--color-vermilion);
-  background: var(--color-vermilion);
-  color: var(--color-surface);
-}
-
-.exhibit-secondary {
   border: 1px solid var(--color-antique-gold);
   background: rgba(255, 250, 240, 0.34);
   color: var(--color-rosewood);
-}
-
-/* ============================================================
-   Cascade overrides — MUST come last so they win past legacy
-   files. Text is forced back into normal flow because the old
-   auto-pagination system set position: absolute on it. Padding
-   is applied to viewport so text is inset from the ornate frame.
-   ============================================================ */
-
-.app--exhibit .exhibit-page-viewport {
-  padding: clamp(1.5rem, 3.5dvh, 2.25rem) clamp(1.75rem, 8vw, 3rem) !important;
-}
-
-.app--exhibit .exhibit-page-scroll-area {
-  padding: 0 !important;
-  height: 100% !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-
-.app--exhibit .exhibit-page-scroll-area .exhibit-page-text {
-  position: static !important;
-  inset: auto !important;
-  height: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
-  display: block !important;
-}
-
-.app--exhibit .exhibit-page-scroll-area .exhibit-page-text p {
-  position: static !important;
-  height: auto !important;
-  overflow: visible !important;
-}
-
-.app--exhibit .exhibit-page-navigation .exhibit-page-arrow {
-  width: 88px !important;
-  height: 56px !important;
-  min-width: 88px !important;
-  padding: 0 !important;
-}
-
-.app--exhibit .exhibit-page-navigation .exhibit-page-arrow img {
-  width: 80px !important;
-  height: auto !important;
-  max-width: none !important;
-  max-height: 48px !important;
-  object-fit: contain !important;
-}
-
-.app--exhibit .exhibit-page-navigation {
-  grid-template-columns: 88px 1fr 88px !important;
-  min-height: 4rem !important;
 }
 
 @media (max-height: 700px) and (orientation: portrait) {
