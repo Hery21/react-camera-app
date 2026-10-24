@@ -21,7 +21,8 @@
     "format:check": "prettier . --check",
     "check:flow": "node scripts/check-visitor-flow.mjs",
     "check:exhibit-content": "node scripts/check-exhibit-content.mjs",
-    "check:exhibit-languages": "node scripts/check-exhibit-languages.mjs"
+    "check:exhibit-languages": "node scripts/check-exhibit-languages.mjs",
+    "check:content-readiness": "node scripts/check-content-readiness.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
