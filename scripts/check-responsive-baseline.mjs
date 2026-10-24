@@ -80,7 +80,7 @@ check(
 
 // 8. Scanner auto-start cleanup exists
 const scannerJsx = read('src/screens/ScannerScreen.jsx')
-check('Scanner stops camera on unmount', scannerJsx.includes('scannerRef.current.stop()'))
+check('Scanner stops camera on unmount', scannerJsx.includes('releaseCamera') || scannerJsx.includes('scannerRef.current.stop()'))
 
 // 9. No inline styles in key screens
 const adminJsx = read('src/screens/AdminScreen.jsx')

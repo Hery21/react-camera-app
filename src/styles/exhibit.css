@@ -55,16 +55,17 @@
 }
 
 .exhibit-top-font-controls button {
-  min-width: 38px;
-  min-height: 40px;
-  padding: 0.15rem 0.42rem;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0.25rem 0.5rem;
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--color-rosewood);
   font-family: var(--font-family-display);
-  font-size: 0.82rem;
+  font-size: 1.05rem;
   font-weight: 700;
+  line-height: 1;
   cursor: pointer;
 }
 
@@ -206,18 +207,9 @@
   min-width: 0;
 }
 
-.exhibit-eyebrow {
-  margin: 0 0 0.1rem;
-  color: var(--color-vermilion);
-  font-size: clamp(0.58rem, 1.25dvh, 0.72rem);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .exhibit-heading h1 {
   margin: 0;
-  color: var(--color-rosewood);
+  color: var(--color-vermilion-dark);
   font-family: var(--font-family-display);
   font-size: clamp(1.2rem, 3.2dvh, 2rem);
   line-height: 1;

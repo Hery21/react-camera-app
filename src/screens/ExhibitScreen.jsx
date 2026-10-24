@@ -19,7 +19,7 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
 
   const [activeSection, setActiveSection] = useState('story')
   const [page, setPage] = useState(0)
-  const [textSize, setTextSize] = useState(1)
+  const [textSize, setTextSize] = useState(0)
 
   const selectedSection = sections.some((section) => section.id === activeSection) ? activeSection : sections[0].id
   const selectedLabel = sections.find((section) => section.id === selectedSection)?.label
@@ -63,7 +63,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
           </div>
         )}
         <div className="exhibit-heading">
-          <p className="exhibit-eyebrow">{getTranslation(language, 'exhibit.articleLabel')}</p>
           <h1 id="exhibit-title">{content?.title}</h1>
           {content?.period && <p className="exhibit-period">{content.period}</p>}
           {content?.summary && <p className="exhibit-summary">{content.summary}</p>}
