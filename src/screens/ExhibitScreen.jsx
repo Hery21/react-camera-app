@@ -8,8 +8,11 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
     if (content.symbolism) {
       available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
     }
+    if (exhibit.gallery?.length) {
+      available.push({ id: 'gallery', label: getTranslation(language, 'exhibit.gallery') })
+    }
     return available
-  }, [content.symbolism, language])
+  }, [content.symbolism, exhibit.gallery, language])
   const [activeSection, setActiveSection] = useState('story')
   const selectedSection = sections.some((section) => section.id === activeSection) ? activeSection : sections[0].id
 
@@ -47,7 +50,21 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
 
       <section className="exhibit-article-copy">
         <h2>{sections.find((section) => section.id === selectedSection)?.label}</h2>
-        <p>{selectedSection === 'symbolism' ? content.symbolism : content.story}</p>
+        {selectedSection === 'gallery' ? (
+          <div className="exhibit-gallery">
+            {exhibit.gallery.map((image) => {
+              const imageContent = image.content?.[language] || image.content?.en || {}
+              return (
+                <figure className="exhibit-gallery-item" key={image.src}>
+                  <img className="exhibit-gallery-image" src={image.src} alt={imageContent.alt || ''} loading="lazy" />
+                  {imageContent.caption && <figcaption>{imageContent.caption}</figcaption>}
+                </figure>
+              )
+            })}
+          </div>
+        ) : (
+          <p>{selectedSection === 'symbolism' ? content.symbolism : content.story}</p>
+        )}
       </section>
 
       <footer className="exhibit-actions">
