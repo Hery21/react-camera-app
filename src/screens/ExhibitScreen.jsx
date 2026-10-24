@@ -2,6 +2,10 @@ import { useState, useMemo } from 'react'
 import { decorativeAssets } from '../data/decorativeAssets.js'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
+import frameTl from '../assets/frame-tl.webp'
+import frameTr from '../assets/frame-tr.webp'
+import frameBl from '../assets/frame-bl.webp'
+import frameBr from '../assets/frame-br.webp'
 
 export function ExhibitScreen({ language, exhibit, onBackToResult }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
@@ -86,10 +90,10 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
 
       <section className="exhibit-reader" aria-labelledby="exhibit-section-title">
         <div className="exhibit-reader-frame" aria-hidden="true">
-          <img src="/src/assets/frame-tl.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-tl" />
-          <img src="/src/assets/frame-tr.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-tr" />
-          <img src="/src/assets/frame-bl.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-bl" />
-          <img src="/src/assets/frame-br.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-br" />
+          <img src={frameTl} alt="" className="exhibit-reader-corner exhibit-reader-corner-tl" />
+          <img src={frameTr} alt="" className="exhibit-reader-corner exhibit-reader-corner-tr" />
+          <img src={frameBl} alt="" className="exhibit-reader-corner exhibit-reader-corner-bl" />
+          <img src={frameBr} alt="" className="exhibit-reader-corner exhibit-reader-corner-br" />
         </div>
         <div className="exhibit-section-heading">
           <h2 id="exhibit-section-title">{selectedLabel}</h2>

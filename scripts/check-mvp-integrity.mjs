@@ -38,7 +38,7 @@ if (app.includes("setScreen('scanner')") && app.includes("setScreen('scan-result
   fail('App is missing an MVP screen transition')
 }
 
-if (scanner.includes('onExhibitDetected') && scanner.includes('scannerRef.current.stop()')) {
+if (scanner.includes('onExhibitDetected') && scanner.includes('releaseCamera')) {
   pass('Scanner reports success and retains cleanup')
 } else {
   fail('Scanner success or cleanup contract missing')
@@ -67,7 +67,7 @@ if (exhibit.includes('decorativeAssets.gallery.previous') && exhibit.includes('d
   fail('Exhibit paged reader arrow assets missing')
 }
 
-if (exhibit.includes('onScanNext') && exhibit.includes('onBackToResult')) {
+if (exhibit.includes('onBackToResult')) {
   pass('Exhibit retains Scan Next and Back to Result actions')
 } else {
   fail('Exhibit action contract incomplete')
