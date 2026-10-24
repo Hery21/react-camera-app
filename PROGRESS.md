@@ -508,3 +508,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Dropped the PIN as requested because import.meta.env.DEV guarantees the UI will never render in the Vercel production deployment. The admin screen is currently a simple read-only list. The "Edit" button is present but disabled to establish the UI layout. 
 **Next part:** Phase 11.2 — Admin Edit Form. Wire up state to actually modify the exhibit data and validate it before export.  
 **Commit:** cffb794
+
+## Phase 11.2 — Admin Edit Form and Inline Images
+
+**Status:** Code complete; manual check pending user report
+**Goal:** Allow the developer to edit exhibit content and add inline images via the Admin dashboard. Update the article reader to render inline images.
+**Files changed:** src/lib/segmentArticleText.js, src/screens/ExhibitScreen.jsx, src/screens/AdminScreen.jsx, src/styles/admin.css.
+**User-visible result:** Admin dashboard has an Edit button per exhibit. Edit form supports coverImage, per-language title/summary/story, plus JSON textarea for inlineImages. Export JSON downloads a file. In the article reader, images declared in inlineImages render as dedicated pages within pagination.
+**Automated checks:** npm run lint; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Open Admin, Edit PSBIKT-006; (3) Add inline image JSON with afterParagraphIndex 0; (4) Export JSON to confirm structure; (5) close admin, scan PSBIKT-006, verify first reader page is the image.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** Admin form does not save to disk; user must export JSON and manually update exhibits.js. Inline images shared across languages (stored in content.en inlineImages).
+**Decisions made:** No inline JSX styles. Inline images render as full-page entries to avoid measurement complexity. Missing exhibits import was a recovery bug. useMemo wraps inlineImages to satisfy react-hooks/exhaustive-deps.
+**Next part:** Phase 11.3 — Node import script that reads exported JSON and merges into exhibits.js.
+**Commit:** d37b93e
