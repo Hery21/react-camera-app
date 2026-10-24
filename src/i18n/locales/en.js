@@ -51,7 +51,15 @@ export const en = {
     viewDetails: 'View Details',
     scanAgain: 'Scan Again',
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: 'Exhibit Story',
+    sections: 'Exhibit sections',
+    story: 'Story',
+    symbolism: 'Symbolism',
+    gallery: 'Gallery',
+    scanNext: 'Scan Next Exhibit',
+    backToResult: 'Back to Result',
+  },
   errors: {},
   accessibility: {},
 }

@@ -52,7 +52,15 @@ export const zh = {
     viewDetails: '查看详情',
     scanAgain: '再次扫描',
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: '展品故事',
+    sections: '展品内容',
+    story: '故事',
+    symbolism: '象征意义',
+    gallery: '图集',
+    scanNext: '扫描下一件展品',
+    backToResult: '返回识别结果',
+  },
   errors: {},
   accessibility: {},
 }

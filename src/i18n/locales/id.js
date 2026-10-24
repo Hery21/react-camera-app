@@ -52,7 +52,15 @@ export const id = {
     viewDetails: 'Lihat Detail',
     scanAgain: 'Pindai Lagi',
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: 'Cerita Pameran',
+    sections: 'Bagian pameran',
+    story: 'Cerita',
+    symbolism: 'Simbolisme',
+    gallery: 'Galeri',
+    scanNext: 'Pindai Pameran Berikutnya',
+    backToResult: 'Kembali ke Hasil',
+  },
   errors: {},
   accessibility: {},
 }

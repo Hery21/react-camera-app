@@ -1,0 +1,222 @@
+.scanner-screen,
+.scanner-video-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.scanner-screen {
+  overflow: hidden;
+  background: #000;
+}
+.scanner-video-wrapper {
+  background: #000;
+}
+.scanner-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.scanner-frame-overlay {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  pointer-events: none;
+}
+.scan-frame-corner {
+  position: absolute;
+  width: clamp(72px, 18vw, 150px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.frame-tl {
+  top: 4.75rem;
+  left: 0;
+}
+.frame-tr {
+  top: 4.75rem;
+  right: 0;
+}
+.frame-bl {
+  bottom: 6.5rem;
+  left: 0;
+}
+.frame-br {
+  right: 0;
+  bottom: 6.5rem;
+}
+.scanner-scan-target {
+  position: absolute;
+  z-index: 15;
+  top: 48%;
+  left: 50%;
+  width: min(58vw, 18rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.scanner-target-corner {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-color: var(--color-antique-gold);
+  border-style: solid;
+}
+.scanner-target-tl {
+  top: 0;
+  left: 0;
+  border-width: 3px 0 0 3px;
+}
+.scanner-target-tr {
+  top: 0;
+  right: 0;
+  border-width: 3px 3px 0 0;
+}
+.scanner-target-bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 3px 3px;
+}
+.scanner-target-br {
+  right: 0;
+  bottom: 0;
+  border-width: 0 3px 3px 0;
+}
+.scanner-overlay-text {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.58);
+  color: var(--color-surface);
+  font-size: 0.95rem;
+}
+.scanner-bottom-panel {
+  position: absolute;
+  z-index: 30;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4) max(var(--space-4), env(safe-area-inset-bottom));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+.scanner-bottom-panel > * {
+  pointer-events: auto;
+}
+.scanner-instructions {
+  width: min(100%, 24rem);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-surface);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 0 1px 4px #000;
+}
+.scanner-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: min(100%, 28rem);
+}
+.scanner-button {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-antique-gold);
+  border-radius: var(--radius-pill);
+  background: var(--color-antique-gold);
+  color: var(--color-rosewood);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.scanner-button:hover {
+  background: #b5952f;
+  border-color: #b5952f;
+}
+.scanner-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.scanner-button:focus-visible {
+  outline: 2px solid var(--color-surface);
+  outline-offset: 3px;
+}
+.scanner-button-secondary {
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--color-surface);
+  border-color: var(--color-surface);
+}
+.scanner-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 28rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  background: rgba(26, 18, 16, 0.92);
+}
+.scanner-error-title,
+.scanner-error-message,
+.scanner-inline-error {
+  margin: 0;
+  text-align: center;
+}
+.scanner-error-title {
+  color: var(--color-surface);
+  font-family: var(--font-family-display);
+  font-size: 1.1rem;
+}
+.scanner-error-message {
+  color: var(--color-surface);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.scanner-inline-error {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-antique-gold);
+  border-radius: var(--radius-sm);
+  background: rgba(26, 18, 16, 0.92);
+  color: var(--color-surface);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.scanner-inline-error strong {
+  color: var(--color-antique-gold);
+}
+
+@media (max-height: 600px) {
+  .scan-frame-corner {
+    width: clamp(58px, 14vw, 110px);
+  }
+  .frame-tl,
+  .frame-tr {
+    top: 4rem;
+  }
+  .frame-bl,
+  .frame-br {
+    bottom: 5.25rem;
+  }
+  .scanner-bottom-panel {
+    padding-top: var(--space-4);
+  }
+  .scanner-scan-target {
+    width: min(42vh, 14rem);
+  }
+}
