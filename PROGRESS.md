@@ -1001,3 +1001,19 @@ Using Tab and Enter only.
 **Decisions made:** Placed the cover INSIDE the scroll area rather than outside so it scrolls with the text and stays on page 1 only. This matches the user's request for "on the first page" — a scroll-area child is by definition part of the page, whereas a reader-level child would be visible on every page. Used selectedSection === 'story' condition so the cover does not redundantly render on the Symbolism tab (which is a sub-topic, not a separate exhibit). Full rewrite of ExhibitScreen.jsx rather than targeted replaces because the change spans three areas (remove top block, add inside scroll area, condition on safePage) and multiple fragile replace steps risk one missing. The CSS cleanup of old .exhibit-article-cover-wrap rules uses once: false so the plan is safe even if the previous plan did not run — no-op if those rules are not present. New .exhibit-page-cover rule uses max-width: 100% and max-height: 220px with width: auto and height: auto so aspect ratio is preserved on any device.
 **Next part:** User visual verification. Then resume roadmap.
 **Commit:** f1caa84
+
+## Style — Flatten cover image and reduce size
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Remove the card/box appearance from the exhibit cover image on page 1 of the reader and make it slightly smaller.
+**Files changed:** src/styles/exhibit.css (.exhibit-page-cover rule: removed border-radius and box-shadow; max-height 220px -> 160px; margin-bottom 0.85em -> 0.75em).
+**User-visible result:** The cover image on page 1 of the Story section now appears as a plain image sitting directly on the paper background — no drop shadow, no rounded corners. It is ~27% shorter than before, freeing up more vertical space for story text on the first page.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open PSBIKT-006 on page 1 of Story; (2) verify the cover image has no shadow or rounded corner effect; (3) verify it is smaller than before; (4) verify the story text below it has more room; (5) navigate to page 2+ to confirm nothing else changed.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** 160px max-height may be too small for exhibits with wide-aspect covers — they will scale down to fit 160px height and become very small horizontally. If observed on a specific exhibit, the max-height can be raised to 180-200px or switched from max-height to max-width. The image itself (source file) still determines aspect ratio, so a square cover will render as ~160x160px, a portrait cover as e.g. 120x160px, a landscape cover as e.g. 160x100px — this is expected behavior with object-fit: contain.
+**Decisions made:** Removed both box-shadow and border-radius because together they create the "card" appearance. The box-shadow alone was the dominant contributor, but keeping border-radius without the shadow would still leave a rounded image that could look intentionally decorative — cleaner to remove both for a plain content image. Used 160px max-height (down from 220px) as a middle-ground reduction. If the image looks too small after this change, only the max-height value needs to change in a follow-up.
+**Next part:** User visual verification.
+**Commit:** bd94446
