@@ -568,3 +568,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Manual pages replace automatic sentence-based pagination for author control. Data model is content[lang].pages as an array of { text, image? } objects. The reader drops segmentArticleText, ResizeObserver, and measurement complexity. Page text split into paragraphs on newline for readability. Recovery fixed a template literal escaping bug: split newline must be written as split(' backslash n ') so the source gets a real escaped newline.
 **Next part:** Manual verification of the page builder and reader.
 **Commit:** 56bfa3a
+
+## Phase 12.1 — Selection Menu Foundation
+
+**Status:** Code complete; manual check pending
+**Goal:** Insert a four-option selection menu between the Welcome screen and the Scanner. Tour is functional; the other three modules show a Coming Soon badge and are disabled.
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (added menu namespace with title, tour, tourDesc, info, infoDesc, quiz, quizDesc, collage, collageDesc, comingSoon, back), src/screens/MenuScreen.jsx (new), src/styles/menu.css (new), src/App.jsx (added menu state and Tour handler), src/App.css (imported menu.css).
+**User-visible result:** Clicking Start Exploring on Welcome now opens the Menu. The Menu shows four cards: Tour (active), Extra Information (coming soon), Quiz (coming soon), Photo and Collage (coming soon). Tour navigates to the existing Scanner. Back from the Menu returns to Welcome. The progress dock remains visible across all screens.
+**Automated checks:** npm run lint; npm run check:flow; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Welcome -> Start Exploring -> Menu appears with 4 cards; (3) click Tour -> Scanner opens; (4) return to Welcome, open Menu again; (5) click a disabled card -> nothing happens; (6) language toggle updates menu labels; (7) verify progress dock is visible on the menu.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The scanner back routing still returns to Welcome (not Menu) when arriving via Tour — this is the intended 12.1 scope, deferred to 12.3 where the scanner is made menu-aware. Currently a visitor going Welcome -> Menu -> Tour -> Scanner -> back lands on Welcome, skipping the menu. Documented as expected intermediate state.
+**Decisions made:** Menu labels use the existing display font for card titles and body font for descriptions. Cards are true semantic buttons (not divs) so keyboard navigation and screen readers work. Disabled cards use aria-disabled via the disabled attribute rather than pointer-events trickery. The CTA on Welcome stays as Start Exploring rather than shortening to Start — the wording still reads naturally and the user has not asked to change it. The Back button on the Menu returns to Welcome via handleMenuBack rather than handleBackToWelcome so future state (adminEditing, etc.) does not get wiped unnecessarily. Two-column grid at 640px and above is a heuristic; 12.2 will decide whether cards stack or grid based on the final card design.
+**Next part:** Phase 12.2 — Menu card design polish (ornate borders, decorative flourishes, hover states matching the proposal aesthetic).
+**Commit:** f2ed5aa
