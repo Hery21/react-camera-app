@@ -23,7 +23,7 @@ export const id = {
   menu: {
     title: 'Pilih perjalanan Anda',
     tour: 'Tur',
-    tourDesc: 'Pindai pameran untuk menjelajahi ceritanya',
+    tourDesc: 'Pindai kode QR untuk menjelajahi cerita pameran',
     info: 'Informasi Tambahan',
     infoDesc: 'Pelajari lebih lanjut tentang budaya Peranakan',
     quiz: 'Kuis',

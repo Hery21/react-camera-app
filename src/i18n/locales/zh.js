@@ -23,7 +23,7 @@ export const zh = {
   menu: {
     title: '选择您的旅程',
     tour: '导览',
-    tourDesc: '扫描展品探索它们的故事',
+    tourDesc: '扫描二维码探索展品故事',
     info: '更多信息',
     infoDesc: '了解娘惹文化的更多内容',
     quiz: '问答',

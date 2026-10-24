@@ -10,7 +10,7 @@ const checks = [
   ['App has scan-result state', app.includes("setScreen('scan-result')")],
   ['App has exhibit state', app.includes("setScreen('exhibit')")],
   ['Scan Again returns to scanner', app.includes('handleScanAgain') && app.includes("setScreen('scanner')")],
-  ['App wires Scan Next to scanner lifecycle', app.includes('onScanNext={handleScanAgain}')],
+
   ['App wires article Back to Result', app.includes('onBackToResult={handleBackToResult}')],
   ['Scanner reports accepted exhibit upward', scanner.includes('onExhibitDetected')],
   ['Scanner auto-start is scheduled', scanner.includes('queueMicrotask') && scanner.includes('handleStart')],
@@ -24,7 +24,7 @@ const checks = [
   ['Article uses Next arrow asset', exhibit.includes('decorativeAssets.gallery.next')],
   ['Article supports Gallery', exhibit.includes("id: 'gallery'")],
   ['Gallery images are lazy-loaded', exhibit.includes('loading="lazy"')],
-  ['Article exposes Scan Next action', exhibit.includes('onScanNext')],
+
   ['Article exposes Back to Result action', exhibit.includes('onBackToResult')],
 ]
 

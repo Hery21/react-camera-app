@@ -97,7 +97,7 @@ function App() {
         screen === 'exhibit'
           ? handleBackToResult
           : screen === 'scan-result'
-            ? handleBackToMenu
+            ? handleScanAgain
             : screen === 'scanner'
               ? handleBackToMenu
               : screen === 'menu'
@@ -128,7 +128,6 @@ function App() {
           language={language}
           exhibit={selectedExhibit}
           onBackToResult={handleBackToResult}
-          onScanNext={handleScanAgain}
         />
       )}
       {screen === 'admin' && (

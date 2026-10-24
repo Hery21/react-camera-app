@@ -23,7 +23,7 @@ export const en = {
   menu: {
     title: 'Choose your journey',
     tour: 'Tour',
-    tourDesc: 'Scan exhibits to explore their stories',
+    tourDesc: 'Scan QR codes to explore exhibit stories',
     info: 'Extra Information',
     infoDesc: 'Learn more about Peranakan culture',
     quiz: 'Quiz',
