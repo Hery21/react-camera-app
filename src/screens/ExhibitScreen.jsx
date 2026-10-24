@@ -75,7 +75,6 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
           </div>
         )}
         <div className="exhibit-heading">
-          <p className="exhibit-eyebrow">{getTranslation(language, 'exhibit.articleLabel')}</p>
           <h1 id="exhibit-title">{content.title}</h1>
           {content.period && <p className="exhibit-period">{content.period}</p>}
         </div>
