@@ -629,3 +629,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** check-i18n.mjs previously asserted specific content values. That was too tightly coupled — content is meant to evolve. New assertions verify helper behavior (fallback chain, edge cases, namespace resolution) without locking specific strings. Recovery used --allow-dirty because the three locale writes from the failed result-i18n run remained on disk. Only check-i18n.mjs was rewritten; the locale files from the previous run are kept as-is.
 **Next part:** Resume roadmap.
 **Commit:** 312a3d1
+
+## Admin Enhancement — Item editing, add new exhibit, menu back
+
+**Status:** Complete
+**Goal:** Add the missing period field so Admin can edit every ScanResult display field, add Add New Exhibit scaffolding, and change Scan Result and Scanner back arrows to return to the Select Menu.
+**Files changed:** src/screens/AdminScreen.jsx (split into AdminScreen router, AdminDashboard list, AdminEditForm form; period field per language; Add New Exhibit header button using next PSBIKT-NNN id), src/App.jsx (handleBackToMenu, onBack handlers for scan-result and scanner changed to handleBackToMenu).
+**User-visible result:** Admin header shows Add New Exhibit and Exit Admin. Clicking Add New opens blank form with next PSBIKT id. Edit form has Period field per language. Scan Result back goes to Menu. Scanner back goes to Menu. Scan Again and Return Home keep original destinations.
+**Automated checks:** npm run lint; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open Admin -> Add New Exhibit -> form shows PSBIKT-009; (2) fill Title/Period/Summary, Save, verify exhibits.json on disk; (3) Edit existing exhibit, change Period, scan it, verify Scan Result shows new period; (4) Scan Result back -> Menu; (5) Menu -> Tour -> Scanner back -> Menu; (6) Scan Again -> Scanner; (7) Scanner error Return Home -> Welcome.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** Add New computes next id by scanning exhibits; two tabs saving simultaneously could overwrite. Non-issue for single-tab dev workflow. Blank exhibit template sets pages: [{text: ''}] which would show empty first page if user forgets to fill. Scanner onReturnHome prop still points to handleBackToWelcome so camera error Return Home goes to Welcome, not Menu — intentional, different action.
+**Decisions made:** Split AdminScreen into three components to satisfy react-hooks/set-state-in-effect (React 19 lint rule). The original single-component useEffect + setState pattern was flagged as a cascading-render risk. The new structure uses useState lazy initializer for form data and key={editingExhibitId} for forced remount on exhibit switch. Added isNew detection in the edit view by checking whether editingExhibitId matches any exhibit. Kept save flow unchanged; the existing Vite /api/admin/save endpoint already upserts by id. allowEmpty: true on commit because after the recovery the two committed files are byte-identical to the failed run's writes.
+**Next part:** Resume roadmap.
+**Commit:** a8a6b4e
