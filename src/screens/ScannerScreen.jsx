@@ -8,8 +8,6 @@ import frameTr from '../assets/frame-tr.png'
 import frameBl from '../assets/frame-bl.png'
 import frameBr from '../assets/frame-br.png'
 
-// Production scanner screen. Camera lifecycle, state handling, and cleanup
-// are self-contained here so App.jsx stays a thin router.
 export function ScannerScreen({ language }) {
   const [scannerState, setScannerState] = useState('idle')
   const [inlineError, setInlineError] = useState(null)
@@ -38,7 +36,6 @@ export function ScannerScreen({ language }) {
 
   function handleDecode(text) {
     if (acceptedRef.current) return
-
     const parsed = parseQrPayload(text)
     if (!parsed.ok) {
       setInlineError({ kind: parsed.reason, detail: '' })
@@ -58,14 +55,12 @@ export function ScannerScreen({ language }) {
   async function handleStart() {
     if (!videoRef.current) return
     stopScanner()
-
     const scanner = createQrScanner()
     scannerRef.current = scanner
     setErrorMessage('')
     setInlineError(null)
     setResult(null)
     setScannerState('requesting')
-
     await scanner.start(videoRef.current, {
       onDecode: handleDecode,
       onError: (err) => {
@@ -73,8 +68,7 @@ export function ScannerScreen({ language }) {
         setScannerState('error')
       },
     })
-
-    setScannerState((s) => (s === 'requesting' ? 'scanning' : s))
+    setScannerState((state) => (state === 'requesting' ? 'scanning' : state))
   }
 
   function handleStop() {
@@ -117,20 +111,19 @@ export function ScannerScreen({ language }) {
   return (
     <section className="scanner-screen" aria-label="QR scanner">
       <div className="scanner-video-wrapper">
-        <video
-          ref={videoRef}
-          className="scanner-video"
-          playsInline
-          muted
-        />
-        
+        <video ref={videoRef} className="scanner-video" playsInline muted />
         <div className="scanner-frame-overlay" aria-hidden="true">
           <img src={frameTl} alt="" className="scan-frame-corner frame-tl" />
           <img src={frameTr} alt="" className="scan-frame-corner frame-tr" />
           <img src={frameBl} alt="" className="scan-frame-corner frame-bl" />
           <img src={frameBr} alt="" className="scan-frame-corner frame-br" />
         </div>
-
+        <div className="scanner-scan-target" aria-hidden="true">
+          <span className="scanner-target-corner scanner-target-tl" />
+          <span className="scanner-target-corner scanner-target-tr" />
+          <span className="scanner-target-corner scanner-target-bl" />
+          <span className="scanner-target-corner scanner-target-br" />
+        </div>
         {scannerState === 'idle' && (
           <p className="scanner-overlay-text">
             {getTranslation(language, 'scanner.cameraOff')}
@@ -142,54 +135,49 @@ export function ScannerScreen({ language }) {
           </p>
         )}
       </div>
-
-      {scannerState === 'scanning' && (
-        <p className="scanner-instructions" role="status">
-          {getTranslation(language, 'scanner.instructions')}
-        </p>
-      )}
-
-      <div className="scanner-controls">
-        {scannerState === 'idle' && (
-          <button type="button" className="scanner-button" onClick={handleStart}>
-            {getTranslation(language, 'scanner.start')}
-          </button>
-        )}
-        {scannerState === 'requesting' && (
-          <button type="button" className="scanner-button" disabled>
-            {getTranslation(language, 'scanner.starting')}
-          </button>
-        )}
+      <div className="scanner-bottom-panel">
         {scannerState === 'scanning' && (
-          <button type="button" className="scanner-button" onClick={handleStop}>
-            {getTranslation(language, 'scanner.stop')}
-          </button>
-        )}
-        {scannerState === 'error' && (
-          <div className="scanner-error">
-            <p className="scanner-error-message">
-              {getTranslation(language, 'scanner.error')}: {errorMessage}
-            </p>
-            <button type="button" className="scanner-button" onClick={handleStart}>
-              {getTranslation(language, 'scanner.tryAgain')}
-            </button>
-            <button
-              type="button"
-              className="scanner-button scanner-button-secondary"
-              onClick={handleStop}
-            >
-              {getTranslation(language, 'scanner.cancel')}
-            </button>
-          </div>
-        )}
-
-        {inlineError && (
-          <p className="scanner-inline-error" role="status">
-            {inlineError.kind === 'unknown-exhibit'
-              ? getTranslation(language, 'scanner.unknownExhibit') + ': ' + inlineError.detail + ' \u2014 ' + getTranslation(language, 'scanner.keepScanning')
-              : getTranslation(language, 'scanner.invalidCode') + ' (' + inlineError.kind + ') \u2014 ' + getTranslation(language, 'scanner.keepScanning')}
+          <p className="scanner-instructions" role="status">
+            {getTranslation(language, 'scanner.instructions')}
           </p>
         )}
+        <div className="scanner-controls">
+          {scannerState === 'idle' && (
+            <button type="button" className="scanner-button" onClick={handleStart}>
+              {getTranslation(language, 'scanner.start')}
+            </button>
+          )}
+          {scannerState === 'requesting' && (
+            <button type="button" className="scanner-button" disabled>
+              {getTranslation(language, 'scanner.starting')}
+            </button>
+          )}
+          {scannerState === 'scanning' && (
+            <button type="button" className="scanner-button" onClick={handleStop}>
+              {getTranslation(language, 'scanner.stop')}
+            </button>
+          )}
+          {scannerState === 'error' && (
+            <div className="scanner-error">
+              <p className="scanner-error-message">
+                {getTranslation(language, 'scanner.error')}: {errorMessage}
+              </p>
+              <button type="button" className="scanner-button" onClick={handleStart}>
+                {getTranslation(language, 'scanner.tryAgain')}
+              </button>
+              <button type="button" className="scanner-button scanner-button-secondary" onClick={handleStop}>
+                {getTranslation(language, 'scanner.cancel')}
+              </button>
+            </div>
+          )}
+          {inlineError && (
+            <p className="scanner-inline-error" role="status">
+              {inlineError.kind === 'unknown-exhibit'
+                ? getTranslation(language, 'scanner.unknownExhibit') + ': ' + inlineError.detail + ' — ' + getTranslation(language, 'scanner.keepScanning')
+                : getTranslation(language, 'scanner.invalidCode') + ' (' + inlineError.kind + ') — ' + getTranslation(language, 'scanner.keepScanning')}
+            </p>
+          )}
+        </div>
       </div>
     </section>
   )
