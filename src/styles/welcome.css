@@ -19,10 +19,11 @@
 
 .welcome-mirror-stage {
   position: absolute;
-  top: clamp(0.5rem, 2vh, 1.5rem);
+  top: 0;
   left: 50%;
-  width: min(92vw, 34rem);
-  transform: translateX(-50%);
+  width: min(96vw, 36rem);
+  transform: translateX(-50%) scale(1.45);
+  transform-origin: 50% 12%;
 }
 
 .welcome-hero {
@@ -39,23 +40,23 @@
   top: 18%;
   left: 50%;
   display: flex;
-  width: 48%;
+  width: 46%;
   transform: translateX(-50%);
   flex-direction: column;
   align-items: center;
-  gap: clamp(0.15rem, 0.65vmin, 0.4rem);
+  gap: clamp(0.1rem, 0.45vmin, 0.3rem);
   color: var(--color-surface);
   text-align: center;
-  text-shadow: 0 1px 5px rgba(74, 46, 38, 0.45);
+  text-shadow: 0 1px 5px rgba(74, 46, 38, 0.55);
 }
 
 .welcome-eyebrow {
   margin: 0;
   color: var(--color-antique-gold);
   font-family: var(--font-family-display);
-  font-size: clamp(0.7rem, 2.5vmin, 1rem);
+  font-size: clamp(0.54rem, 1.7vmin, 0.82rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   line-height: 1.05;
 }
 
@@ -63,7 +64,7 @@
   margin: 0;
   color: var(--color-surface);
   font-family: var(--font-family-display);
-  font-size: clamp(1.45rem, 5.4vmin, 2.5rem);
+  font-size: clamp(1.05rem, 3.8vmin, 1.9rem);
   font-weight: 700;
   line-height: 0.96;
   text-wrap: balance;
@@ -73,42 +74,35 @@
   margin: 0;
   color: var(--color-surface);
   font-family: var(--font-family-display);
-  font-size: clamp(0.56rem, 1.8vmin, 0.82rem);
-  letter-spacing: 0.03em;
+  font-size: clamp(0.46rem, 1.3vmin, 0.68rem);
+  letter-spacing: 0.02em;
   line-height: 1.15;
   text-wrap: balance;
 }
 
-.welcome-action-dock {
-  position: absolute;
-  z-index: 5;
-  right: 0;
-  bottom: max(var(--space-3), env(safe-area-inset-bottom));
-  left: 0;
-  display: grid;
-  place-items: center;
-  padding-inline: var(--space-3);
-}
-
 .welcome-cta {
-  min-height: 48px;
-  width: min(100%, 18rem);
-  padding: var(--space-2) var(--space-6);
+  position: absolute;
+  z-index: 3;
+  top: 63%;
+  left: 50%;
+  min-height: 40px;
+  width: 44%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-3);
   border: 1px solid var(--color-surface);
   border-radius: var(--radius-pill);
   background: var(--color-vermilion);
   color: var(--color-surface);
   font: inherit;
-  font-size: 1rem;
+  font-size: clamp(0.62rem, 1.7vmin, 0.82rem);
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
 }
 
 .welcome-cta:hover {
   background: var(--color-vermilion-dark);
 }
-
 .welcome-cta:focus-visible {
   outline: 2px solid var(--color-antique-gold);
   outline-offset: 3px;
@@ -128,35 +122,25 @@
 
 @media (orientation: portrait) {
   .welcome-mirror-stage {
-    width: min(96vw, 34rem);
+    width: min(98vw, 36rem);
+    transform: translateX(-50%) scale(1.45);
   }
 }
 
 @media (orientation: landscape) {
   .welcome-mirror-stage {
-    top: -4vh;
-    width: min(94vh, 34rem);
-  }
-
-  .welcome-glass-copy {
-    width: 50%;
+    top: -5vh;
+    width: min(112vh, 40rem);
+    transform: translateX(-50%) scale(1.35);
   }
 }
 
 @media (max-width: 360px) {
   .welcome-mirror-stage {
-    width: 98vw;
+    transform: translateX(-50%) scale(1.55);
   }
 
   .welcome-glass-copy {
-    width: 52%;
-  }
-
-  .welcome-title {
-    font-size: clamp(1.2rem, 7vw, 1.8rem);
-  }
-
-  .welcome-cta {
-    min-height: 44px;
+    width: 46%;
   }
 }
