@@ -660,3 +660,19 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Added all three missing namespaces in one plan rather than waiting for each to surface separately. The exhibit, scanner, and progress missing keys are all the same class of bug — getTranslation returning the key because the translation is absent. Doing them together prevents the user from encountering the same symptom three more times in different screens. Scanner.back updated from 'Back to welcome' to 'Back to menu' to match the new back routing (scanner now returns to Menu, not Welcome).
 **Next part:** Resume roadmap.
 **Commit:** cc93400
+
+## Fix — Reader text overflow and larger page arrows
+
+**Status:** Complete
+**Goal:** Stop paragraph text from touching or crossing the reader frame edge, and enlarge the previous/next page arrows for easier tapping.
+**Root cause:** .exhibit-page-text was refactored from a single p element into a wrapper div containing p children, but the CSS still targeted the wrapper only. The p children got default browser styles with no overflow-wrap or max-width, so mixed Latin/CJK strings and words containing parentheses could push past the intended inner padding. Also .exhibit-page-scroll-area had no min-width: 0 or overflow-x: hidden, so any horizontal content push could escape the flex parent.
+**Files changed:** src/styles/exhibit.css only.
+**User-visible result:** Body paragraphs now wrap cleanly within the reader frame at any width. Long unbreakable strings (e.g. Xiangqi (象棋, siang-ci)) break at the character level instead of overflowing. Prev/next arrows are 44px tall images inside 48px square buttons with a 48px-grid column. Text has explicit box-sizing and max-width so future refactors cannot reintroduce overflow.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) open any exhibit article; (3) verify text sits comfortably inside the frame with breathing room on both sides; (4) verify the Indonesian and Chinese versions wrap correctly with mixed CJK/Latin content; (5) verify prev/next arrows are noticeably larger; (6) shrink the viewport to 320px and verify no horizontal overflow appears.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** word-break: break-word is aggressive — it will break words mid-syllable if they do not fit. For serif body text this is usually acceptable and preferable to overflow. If observed to produce ugly breaks in normal prose, the fix is to remove word-break: break-word from p and keep only overflow-wrap: anywhere — but that would leave the CJK-mixed strings vulnerable again. The current combination is the safest starting point.
+**Decisions made:** Added overflow-wrap, word-wrap, and word-break together (belt and suspenders) because browser support for each keyword varies slightly and the cost of redundancy is zero. Added the p selector separately so existing paragraphs get the same treatment as the wrapper. Arrow images went from 2rem to 2.75rem (32px to 44px) inside 48x48 buttons — 44px is the iOS recommended minimum touch target height. Navigation grid columns updated from 3rem to 48px to keep the arrows visually centered. min-width: 0 on the scroll area is the classic flex/grid fix for "child refuses to shrink below content width" — it is what actually allows overflow-x: hidden to work.
+**Next part:** Resume roadmap.
+**Commit:** 11cda9b
