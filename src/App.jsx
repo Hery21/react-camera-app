@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { getTranslation } from './i18n/getTranslation.js'
 import { applyDocumentLanguage, getInitialLanguage, persistLanguage } from './i18n/language.js'
 import { AppShell } from './components/AppShell.jsx'
 import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
@@ -62,6 +63,7 @@ function App() {
       onBack={
         screen === 'exhibit' ? handleBackToResult : screen === 'scanner' || screen === 'scan-result' ? handleBackToWelcome : undefined
       }
+      backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
       {screen === 'welcome' && <WelcomeScreen language={language} onStart={handleStartExploring} />}
       {screen === 'scanner' && (
@@ -75,7 +77,6 @@ function App() {
           key={selectedExhibit.id + '-' + language}
           language={language}
           exhibit={selectedExhibit}
-
           onScanNext={handleScanNext}
         />
       )}

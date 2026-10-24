@@ -50,6 +50,7 @@ export const id = {
     symbolism: 'Simbolisme',
     gallery: 'Galeri',
     scanNext: 'Pindai Pameran Berikutnya',
+    backToInfo: 'Kembali ke Info',
     backToResult: 'Kembali ke Info',
     previous: 'Sebelumnya',
     next: 'Berikutnya',
