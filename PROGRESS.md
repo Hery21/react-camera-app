@@ -523,3 +523,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** No inline JSX styles. Inline images render as full-page entries to avoid measurement complexity. Missing exhibits import was a recovery bug. useMemo wraps inlineImages to satisfy react-hooks/exhaustive-deps.
 **Next part:** Phase 11.3 — Node import script that reads exported JSON and merges into exhibits.js.
 **Commit:** d37b93e
+
+## Phase 11.3 — Admin Direct Save via Vite Plugin
+
+**Status:** Code complete; manual check pending user report
+**Goal:** Replace the JSON-download workflow with a direct save that writes to src/data/exhibits.json through a Vite dev-server endpoint. Fix the back button to return to the Admin Dashboard from the Edit view rather than to Welcome.
+**Files changed:** scripts/migrate-exhibits-to-json.mjs (new migration), src/data/exhibits.json (new canonical data file), src/data/exhibits.js (now a JSON re-export), vite-plugin-admin-save.mjs (new dev-only middleware), vite.config.js (registers the plugin), src/screens/AdminScreen.jsx (Save button, save status), src/App.jsx (owns editingExhibitId, routes admin back button), src/styles/admin.css (save status styles).
+**User-visible result:** Clicking Edit in the Admin dashboard opens the form. Save now POSTs to /api/admin/save which rewrites src/data/exhibits.json on disk. The page reloads to reflect the new source. Back button while editing returns to the Admin Dashboard; back button on the dashboard returns to Welcome.
+**Automated checks:** npm run lint; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Open Admin, Edit PSBIKT-001; (3) Change the title; (4) Click Save — should show saving state, then reload; (5) after reload, Dashboard shows the new title; (6) verify src/data/exhibits.json on disk contains the new title; (7) while editing, press the top-left back arrow — should return to the Admin Dashboard, not Welcome; (8) press back again — should return to Welcome.
+**Not checked:** npm run build (deferred per user request). Production behavior of /api/admin/save — the plugin uses apply: 'serve' so it does not exist in the build output, and any production POST to that URL will 404 (safe by construction).
+**Remaining risks:** The vite.config.js replace steps assume the standard Vite React scaffold (import react from '@vitejs/plugin-react' plus plugins: [react()]). If the config was customized, the replace will fail loudly and we can adjust. After first Save, exhibits.js no longer imports exhibitTranslations.js — that file becomes orphan but is left in place; a future cleanup can delete it. The 600ms delay before reload is a heuristic; if HMR sometimes does not pick up the JSON change before reload, the reload itself always serves fresh data. The Admin form still uses a plain string for inline image alt text (not localized).
+**Decisions made:** Chose a Vite plugin (import.meta.env.DEV-safe by apply: 'serve') rather than a browser File System Access API or IndexedDB approach because the goal is to persist to source code, and only the dev server has filesystem write access. Migrated to JSON for canonical data so the endpoint writes clean serialized data rather than parsing JS source. Reload the page after save (brief 600ms delay) rather than trying to reconcile Vite HMR state with form state — the reload is the simplest correct thing. Lifted editingExhibitId to App.jsx so AppShell's back button can route based on edit state.
+**Next part:** User manual verification. If issues arise, address in a Phase 11.3a follow-up.
+**Commit:** 9b99ee6
