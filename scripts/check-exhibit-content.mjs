@@ -14,12 +14,25 @@ const first = exhibits.find((exhibit) => exhibit.id === 'PSBIKT-001')
 const catur = exhibits.find((exhibit) => exhibit.id === 'PSBIKT-006')
 
 expect(getExhibitContent(first, 'id')?.title, 'Lukisan 8 Kuda', 'Indonesian uses Indonesian content')
-expect(resolveExhibitContent(first, 'id').isFallback, false, 'Indonesian is not a fallback')
-expect(resolveExhibitContent(first, 'en').content?.title, 'Lukisan 8 Kuda', 'English falls back to Indonesian')
-expect(resolveExhibitContent(first, 'en').sourceLanguage, 'id', 'English fallback source is Indonesian')
-expect(resolveExhibitContent(first, 'en').isFallback, true, 'English fallback is disclosed')
-expect(resolveExhibitContent(first, 'zh').sourceLanguage, 'id', 'Chinese fallback source is Indonesian')
-expect(getExhibitContent(catur, 'en')?.title, 'Catur Cina', 'Catur Cina fallback works')
+expect(resolveExhibitContent(first, 'id').sourceLanguage, 'id', 'Indonesian source is id')
+expect(resolveExhibitContent(first, 'id').isFallback, false, 'Indonesian is not fallback')
+
+expect(getExhibitContent(first, 'en')?.title, 'Painting of Eight Horses', 'English uses English translation')
+expect(resolveExhibitContent(first, 'en').sourceLanguage, 'en', 'English source is en')
+expect(resolveExhibitContent(first, 'en').isFallback, false, 'English is not fallback')
+
+expect(getExhibitContent(first, 'zh')?.title, '八骏图', 'Chinese uses Chinese translation')
+expect(resolveExhibitContent(first, 'zh').sourceLanguage, 'zh', 'Chinese source is zh')
+expect(resolveExhibitContent(first, 'zh').isFallback, false, 'Chinese is not fallback')
+
+expect(getExhibitContent(catur, 'en')?.title, 'Chinese Chess (Xiangqi)', 'Catur Cina English translation works')
+expect(getExhibitContent(catur, 'zh')?.title, '中国象棋', 'Catur Cina Chinese translation works')
+
+expect(
+  resolveExhibitContent({ content: { id: { title: 'Indonesian only' } } }, 'en').sourceLanguage,
+  'id',
+  'Indonesian remains first fallback',
+)
 expect(
   resolveExhibitContent({ content: { en: { title: 'English only' } } }, 'zh').sourceLanguage,
   'en',
@@ -29,7 +42,8 @@ expect(getExhibitContent({ content: {} }, 'en'), null, 'empty content returns nu
 expect(getExhibitContent(null, 'en'), null, 'missing exhibit returns null')
 
 if (process.exitCode) {
-  console.error('Exhibit content fallback self-check failed')
-} else {
-  console.log('All exhibit content fallback self-checks passed')
+  console.error('Exhibit content self-check failed')
+  process.exit(1)
 }
+
+console.log('All exhibit content self-checks passed')

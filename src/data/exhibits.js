@@ -1,4 +1,6 @@
-export const exhibits = [
+import { exhibitTranslations } from './exhibitTranslations.js'
+
+const baseExhibits = [
   {
     id: 'PSBIKT-001',
     content: {
@@ -94,3 +96,11 @@ export const exhibits = [
     },
   },
 ]
+
+export const exhibits = baseExhibits.map((exhibit) => ({
+  ...exhibit,
+  content: {
+    ...exhibit.content,
+    ...(exhibitTranslations[exhibit.id] || {}),
+  },
+}))
