@@ -613,3 +613,19 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Pill shape kept as user requested. Added gradient, inner gold glow, and flourish watermark to make the pill feel ornamented rather than plain. Disabled state uses cream rather than desaturated red so the coming-soon cards read as intentional placeholders rather than broken active buttons. Badge moved inline with title because the pill radius would clip it awkwardly when absolutely positioned. Flourish applied via ::before with pointer-events none to avoid interfering with click.
 **Next part:** Phase 12.3 — Tour integration so that Scanner back returns to Menu when arriving via Tour, and Welcome when arriving directly.
 **Commit:** 71223ef
+
+## Fix — Missing result namespace translations
+
+**Status:** Complete
+**Goal:** Fix the ScanResultScreen buttons showing raw keys (result.viewDetails, result.scanAgain) instead of translated text.
+**Root cause:** ScanResultScreen called getTranslation with result.viewDetails and result.scanAgain, but the result namespace was empty in all three locale files. getTranslation returns the key verbatim when no translation exists.
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (added result.detected, result.viewDetails, result.scanAgain to each), scripts/check-i18n.mjs (rewritten to be content-agnostic; prior assertions locked the old translation content of Ikatan Keluarga Tionghoa and Pekan Seni Budaya 2026, which were later changed to Cultural Expo and The Storytelling Mirror to match the design proposal).
+**User-visible result:** Scan Result buttons now show View Details / Scan Again in English, Lihat Detail / Pindai Lagi in Indonesian, 查看详情 / 再次扫描 in Chinese.
+**Automated checks:** npm run lint; npm run check:i18n (24 content-agnostic assertions).
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. Scan any exhibit and confirm the two buttons read in the active language.
+**Not checked:** npm run build.
+**Remaining risks:** scanner.viewDetails and scanner.scanAnother still exist as unused duplicates of result.viewDetails and result.scanAgain. A future cleanup could remove the scanner namespace duplicates, but doing so now risks touching working code.
+**Decisions made:** check-i18n.mjs previously asserted specific content values. That was too tightly coupled — content is meant to evolve. New assertions verify helper behavior (fallback chain, edge cases, namespace resolution) without locking specific strings. Recovery used --allow-dirty because the three locale writes from the failed result-i18n run remained on disk. Only check-i18n.mjs was rewritten; the locale files from the previous run are kept as-is.
+**Next part:** Resume roadmap.
+**Commit:** 312a3d1
