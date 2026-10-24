@@ -23,16 +23,18 @@ function fallbackSentenceSegments(text) {
   return segments.length ? segments : [text]
 }
 
-export function segmentArticleText(text, language) {
-  if (typeof text !== 'string' || text.trim() === '') return []
-
+export function segmentArticleText(text, language, inlineImages = []) {
+  const blocks = []
   const locale = LOCALES[language] || LOCALES.en
-  const normalized = text.split(String.fromCharCode(13)).join('')
+  const normalized = text ? text.split(String.fromCharCode(13)).join('') : ''
   const paragraphs = normalized
     .split(PARAGRAPH_BREAK)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean)
-  const units = []
+
+  inlineImages.filter(img => img.afterParagraphIndex === 0).forEach(img => {
+    blocks.push({ type: 'image', src: img.src, alt: img.alt })
+  })
 
   paragraphs.forEach((paragraph, paragraphIndex) => {
     let sentences
@@ -44,18 +46,24 @@ export function segmentArticleText(text, language) {
     }
 
     sentences.forEach((sentence, sentenceIndex) => {
-      units.push({
+      blocks.push({
+        type: 'text',
         text: sentence,
         paragraphStart: paragraphIndex > 0 && sentenceIndex === 0,
       })
     })
+
+    inlineImages.filter(img => img.afterParagraphIndex === paragraphIndex + 1).forEach(img => {
+      blocks.push({ type: 'image', src: img.src, alt: img.alt })
+    })
   })
 
-  return units
+  return blocks
 }
 
 export function joinSentenceUnits(units) {
   return units.reduce((text, unit, index) => {
+    if (unit.type === 'image') return text
     if (index === 0) return unit.text
     return text + (unit.paragraphStart ? PARAGRAPH_BREAK : ' ') + unit.text
   }, '')
