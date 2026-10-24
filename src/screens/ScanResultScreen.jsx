@@ -1,13 +1,28 @@
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
+import frameTl from '../assets/frame-tl.png'
+import frameTr from '../assets/frame-tr.png'
+import frameBl from '../assets/frame-bl.png'
+import frameBr from '../assets/frame-br.png'
 
 export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain }) {
-  const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
+  const { content } = resolveExhibitContent(exhibit, language)
 
   return (
     <section className="scan-result-screen" aria-labelledby="scan-result-title">
-      <div className="scan-result-ornament" aria-hidden="true" />
-      <div className="scan-result-card">
+      <div className="scan-result-frame" aria-hidden="true">
+        <img src={frameTl} alt="" className="scan-result-frame-corner scan-result-frame-tl" />
+        <img src={frameTr} alt="" className="scan-result-frame-corner scan-result-frame-tr" />
+        <img src={frameBl} alt="" className="scan-result-frame-corner scan-result-frame-bl" />
+        <img src={frameBr} alt="" className="scan-result-frame-corner scan-result-frame-br" />
+      </div>
+
+      <div className="scan-result-content">
+        <div className="scan-result-brand">
+          <span>{getTranslation(language, 'app.eyebrow')}</span>
+          <strong>{getTranslation(language, 'app.title')}</strong>
+        </div>
+
         {exhibit.coverImage && (
           <div className="scan-result-image-wrap">
             <img className="scan-result-image" src={exhibit.coverImage} alt={content.coverAlt || ''} />
@@ -15,20 +30,17 @@ export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain
         )}
 
         <div className="scan-result-copy">
-          <p className="scan-result-kicker">{getTranslation(language, 'result.detected')}</p>
           <h1 id="scan-result-title" className="scan-result-title">
             {content.title}
           </h1>
           {content.period && <p className="scan-result-period">{content.period}</p>}
-          {content.summary && <p className="scan-result-summary">{content.summary}</p>}
-        </div>
-
-        {isFallback && (
-          <p className="content-language-notice" role="status">
-            {getTranslation(language, 'exhibit.translationUnavailable')}{' '}
-            {getTranslation(language, 'language.' + sourceLanguage + 'FullName')}.
+          <p className="scan-result-detected">
+            <span className="scan-result-check" aria-hidden="true">
+              ✓
+            </span>
+            {getTranslation(language, 'result.detected')}
           </p>
-        )}
+        </div>
 
         <div className="scan-result-actions">
           <button type="button" className="scan-result-primary" onClick={onViewDetails}>

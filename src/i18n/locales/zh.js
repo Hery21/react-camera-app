@@ -1,21 +1,7 @@
 // Mandarin Chinese (Simplified) UI strings. Exhibit content lives in src/data/exhibits.js, not here.
-// Cultural wording remains subject to native-speaker and expo-team approval.
-// Brand name intentionally remains English until an approved Chinese name is supplied.
 export const zh = {
-  app: {
-    eyebrow: '文化展览',
-    title: 'The Storytelling Mirror',
-    tagline: '扫描 · 探索 · 发现',
-  },
-  language: {
-    label: '语言',
-    en: 'EN',
-    id: 'ID',
-    zh: '中文',
-    enFullName: 'English',
-    idFullName: 'Bahasa Indonesia',
-    zhFullName: '中文',
-  },
+  app: { eyebrow: 'Ikatan Keluarga Tionghoa', title: 'Pekan Seni Budaya 2026' },
+  language: { label: '语言', en: 'EN', id: 'ID', zh: '中文', enFullName: 'English', idFullName: 'Bahasa Indonesia', zhFullName: '中文' },
   welcome: {
     explanation: '扫描任何展品旁边的二维码，揭开它的故事。',
     cameraNotice: '此体验需要使用您的相机。开始时系统会请求您的许可。',
@@ -47,11 +33,7 @@ export const zh = {
     unknownExhibitMessage: '已识别展品 {id}，但该展品尚未收录在本指南中。请继续扫描其他展品二维码。',
     keepScanning: '继续扫描',
   },
-  result: {
-    detected: '已识别展品！',
-    viewDetails: '查看详情',
-    scanAgain: '再次扫描',
-  },
+  result: { detected: '已识别展品！', viewDetails: '查看详情', scanAgain: '再次扫描' },
   exhibit: {
     articleLabel: '展品故事',
     sections: '展品内容',

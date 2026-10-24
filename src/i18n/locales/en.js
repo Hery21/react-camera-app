@@ -1,9 +1,8 @@
 // English UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const en = {
   app: {
-    eyebrow: 'Cultural Expo',
-    title: 'The Storytelling Mirror',
-    tagline: 'Scan · Explore · Discover',
+    eyebrow: 'Ikatan Keluarga Tionghoa',
+    title: 'Pekan Seni Budaya 2026',
   },
   language: {
     label: 'Language',
@@ -46,11 +45,7 @@ export const en = {
     unknownExhibitMessage: 'Exhibit {id} was recognized, but it is not available in this guide. Keep scanning another exhibit code.',
     keepScanning: 'Keep scanning',
   },
-  result: {
-    detected: 'Item detected!',
-    viewDetails: 'View Details',
-    scanAgain: 'Scan Again',
-  },
+  result: { detected: 'Item detected!', viewDetails: 'View Details', scanAgain: 'Scan Again' },
   exhibit: {
     articleLabel: 'Exhibit Story',
     sections: 'Exhibit sections',

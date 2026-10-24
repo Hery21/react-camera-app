@@ -1,43 +1,37 @@
-// Small self-check for getTranslation. Not a test framework.
-// Run: node scripts/check-i18n.mjs   (or: npm run check:i18n)
 import { getTranslation } from '../src/i18n/getTranslation.js'
 
-let failed = 0
+let failures = 0
 
-function expect(actual, expected, label) {
+function check(label, actual, expected) {
   if (actual === expected) {
     console.log('OK  ' + label)
     return
   }
+
+  failures += 1
   console.error('FAIL ' + label + ' — expected ' + JSON.stringify(expected) + ', got ' + JSON.stringify(actual))
-  failed += 1
 }
 
-// Happy path: each language returns its own string
-expect(getTranslation('en', 'app.title'), 'The Storytelling Mirror', 'en app.title')
-expect(getTranslation('en', 'language.zh'), '中文', 'en language.zh')
-expect(getTranslation('id', 'app.eyebrow'), 'Pameran Budaya', 'id app.eyebrow')
-expect(getTranslation('id', 'language.label'), 'Bahasa', 'id language.label')
-expect(getTranslation('zh', 'app.tagline'), '扫描 · 探索 · 发现', 'zh app.tagline')
-expect(getTranslation('zh', 'language.label'), '语言', 'zh language.label')
+for (const language of ['en', 'id', 'zh']) {
+  check(language + ' contextual identity', getTranslation(language, 'app.eyebrow'), 'Ikatan Keluarga Tionghoa')
+  check(language + ' main title', getTranslation(language, 'app.title'), 'Pekan Seni Budaya 2026')
+  check(language + ' tagline key removed', getTranslation(language, 'app.tagline'), 'app.tagline')
+}
 
-// Missing key in all languages returns the key itself
-expect(getTranslation('en', 'app.doesNotExist'), 'app.doesNotExist', 'en missing -> key')
-expect(getTranslation('zh', 'app.doesNotExist'), 'app.doesNotExist', 'zh missing -> key')
+check('en language.zh', getTranslation('en', 'language.zh'), '中文')
+check('id language.label', getTranslation('id', 'language.label'), 'Bahasa')
+check('zh language.label', getTranslation('zh', 'language.label'), '语言')
+check('en missing -> key', getTranslation('en', 'missing.key'), 'missing.key')
+check('zh missing -> key', getTranslation('zh', 'missing.key'), 'missing.key')
+check('unknown lang -> English title', getTranslation('xx', 'app.title'), 'Pekan Seni Budaya 2026')
+check('unknown lang + missing -> key', getTranslation('xx', 'missing.key'), 'missing.key')
+check('empty key -> empty string', getTranslation('en', ''), '')
+check('null key -> empty string', getTranslation('en', null), '')
+check('non-leaf key -> key', getTranslation('en', 'app'), 'app')
 
-// Unknown language falls back to English when the key exists there
-expect(getTranslation('fr', 'app.title'), 'The Storytelling Mirror', 'unknown lang -> en fallback')
-
-// Unknown language + missing key -> key itself
-expect(getTranslation('fr', 'app.doesNotExist'), 'app.doesNotExist', 'unknown lang + missing -> key')
-
-// Edge cases: empty / null / non-leaf
-expect(getTranslation('en', ''), '', 'empty key -> empty string')
-expect(getTranslation('en', null), '', 'null key -> empty string')
-expect(getTranslation('en', 'app'), 'app', 'non-leaf key -> key')
-
-if (failed > 0) {
-  console.error('\n' + failed + ' check(s) failed')
+if (failures > 0) {
+  console.error(failures + ' check(s) failed')
   process.exit(1)
 }
-console.log('\nAll i18n self-checks passed')
+
+console.log('All i18n self-checks passed')

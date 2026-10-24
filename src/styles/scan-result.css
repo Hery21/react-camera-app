@@ -1,69 +1,129 @@
 .scan-result-screen {
+  position: relative;
   width: min(100%, 34rem);
+  min-height: min(44rem, calc(100dvh - 8rem));
   margin: 0 auto;
-  padding: var(--space-4) 0 var(--space-8);
-}
-.scan-result-card {
   overflow: hidden;
   border: 1px solid var(--color-antique-gold);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-warm-ivory);
   box-shadow: var(--shadow-sm);
 }
+
+.scan-result-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.scan-result-frame-corner {
+  position: absolute;
+  width: clamp(4.5rem, 24vw, 8rem);
+  height: auto;
+  pointer-events: none;
+  opacity: 0.95;
+}
+.scan-result-frame-tl {
+  top: 0;
+  left: 0;
+}
+.scan-result-frame-tr {
+  top: 0;
+  right: 0;
+}
+.scan-result-frame-bl {
+  bottom: 0;
+  left: 0;
+}
+.scan-result-frame-br {
+  right: 0;
+  bottom: 0;
+}
+
+.scan-result-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: inherit;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(4.5rem, 15vw, 6rem) var(--space-6) clamp(5rem, 16vw, 7rem);
+}
+
+.scan-result-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-bottom: var(--space-3);
+  color: var(--color-rosewood);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  text-align: center;
+}
+.scan-result-brand strong {
+  color: var(--color-vermilion);
+  font-family: var(--font-family-display);
+  font-size: 0.9rem;
+}
+
 .scan-result-image-wrap {
+  width: min(62%, 15rem);
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--color-warm-ivory);
+  border-radius: var(--radius-sm);
+  background: transparent;
 }
 .scan-result-image {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
+
 .scan-result-copy {
-  padding: var(--space-6);
+  width: min(100%, 25rem);
+  padding: var(--space-4) var(--space-3) var(--space-3);
   text-align: center;
-}
-.scan-result-kicker {
-  margin: 0 0 var(--space-2);
-  color: var(--color-success);
-  font-weight: 700;
 }
 .scan-result-title {
   margin: 0;
   color: var(--color-rosewood);
   font-family: var(--font-family-display);
-  font-size: clamp(1.75rem, 8vw, 2.5rem);
-  line-height: 1.1;
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  line-height: 1.08;
+  text-wrap: balance;
 }
 .scan-result-period {
-  margin: var(--space-2) 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--color-rosewood);
-  opacity: 0.75;
+  font-size: 0.9rem;
+  opacity: 0.72;
 }
-.scan-result-summary {
+.scan-result-detected {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin: var(--space-4) 0 0;
-  color: var(--color-text);
-  line-height: 1.55;
-}
-.content-language-notice {
-  margin: 0 var(--space-6) var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-antique-gold);
-  border-radius: var(--radius-sm);
-  background: var(--color-warm-ivory);
   color: var(--color-rosewood);
-  font-size: 0.8rem;
-  line-height: 1.4;
-  text-align: center;
+  font-weight: 700;
+}
+.scan-result-check {
+  display: inline-grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-success);
+  color: white;
+  font-size: 0.9rem;
 }
 
 .scan-result-actions {
   display: flex;
+  width: min(100%, 20rem);
   flex-direction: column;
   gap: var(--space-2);
-  padding: 0 var(--space-6) var(--space-6);
+  margin-top: auto;
 }
 .scan-result-primary,
 .scan-result-secondary {
@@ -77,14 +137,24 @@
   border: 1px solid var(--color-vermilion);
   background: var(--color-vermilion);
   color: var(--color-surface);
+  box-shadow: 0 3px 10px rgba(74, 46, 38, 0.2);
 }
 .scan-result-secondary {
   border: 1px solid var(--color-antique-gold);
-  background: transparent;
+  background: rgba(255, 250, 240, 0.82);
   color: var(--color-rosewood);
 }
 .scan-result-primary:focus-visible,
 .scan-result-secondary:focus-visible {
   outline: 2px solid var(--color-vermilion);
   outline-offset: 3px;
+}
+
+@media (max-width: 360px) {
+  .scan-result-content {
+    padding-inline: var(--space-4);
+  }
+  .scan-result-image-wrap {
+    width: 68%;
+  }
 }

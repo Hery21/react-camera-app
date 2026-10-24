@@ -1,11 +1,6 @@
 // Bahasa Indonesia UI strings. Exhibit content lives in src/data/exhibits.js, not here.
-// Cultural wording remains subject to expo-team approval.
 export const id = {
-  app: {
-    eyebrow: 'Pameran Budaya',
-    title: 'The Storytelling Mirror',
-    tagline: 'Pindai · Jelajahi · Temukan',
-  },
+  app: { eyebrow: 'Ikatan Keluarga Tionghoa', title: 'Pekan Seni Budaya 2026' },
   language: {
     label: 'Bahasa',
     en: 'EN',
@@ -47,11 +42,7 @@ export const id = {
     unknownExhibitMessage: 'Pameran {id} dikenali, tetapi belum tersedia dalam panduan ini. Lanjutkan memindai kode pameran lain.',
     keepScanning: 'Lanjutkan memindai',
   },
-  result: {
-    detected: 'Pameran ditemukan!',
-    viewDetails: 'Lihat Detail',
-    scanAgain: 'Pindai Lagi',
-  },
+  result: { detected: 'Pameran ditemukan!', viewDetails: 'Lihat Detail', scanAgain: 'Pindai Lagi' },
   exhibit: {
     articleLabel: 'Cerita Pameran',
     sections: 'Bagian pameran',

@@ -6,21 +6,16 @@ export function WelcomeScreen({ language, onStart }) {
     <section className="welcome-screen" aria-labelledby="welcome-title">
       <div className="welcome-mirror-stage">
         <img src={heroMirror} alt="" className="welcome-hero" />
-
         <div className="welcome-glass-copy">
           <p className="welcome-eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
-          <p className="welcome-stand">{getTranslation(language, 'app.stand')}</p>
           <h1 id="welcome-title" className="welcome-title">
             {getTranslation(language, 'app.title')}
           </h1>
-          <p className="welcome-tagline">{getTranslation(language, 'app.tagline')}</p>
         </div>
-
         <button type="button" className="welcome-cta" onClick={onStart}>
           {getTranslation(language, 'welcome.cta')}
         </button>
       </div>
-
       <p className="sr-only">{getTranslation(language, 'welcome.cameraNotice')}</p>
     </section>
   )
