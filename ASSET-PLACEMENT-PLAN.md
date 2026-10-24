@@ -27,7 +27,7 @@ Keep the already accepted scanner-corner frame assets for the camera overlay. Do
 
 Optional additions only if they do not obstruct camera content:
 
-- `floral-corner.webp` — not recommended by default because the scanner already has four dedicated frame-corner assets.
+- `floral-corner-tr.webp` — not recommended by default because the scanner already has four dedicated frame-corner assets.
 - `motif-cloud.webp` — do not use by default.
 - `motif-knot.webp` — do not use by default.
 
@@ -44,7 +44,7 @@ Recommended assets:
 - `artifact-pedestal.webp` — beneath the exhibit/medallion to make the recognized object presentation feel intentional.
 - `divider-gold.webp` — between detected status/title and action area when spacing permits.
 - `button-flourish.webp` — optional decoration behind/around primary `View Details`, not a replacement for the semantic button.
-- `floral-corner.webp` — one restrained corner decoration, preferably top-right or bottom-left, with mirrored CSS transform for the opposite corner only if needed.
+- `floral-corner-tr.webp` — one restrained corner decoration, preferably top-right or bottom-left, with mirrored CSS transform for the opposite corner only if needed.
 
 Avoid:
 
@@ -72,7 +72,7 @@ Secondary motifs:
 - `motif-knot.webp` — small symbolic accent near an article metadata/divider area, used once rather than repeated heavily.
 - `motif-lattice.webp` — subtle repeat/border treatment for tab/navigation or gallery framing, not behind body text.
 - `motif.webp` — generic fallback ornament only when a specific motif does not fit. Avoid using it merely because it exists.
-- `floral-corner.webp` — optional article-card corner ornament on wide/tablet layouts; suppress on narrow phones if it crowds text.
+- `floral-corner-tr.webp` — optional article-card corner ornament on wide/tablet layouts; suppress on narrow phones if it crowds text.
 
 ### Gallery
 
@@ -84,7 +84,7 @@ Recommended assets:
 - `motif-lattice.webp` — preferred ornamental treatment around gallery tiles or gallery-section boundary.
 - `divider-gold.webp` — section separator above Gallery if needed.
 - `arrow-left.webp` and `arrow-right.webp` — reserve for a future image lightbox/gallery navigation only. Do not show arrows in the initial grid when there is nothing to paginate.
-- `floral-corner.webp` — optional single decorative accent around the gallery section, not on every tile.
+- `floral-corner-tr.webp` — optional single decorative accent around the gallery section, not on every tile.
 
 ### Article/gallery lightbox — only if added
 
@@ -104,7 +104,7 @@ Recommended assets:
 | `article-crown.webp`         | Exhibit header                           | None by default                                         | Welcome/Scanner                                          |
 | `article-floral-bottom.webp` | Exhibit ending                           | Gallery ending only if article and gallery share ending | Scanner                                                  |
 | `divider-gold.webp`          | Exhibit                                  | Scan Result                                             | Repeated after every paragraph                           |
-| `floral-corner.webp`         | Result/Article accent                    | Gallery                                                 | Repeated on all four corners of every component          |
+| `floral-corner-tr.webp`         | Result/Article accent                    | Gallery                                                 | Repeated on all four corners of every component          |
 | `motif-cloud.webp`           | Article accent                           | Small empty states                                      | Large backgrounds                                        |
 | `motif-knot.webp`            | Article metadata/accent                  | Result accent                                           | Repeated pattern                                         |
 | `motif-lattice.webp`         | Gallery/tab framing                      | Article edge pattern                                    | Body-text background at normal opacity                   |
@@ -158,7 +158,7 @@ public/
   welcome/
     mirror.webp
   ornament/
-    floral-corner.webp
+    floral-corner-tr.webp
     divider-gold.webp
     motif-cloud.webp
     motif-knot.webp

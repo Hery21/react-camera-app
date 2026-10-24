@@ -7,7 +7,8 @@ export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain
 
   return (
     <section className="scan-result-screen" aria-labelledby="scan-result-title">
-      <img src={decorativeAssets.result.floralCorner} alt="" className="scan-result-floral-corner" aria-hidden="true" />
+      <img src={decorativeAssets.result.floralCornerTopRight} alt="" className="scan-result-floral-corner-top-right" aria-hidden="true" />
+      <img src={decorativeAssets.result.floralCornerTopLeft} alt="" className="scan-result-floral-corner-top-left" aria-hidden="true" />
 
       <div className="scan-result-card">
         <div className="scan-result-artifact-area">

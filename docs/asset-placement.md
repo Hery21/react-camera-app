@@ -21,7 +21,7 @@ Keep the existing scanner frame-corner assets and CSS QR target. The decorative 
 - /artifact-pedestal.webp — lower artifact presentation.
 - /divider-gold.webp — restrained separator.
 - /button-flourish.webp — optional primary-action ornament.
-- /floral-corner.webp — optional single corner accent.
+- /floral-corner-tr.webp — optional single corner accent.
 
 ## Exhibit Article
 

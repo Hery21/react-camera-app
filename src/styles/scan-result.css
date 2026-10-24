@@ -90,11 +90,22 @@
   overflow: visible;
 }
 
-.scan-result-floral-corner {
+.scan-result-floral-corner-top-right {
   position: absolute;
   z-index: 3;
   top: 0.35rem;
   right: -0.45rem;
+  width: clamp(4.75rem, 21vw, 8rem);
+  height: auto;
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.scan-result-floral-corner-top-left {
+  position: absolute;
+  z-index: 3;
+  top: 0.35rem;
+  left: -0.45rem;
   width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
   opacity: 0.82;

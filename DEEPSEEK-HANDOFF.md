@@ -137,7 +137,7 @@ article-crown.webp
 article-floral-bottom.webp
 button-flourish.webp
 divider-gold.webp
-floral-corner.webp
+floral-corner-tr.webp
 mirror.webp
 motif-cloud.webp
 motif-knot.webp
