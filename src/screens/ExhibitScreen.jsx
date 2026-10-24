@@ -5,6 +5,7 @@ import { joinSentenceUnits, segmentArticleText } from '../lib/segmentArticleText
 
 const MIN_TEXT_SIZE = 0
 const MAX_TEXT_SIZE = 2
+const MIN_USABLE_PAGE_HEIGHT = 48
 
 export function ExhibitScreen({ language, exhibit }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
@@ -17,7 +18,7 @@ export function ExhibitScreen({ language, exhibit }) {
 
   const [activeSection, setActiveSection] = useState('story')
   const [page, setPage] = useState(0)
-  const [pages, setPages] = useState([''])
+  const [pages, setPages] = useState(() => [content.story])
   const [textSize, setTextSize] = useState(1)
   const viewportRef = useRef(null)
   const measureRef = useRef(null)
@@ -58,7 +59,7 @@ export function ExhibitScreen({ language, exhibit }) {
 
     const pageWidth = viewport.clientWidth
     const pageHeight = viewport.clientHeight
-    if (!pageWidth || !pageHeight) return
+    if (!pageWidth || pageHeight < MIN_USABLE_PAGE_HEIGHT) return
 
     measure.style.width = pageWidth + 'px'
     measure.style.height = 'auto'
@@ -90,7 +91,7 @@ export function ExhibitScreen({ language, exhibit }) {
     }
 
     if (currentUnits.length) nextPages.push(joinSentenceUnits(currentUnits))
-    if (!nextPages.length) nextPages.push('')
+    if (!nextPages.length) nextPages.push(articleText)
 
     setPages(nextPages)
     setPage((current) => Math.min(current, nextPages.length - 1))
@@ -111,14 +112,14 @@ export function ExhibitScreen({ language, exhibit }) {
     [isGallery, repaginate],
   )
 
-  function resetReader() {
+  function resetReader(nextText = articleText) {
     setPage(0)
-    setPages([''])
+    setPages([nextText])
   }
 
   function handleSectionChange(sectionId) {
     setActiveSection(sectionId)
-    resetReader()
+    resetReader(sectionId === 'symbolism' ? content.symbolism : content.story)
   }
 
   function handleTextSizeChange(nextSize) {

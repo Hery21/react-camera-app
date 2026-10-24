@@ -34,7 +34,8 @@
     "check:article-control-treatment": "node scripts/check-article-control-treatment.mjs",
     "check:reader-font-controls": "node scripts/check-reader-font-controls.mjs",
     "check:sentence-pagination": "node scripts/check-sentence-pagination.mjs",
-    "check:sentence-packing": "node scripts/check-sentence-packing.mjs"
+    "check:sentence-packing": "node scripts/check-sentence-packing.mjs",
+    "check:article-layout": "node scripts/check-article-layout.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
