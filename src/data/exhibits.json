@@ -107,19 +107,70 @@
         "title": "Catur Cina",
         "summary": "Xiangqi adalah permainan strategi papan tradisional Tiongkok dengan sungai, istana, dan bidak yang bergerak pada titik persilangan garis.",
         "story": "Catur Cina, yang dikenal sebagai Xiangqi (象棋, dibaca kurang lebih siang-ci), adalah permainan strategi papan tradisional Tiongkok yang dimainkan oleh dua orang. Permainan ini mirip dengan catur internasional karena kedua pemain berusaha mengalahkan pemimpin pasukan lawan, tetapi memiliki papan, bentuk bidak, aturan gerakan, dan strategi yang berbeda. Ada tiga bagian penting pada papan Xiangqi.\n\nA. Sungai (River)\nSungai berada di bagian tengah papan dan memisahkan wilayah kedua pemain. Sungai bukan hanya hiasan. Bagian ini memengaruhi pergerakan beberapa bidak, khususnya gajah dan prajurit. Gajah tidak boleh menyeberangi sungai, sedangkan prajurit memperoleh kemampuan bergerak menyamping setelah menyeberang.\n\nB. Istana (Palace atau Jiu Gong)\nSetiap pemain memiliki wilayah istana berbentuk persegi yang terdiri dari sembilan titik, biasanya ditandai dengan garis diagonal membentuk huruf X. Jenderal dan penasihat harus tetap berada di wilayah istana masing-masing. Karena itu, pertahanan jenderal memiliki ruang gerak yang terbatas.\n\nC. Titik persilangan garis\nBerbeda dengan catur internasional, bidak Xiangqi diletakkan dan bergerak pada titik pertemuan garis, bukan di dalam kotak.\n\nKetiga ciri tersebut merupakan fondasi penting untuk memahami seluruh aturan Xiangqi. Xiangqi sangat menarik karena menggambarkan pertempuran antara dua pasukan. Setiap bidak memiliki fungsi tertentu, seperti jenderal, penasihat, gajah, kuda, kereta perang, meriam, dan prajurit.",
-        "coverAlt": "Papan Catur Cina dengan garis, sungai, istana, dan bidak bundar beraksara Tionghoa."
+        "coverAlt": "Papan Catur Cina dengan garis, sungai, istana, dan bidak bundar beraksara Tionghoa.",
+        "pages": [
+          {
+            "text": "Catur Cina, yang dikenal sebagai Xiangqi (象棋, dibaca kurang lebih siang-ci), adalah permainan strategi papan tradisional Tiongkok yang dimainkan oleh dua orang. Permainan ini mirip dengan catur internasional karena kedua pemain berusaha mengalahkan pemimpin pasukan lawan, tetapi memiliki papan, bentuk bidak, aturan gerakan, dan strategi yang berbeda. Ada tiga bagian penting pada papan Xiangqi.\n\n"
+          },
+          {
+            "text": "A. Sungai (River)\nSungai berada di bagian tengah papan dan memisahkan wilayah kedua pemain. Sungai bukan hanya hiasan. Bagian ini memengaruhi pergerakan beberapa bidak, khususnya gajah dan prajurit. Gajah tidak boleh menyeberangi sungai, sedangkan prajurit memperoleh kemampuan bergerak menyamping setelah menyeberang."
+          },
+          {
+            "text": "B. Istana (Palace atau Jiu Gong)\nSetiap pemain memiliki wilayah istana berbentuk persegi yang terdiri dari sembilan titik, biasanya ditandai dengan garis diagonal membentuk huruf X. Jenderal dan penasihat harus tetap berada di wilayah istana masing-masing. Karena itu, pertahanan jenderal memiliki ruang gerak yang terbatas."
+          },
+          {
+            "text": "C. Titik persilangan garis\nBerbeda dengan catur internasional, bidak Xiangqi diletakkan dan bergerak pada titik pertemuan garis, bukan di dalam kotak."
+          },
+          {
+            "text": "Ketiga ciri tersebut merupakan fondasi penting untuk memahami seluruh aturan Xiangqi. Xiangqi sangat menarik karena menggambarkan pertempuran antara dua pasukan. Setiap bidak memiliki fungsi tertentu, seperti jenderal, penasihat, gajah, kuda, kereta perang, meriam, dan prajurit."
+          }
+        ]
       },
       "en": {
         "title": "Chinese Chess (Xiangqi)",
         "summary": "Xiangqi is a traditional Chinese strategy board game featuring a river, palaces, and pieces that move on line intersections.",
         "story": "Chinese chess, known as Xiangqi (象棋, approximately pronounced “shiang-chi”), is a traditional Chinese strategy board game for two players. It resembles international chess in that both players seek to defeat the opposing army’s leader, but it has a different board, pieces, movement rules, and strategies. There are three important features of a Xiangqi board.\n\nA. River\nThe river runs through the middle of the board and separates the territories of the two players. It is more than decoration because it affects the movement of certain pieces, particularly elephants and soldiers. Elephants may not cross the river, while soldiers gain the ability to move sideways after crossing it.\n\nB. Palace or Jiu Gong\nEach player has a square palace area made up of nine points, usually marked by diagonal lines forming an X. The general and advisors must remain within their own palace, so the general’s defensive movement is limited.\n\nC. Line intersections\nUnlike international chess, Xiangqi pieces are placed and moved on the intersections of lines rather than inside squares.\n\nThese three features provide an important foundation for understanding Xiangqi. The game represents a battle between two armies. Each piece has a particular role, including the general, advisors, elephants, horses, chariots, cannons, and soldiers.",
-        "coverAlt": "Xiangqi board showing the grid, river, palace diagonals, and round pieces with Chinese characters."
+        "coverAlt": "Xiangqi board showing the grid, river, palace diagonals, and round pieces with Chinese characters.",
+        "pages": [
+          {
+            "text": "Chinese chess, known as Xiangqi (象棋, approximately pronounced “shiang-chi”), is a traditional Chinese strategy board game for two players. It resembles international chess in that both players seek to defeat the opposing army’s leader, but it has a different board, pieces, movement rules, and strategies. There are three important features of a Xiangqi board."
+          },
+          {
+            "text": "A. River\nThe river runs through the middle of the board and separates the territories of the two players. It is more than decoration because it affects the movement of certain pieces, particularly elephants and soldiers. Elephants may not cross the river, while soldiers gain the ability to move sideways after crossing it."
+          },
+          {
+            "text": "B. Palace or Jiu Gong\nEach player has a square palace area made up of nine points, usually marked by diagonal lines forming an X. The general and advisors must remain within their own palace, so the general’s defensive movement is limited."
+          },
+          {
+            "text": "C. Line intersections\nUnlike international chess, Xiangqi pieces are placed and moved on the intersections of lines rather than inside squares."
+          },
+          {
+            "text": "These three features provide an important foundation for understanding Xiangqi. The game represents a battle between two armies. Each piece has a particular role, including the general, advisors, elephants, horses, chariots, cannons, and soldiers."
+          }
+        ]
       },
       "zh": {
         "title": "中国象棋",
         "summary": "中国象棋是一种传统策略棋类游戏，棋盘上有河界、九宫，棋子走在纵横线的交叉点上。",
         "story": "中国象棋（Xiangqi，象棋）是一种由两人对弈的中国传统策略棋类游戏。它与国际象棋相似之处在于双方都试图击败对方军队的统帅，但棋盘、棋子、走法和策略各有不同。象棋棋盘有三个重要部分。\n\nA. 河界\n河界位于棋盘中央，将双方的阵地分开。河界不仅是装饰，也会影响部分棋子的走法，特别是象和兵。象不能过河，而兵过河后可以横向移动。\n\nB. 九宫\n双方各有一个由九个点组成的方形九宫，通常以交叉的斜线标示成“X”形。将和士必须留在各自的九宫内，因此将的活动范围受到限制。\n\nC. 纵横线交叉点\n与国际象棋不同，中国象棋的棋子摆放并移动于线与线的交叉点上，而不是方格内部。\n\n这三个特点是理解中国象棋规则的重要基础。象棋以两军交战为主题，不同棋子各有职能，包括将、士、象、马、车、炮和兵。",
-        "coverAlt": "中国象棋棋盘，可见纵横线、河界、九宫斜线，以及写有汉字的圆形棋子。"
+        "coverAlt": "中国象棋棋盘，可见纵横线、河界、九宫斜线，以及写有汉字的圆形棋子。",
+        "pages": [
+          {
+            "text": "中国象棋（Xiangqi，象棋）是一种由两人对弈的中国传统策略棋类游戏。它与国际象棋相似之处在于双方都试图击败对方军队的统帅，但棋盘、棋子、走法和策略各有不同。象棋棋盘有三个重要部分。"
+          },
+          {
+            "text": "A. 河界\n河界位于棋盘中央，将双方的阵地分开。河界不仅是装饰，也会影响部分棋子的走法，特别是象和兵。象不能过河，而兵过河后可以横向移动。"
+          },
+          {
+            "text": "B. 九宫\n双方各有一个由九个点组成的方形九宫，通常以交叉的斜线标示成“X”形。将和士必须留在各自的九宫内，因此将的活动范围受到限制。"
+          },
+          {
+            "text": "C. 纵横线交叉点\n与国际象棋不同，中国象棋的棋子摆放并移动于线与线的交叉点上，而不是方格内部。"
+          },
+          {
+            "text": "这三个特点是理解中国象棋规则的重要基础。象棋以两军交战为主题，不同棋子各有职能，包括将、士、象、马、车、炮和兵。"
+          }
+        ]
       }
     }
   },
