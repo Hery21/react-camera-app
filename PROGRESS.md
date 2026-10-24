@@ -785,3 +785,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Kept the strings identical across all three languages because they are proper nouns for the event and the organizing body — translating them would be incorrect. The tagline ("Scan · Explore · Discover") remains translated per language as before; only the brand strings are intentionally untranslated.
 **Next part:** Manual visual verification on Welcome at 320px and 390px widths. If title overflows, may need a small CSS clamp adjustment.
 **Commit:** 8bea221
+
+## Fix — Scan Result back to Scanner, Tour text mentions QR
+
+**Status:** Complete
+**Goal:** Make the Scan Result back arrow return to the Scanner (instead of Menu), clarify the Tour card description to mention scanning a QR code, and clean up dead onScanNext references left behind by the earlier button removal.
+**Files changed:** src/App.jsx (scan-result onBack routed to handleScanAgain, removed unused onScanNext prop pass to ExhibitScreen), src/i18n/locales/en.js, id.js, zh.js (menu.tourDesc updated to mention QR), scripts/check-visitor-flow.mjs (removed two obsolete onScanNext assertions).
+**User-visible result:** After scanning an exhibit and landing on Scan Result, the top-left back arrow returns to the live Scanner instead of the Menu. The Menu Tour card description reads "Scan QR codes to explore exhibit stories" / "Pindai kode QR untuk menjelajahi cerita pameran" / "扫描二维码探索展品故事".
+**Automated checks:** npm run lint; npm run check:i18n; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Scan an exhibit; (2) click top-left back on Scan Result — should land on Scanner; (3) return to Menu and verify Tour card mentions QR code in all three languages.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** check-visitor-flow.mjs was tightly coupled to a specific prop name (onScanNext) that no longer exists. Future prop renames should update this file alongside the JSX to avoid the same false failure. Two other flow assertions remain that may become stale if buttons are removed: "Article exposes Back to Result action" and "Article uses Previous arrow asset" — both still valid today.
+**Decisions made:** Removed both obsolete assertions entirely rather than commenting them out. If Scan Next is ever reintroduced, a new assertion should be added at that time with the actual prop name. Also removed the unused onScanNext prop pass in App.jsx so the App-Exhibit prop contract matches the component signature. Recovery ran with --allow-dirty because App.jsx and the three locale files were dirty from earlier failed runs. First failed plan had a 2-space indentation mismatch in the replace target; the second failed because check:flow was out of date with the current ExhibitScreen. Both fixes are now applied.
+**Next part:** Resume roadmap.
+**Commit:** 3c10fba
