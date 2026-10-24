@@ -34,7 +34,8 @@ export const id = {
     back: 'Kembali ke beranda'
   },
   scanner: {
-    back: 'Kembali ke beranda',
+    label: 'Pemindai QR',
+    back: 'Kembali ke menu',
     instructions: 'Arahkan kamera Anda ke kode QR pameran.',
     start: 'Nyalakan Kamera',
     stop: 'Matikan Kamera',
@@ -46,17 +47,46 @@ export const id = {
     cancel: 'Batal',
     scanAnother: 'Pindai Lagi',
     viewDetails: 'Lihat Detail',
+    returnHome: 'Kembali ke Beranda',
     matched: 'Cocok',
     invalidCode: 'Kode tidak valid',
     unknownExhibit: 'Pameran tidak dikenal',
-    keepScanning: 'terus pindai'
+    keepScanning: 'terus pindai',
+    permissionDeniedTitle: 'Izin kamera ditolak',
+    permissionDeniedMessage: 'Izinkan akses kamera di pengaturan peramban Anda untuk memindai pameran.',
+    cameraUnavailableTitle: 'Kamera tidak tersedia',
+    cameraUnavailableMessage: 'Tidak ada kamera yang ditemukan di perangkat ini.',
+    scannerErrorTitle: 'Kesalahan pemindai',
+    scannerErrorMessage: 'Terjadi kesalahan saat memulai kamera.',
+    unknownExhibitTitle: 'Pameran tidak dikenal',
+    unknownExhibitMessage: 'Kode QR ini tidak terhubung ke pameran mana pun: {id}',
+    invalidCodeTitle: 'Kode tidak valid',
+    invalidCodeMessage: 'Kode QR ini tidak dikenali sebagai kode pameran.'
   },
   result: {
     detected: 'Item terdeteksi!',
     viewDetails: 'Lihat Detail',
     scanAgain: 'Pindai Lagi'
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: 'Pameran',
+    story: 'Cerita',
+    symbolism: 'Simbolisme',
+    gallery: 'Galeri',
+    sections: 'Bagian',
+    translationUnavailable: 'Terjemahan tidak tersedia. Menampilkan konten dalam',
+    textSize: 'Ukuran teks',
+    decreaseText: 'Perkecil ukuran teks',
+    increaseText: 'Perbesar ukuran teks',
+    previous: 'Halaman sebelumnya',
+    next: 'Halaman berikutnya',
+    scanNext: 'Pindai Pameran Berikutnya',
+    backToResult: 'Kembali ke Hasil',
+    backToInfo: 'Kembali ke info'
+  },
+  progress: {
+    scanned: 'Dipindai'
+  },
   errors: {},
   accessibility: {}
 }

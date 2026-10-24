@@ -34,7 +34,8 @@ export const zh = {
     back: '返回首页'
   },
   scanner: {
-    back: '返回首页',
+    label: '二维码扫描',
+    back: '返回菜单',
     instructions: '将相机对准展品二维码。',
     start: '开启相机',
     stop: '关闭相机',
@@ -46,17 +47,46 @@ export const zh = {
     cancel: '取消',
     scanAnother: '再次扫描',
     viewDetails: '查看详情',
+    returnHome: '返回首页',
     matched: '已匹配',
     invalidCode: '无效代码',
     unknownExhibit: '未知展品',
-    keepScanning: '继续扫描'
+    keepScanning: '继续扫描',
+    permissionDeniedTitle: '相机权限被拒绝',
+    permissionDeniedMessage: '请在浏览器设置中允许相机访问以扫描展品。',
+    cameraUnavailableTitle: '相机不可用',
+    cameraUnavailableMessage: '此设备上未找到相机。',
+    scannerErrorTitle: '扫描错误',
+    scannerErrorMessage: '启动相机时出错。',
+    unknownExhibitTitle: '未知展品',
+    unknownExhibitMessage: '此二维码未关联任何展品：{id}',
+    invalidCodeTitle: '无效代码',
+    invalidCodeMessage: '此二维码无法识别为展品代码。'
   },
   result: {
     detected: '已识别展品！',
     viewDetails: '查看详情',
     scanAgain: '再次扫描'
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: '展品',
+    story: '故事',
+    symbolism: '象征意义',
+    gallery: '画廊',
+    sections: '章节',
+    translationUnavailable: '翻译不可用。当前显示内容为',
+    textSize: '文字大小',
+    decreaseText: '缩小文字',
+    increaseText: '放大文字',
+    previous: '上一页',
+    next: '下一页',
+    scanNext: '扫描下一件展品',
+    backToResult: '返回结果',
+    backToInfo: '返回信息'
+  },
+  progress: {
+    scanned: '已扫描'
+  },
   errors: {},
   accessibility: {}
 }

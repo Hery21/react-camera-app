@@ -34,7 +34,8 @@ export const en = {
     back: 'Back to welcome'
   },
   scanner: {
-    back: 'Back to welcome',
+    label: 'QR scanner',
+    back: 'Back to menu',
     instructions: 'Point your camera at the exhibit QR code.',
     start: 'Start Camera',
     stop: 'Stop Camera',
@@ -46,17 +47,46 @@ export const en = {
     cancel: 'Cancel',
     scanAnother: 'Scan Another',
     viewDetails: 'View Details',
+    returnHome: 'Return Home',
     matched: 'Matched',
     invalidCode: 'Invalid code',
     unknownExhibit: 'Unknown exhibit',
-    keepScanning: 'keep scanning'
+    keepScanning: 'keep scanning',
+    permissionDeniedTitle: 'Camera permission denied',
+    permissionDeniedMessage: 'Allow camera access in your browser settings to scan exhibits.',
+    cameraUnavailableTitle: 'Camera unavailable',
+    cameraUnavailableMessage: 'No camera was found on this device.',
+    scannerErrorTitle: 'Scanner error',
+    scannerErrorMessage: 'Something went wrong while starting the camera.',
+    unknownExhibitTitle: 'Unknown exhibit',
+    unknownExhibitMessage: 'This QR code is not linked to any exhibit: {id}',
+    invalidCodeTitle: 'Invalid code',
+    invalidCodeMessage: 'This QR code is not recognized as an exhibit code.'
   },
   result: {
     detected: 'Item detected!',
     viewDetails: 'View Details',
     scanAgain: 'Scan Again'
   },
-  exhibit: {},
+  exhibit: {
+    articleLabel: 'Exhibit',
+    story: 'Story',
+    symbolism: 'Symbolism',
+    gallery: 'Gallery',
+    sections: 'Sections',
+    translationUnavailable: 'Translation unavailable. Showing content in',
+    textSize: 'Text size',
+    decreaseText: 'Decrease text size',
+    increaseText: 'Increase text size',
+    previous: 'Previous page',
+    next: 'Next page',
+    scanNext: 'Scan Next Exhibit',
+    backToResult: 'Back to Result',
+    backToInfo: 'Back to info'
+  },
+  progress: {
+    scanned: 'Scanned'
+  },
   errors: {},
   accessibility: {}
 }
