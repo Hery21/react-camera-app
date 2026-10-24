@@ -18,7 +18,8 @@
     "check:phase3": "node scripts/check-phase3-exit.mjs",
     "check:scanner": "node scripts/check-qr-scanner.mjs",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "check:flow": "node scripts/check-visitor-flow.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
