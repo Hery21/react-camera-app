@@ -16,6 +16,10 @@
 // - Dynamic import of @zxing/browser keeps this module Node-safe (for the
 //   self-check) and lets Vite split the ~150 KB decoder out of the initial
 //   bundle.
+// - The start() method guards against the race where stop() is called while
+//   the dynamic import or decodeFromConstraints is still pending. Without
+//   this guard, the pending controls would be assigned to a stopped scanner
+//   and the media stream would never be released.
 
 export function createQrScanner() {
   let controls = null
@@ -31,15 +35,32 @@ export function createQrScanner() {
       if (stopped) return
       const reader = new BrowserQRCodeReader()
 
-      controls = await reader.decodeFromConstraints({ video: { facingMode: 'environment' } }, videoElement, (result) => {
-        if (stopped) return
-        if (!result) return
-        const text = result.getText()
-        if (typeof text !== 'string' || text.length === 0) return
-        if (text === lastText) return
-        lastText = text
-        if (onDecode) onDecode(text)
-      })
+      const pendingControls = await reader.decodeFromConstraints(
+        { video: { facingMode: 'environment' } },
+        videoElement,
+        (result) => {
+          if (stopped) return
+          if (!result) return
+          const text = result.getText()
+          if (typeof text !== 'string' || text.length === 0) return
+          if (text === lastText) return
+          lastText = text
+          if (onDecode) onDecode(text)
+        },
+      )
+
+      // If stop() was called while the stream was initializing, immediately
+      // release the pending controls to prevent the media stream leaking.
+      if (stopped) {
+        try {
+          pendingControls.stop()
+        } catch {
+          // ignore — stream may already be gone
+        }
+        return
+      }
+
+      controls = pendingControls
     } catch (err) {
       if (stopped) return
       if (onError) onError(err)

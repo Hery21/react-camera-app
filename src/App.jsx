@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { getTranslation } from './i18n/getTranslation.js'
 import { applyDocumentLanguage, getInitialLanguage, persistLanguage } from './i18n/language.js'
@@ -65,7 +65,11 @@ function App() {
     }
   }
 
-  function handleExhibitDetected(exhibit) {
+  // Stable reference: ScannerScreen's auto-start effect depends on this
+  // handler indirectly (via handleDecode -> handleStart). If this were
+  // recreated on every render, any App state change (language, etc.) would
+  // restart the scanner's camera. useCallback keeps it stable across renders.
+  const handleExhibitDetected = useCallback((exhibit) => {
     setScannedExhibitIds((current) => {
       const next = addScannedExhibitId(current, exhibit.id)
       saveScannedExhibitIds(next)
@@ -73,7 +77,7 @@ function App() {
     })
     setSelectedExhibit(exhibit)
     setScreen('scan-result')
-  }
+  }, [])
 
   function handleScanAgain() {
     setSelectedExhibit(null)

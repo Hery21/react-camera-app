@@ -10,7 +10,6 @@ import frameBr from '../assets/frame-br.webp'
 
 function classifyCameraError(error) {
   const name = error?.name || error?.cause?.name || ''
-
   if (name === 'NotAllowedError' || name === 'SecurityError') return 'permission-denied'
   if (name === 'NotFoundError' || name === 'DevicesNotFoundError') return 'camera-unavailable'
   return 'scanner-error'
@@ -91,13 +90,23 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
     }
   }, [handleDecode])
 
+  // Latest-ref pattern: keeps the auto-start effect's dependency array empty
+  // so language changes (which re-render the parent App) cannot re-trigger
+  // the effect and restart the camera. The ref always holds the latest
+  // handleStart closure, so if its deps ever change the newest version is used.
+  const handleStartRef = useRef(handleStart)
+  useEffect(() => {
+    handleStartRef.current = handleStart
+  }, [handleStart])
+
+  // Auto-start once on mount. Empty deps mean this effect runs exactly once
+  // when ScannerScreen mounts and cleanup runs exactly once on unmount.
+  // Language changes do NOT re-trigger this effect.
   useEffect(() => {
     let cancelled = false
-
     queueMicrotask(() => {
-      if (!cancelled) void handleStart()
+      if (!cancelled) void handleStartRef.current()
     })
-
     return () => {
       cancelled = true
       if (scannerRef.current) {
@@ -105,7 +114,7 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
         scannerRef.current = null
       }
     }
-  }, [handleStart])
+  }, [])
 
   function handleStop() {
     stopScanner()
