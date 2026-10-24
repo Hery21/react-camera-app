@@ -8,47 +8,29 @@ const files = [
   'src/lib/qrPayload.js',
   'src/data/exhibits.js',
 ]
-
 let failed = false
 
-function fail(message) {
-  console.error('FAIL ' + message)
-  failed = true
-}
-
-function pass(message) {
-  console.log('OK  ' + message)
+function check(condition, message) {
+  console.log((condition ? 'OK  ' : 'FAIL') + message)
+  if (!condition) failed = true
 }
 
 const contents = new Map(files.map((file) => [file, readFileSync(file, 'utf8')]))
-
-for (const [file, content] of contents) {
-  if (content.includes('EXPO-')) fail(file + ' still contains obsolete EXPO identifier')
-  else pass(file + ' has no obsolete EXPO identifier')
-}
+for (const [file, content] of contents) check(!content.includes('EXPO-'), file + ' has no obsolete EXPO identifier')
 
 const app = contents.get('src/App.jsx')
 const scanner = contents.get('src/screens/ScannerScreen.jsx')
 const result = contents.get('src/screens/ScanResultScreen.jsx')
 const exhibit = contents.get('src/screens/ExhibitScreen.jsx')
 
-if (app.includes("setScreen('scanner')") && app.includes("setScreen('scan-result')") && app.includes("setScreen('exhibit')"))
-  pass('App contains scanner, result, and exhibit transitions')
-else fail('App is missing an MVP screen transition')
+check(
+  app.includes("setScreen('scanner')") && app.includes("setScreen('scan-result')") && app.includes("setScreen('exhibit')"),
+  'App contains scanner result and exhibit transitions',
+)
+check(scanner.includes('onExhibitDetected') && scanner.includes('scannerRef.current.stop()'), 'Scanner reports success and retains cleanup')
+check(result.includes('onViewDetails') && result.includes('onScanAgain'), 'Scan Result retains both actions')
+check(exhibit.includes("id: 'gallery'") && exhibit.includes('exhibit-font-controls'), 'Exhibit retains Gallery and reader controls')
+check(!exhibit.includes('onScanNext'), 'Exhibit no longer exposes Scan Next')
 
-if (scanner.includes('onExhibitDetected') && scanner.includes('scannerRef.current.stop()'))
-  pass('Scanner reports success and retains cleanup')
-else fail('Scanner success or cleanup contract missing')
-
-if (result.includes('onViewDetails') && result.includes('onScanAgain')) pass('Scan Result retains both actions')
-else fail('Scan Result action contract missing')
-
-if (exhibit.includes('onScanNext') && exhibit.includes("id: 'gallery'")) pass('Exhibit retains scan-next and Gallery support')
-else fail('Exhibit article contract incomplete')
-
-if (failed) {
-  console.error('MVP integrity self-check failed')
-  process.exit(1)
-}
-
+if (failed) process.exit(1)
 console.log('All MVP integrity self-checks passed')

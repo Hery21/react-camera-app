@@ -50,11 +50,6 @@ function App() {
     setScreen('scan-result')
   }
 
-  function handleScanNext() {
-    setSelectedExhibit(null)
-    setScreen('scanner')
-  }
-
   return (
     <AppShell
       language={language}
@@ -73,12 +68,7 @@ function App() {
         <ScanResultScreen language={language} exhibit={selectedExhibit} onViewDetails={handleViewDetails} onScanAgain={handleScanAgain} />
       )}
       {screen === 'exhibit' && selectedExhibit && (
-        <ExhibitScreen
-          key={selectedExhibit.id + '-' + language}
-          language={language}
-          exhibit={selectedExhibit}
-          onScanNext={handleScanNext}
-        />
+        <ExhibitScreen key={selectedExhibit.id + '-' + language} language={language} exhibit={selectedExhibit} />
       )}
     </AppShell>
   )

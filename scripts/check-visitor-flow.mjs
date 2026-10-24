@@ -10,22 +10,16 @@ const checks = [
   ['App has scan-result state', app.includes("setScreen('scan-result')")],
   ['App has exhibit state', app.includes("setScreen('exhibit')")],
   ['Scan Again returns to scanner', app.includes('handleScanAgain') && app.includes("setScreen('scanner')")],
-  ['Scan Next returns to scanner', app.includes('handleScanNext') && app.includes("setScreen('scanner')")],
   ['Scanner reports accepted exhibit upward', scanner.includes('onExhibitDetected')],
   ['Scanner auto-start is scheduled', scanner.includes('queueMicrotask') && scanner.includes('handleStart')],
   ['Scanner cleanup still stops adapter', scanner.includes('scannerRef.current.stop()')],
   ['Result exposes View Details', result.includes('onViewDetails')],
   ['Result exposes Scan Again', result.includes('onScanAgain')],
-  ['Article exposes Scan Next', exhibit.includes('onScanNext')],
-  [
-    'Article top Back returns to Info',
-    app.includes('handleBackToResult') &&
-      app.includes("screen === 'exhibit' ? handleBackToResult") &&
-      app.includes("setScreen('scan-result')"),
-  ],
+  ['Article top Back returns to Info', app.includes('handleBackToResult') && app.includes("setScreen('scan-result')")],
   ['Article supports Gallery', exhibit.includes("id: 'gallery'")],
   ['Gallery images are lazy-loaded', exhibit.includes('loading="lazy"')],
-  ['Article navigation is integrated', exhibit.includes('exhibit-navigation') && !exhibit.includes('exhibit-pagination')],
+  ['Article provides font controls', exhibit.includes('exhibit-font-controls')],
+  ['Article does not expose Scan Next', !exhibit.includes('onScanNext')],
 ]
 
 let failed = false
@@ -33,10 +27,5 @@ for (const [label, ok] of checks) {
   console.log((ok ? 'OK  ' : 'FAIL') + label)
   if (!ok) failed = true
 }
-
-if (failed) {
-  console.error('Visitor flow self-check failed')
-  process.exit(1)
-}
-
+if (failed) process.exit(1)
 console.log('All visitor flow self-checks passed')

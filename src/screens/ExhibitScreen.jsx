@@ -2,7 +2,10 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
-export function ExhibitScreen({ language, exhibit, onScanNext }) {
+const MIN_TEXT_SIZE = 0
+const MAX_TEXT_SIZE = 2
+
+export function ExhibitScreen({ language, exhibit }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
@@ -14,6 +17,7 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
   const [activeSection, setActiveSection] = useState('story')
   const [page, setPage] = useState(0)
   const [pageCount, setPageCount] = useState(1)
+  const [textSize, setTextSize] = useState(1)
   const viewportRef = useRef(null)
   const textRef = useRef(null)
   const cleanupRef = useRef(null)
@@ -21,6 +25,7 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
   const isGallery = selectedSection === 'gallery'
   const articleText = selectedSection === 'symbolism' ? content.symbolism : content.story
   const pageStyle = { '--exhibit-page': page }
+  const screenClassName = 'exhibit-screen exhibit-text-size-' + textSize
 
   const measurePages = useCallback(() => {
     const viewport = viewportRef.current
@@ -58,16 +63,14 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
     setPageCount(1)
   }
 
-  function handlePrevious() {
-    setPage((current) => Math.max(0, current - 1))
-  }
-
-  function handleNext() {
-    setPage((current) => Math.min(pageCount - 1, current + 1))
+  function handleTextSizeChange(nextSize) {
+    setTextSize(nextSize)
+    setPage(0)
+    setPageCount(1)
   }
 
   return (
-    <article className="exhibit-screen" aria-labelledby="exhibit-title">
+    <article className={screenClassName} aria-labelledby="exhibit-title">
       <header className="exhibit-hero">
         {exhibit.coverImage && (
           <div className="exhibit-cover-wrap">
@@ -104,7 +107,30 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
       )}
 
       <section className="exhibit-reader" aria-labelledby="exhibit-section-title">
-        <h2 id="exhibit-section-title">{sections.find((section) => section.id === selectedSection)?.label}</h2>
+        <div className="exhibit-reader-heading">
+          <h2 id="exhibit-section-title">{sections.find((section) => section.id === selectedSection)?.label}</h2>
+          {!isGallery && (
+            <div className="exhibit-font-controls" role="group" aria-label={getTranslation(language, 'exhibit.textSize')}>
+              <button
+                type="button"
+                onClick={() => handleTextSizeChange(Math.max(MIN_TEXT_SIZE, textSize - 1))}
+                disabled={textSize === MIN_TEXT_SIZE}
+                aria-label={getTranslation(language, 'exhibit.decreaseText')}
+              >
+                A−
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTextSizeChange(Math.min(MAX_TEXT_SIZE, textSize + 1))}
+                disabled={textSize === MAX_TEXT_SIZE}
+                aria-label={getTranslation(language, 'exhibit.increaseText')}
+              >
+                A+
+              </button>
+            </div>
+          )}
+        </div>
+
         {isGallery ? (
           <div className="exhibit-gallery">
             {exhibit.gallery.map((image) => {
@@ -126,45 +152,30 @@ export function ExhibitScreen({ language, exhibit, onScanNext }) {
         )}
       </section>
 
-      <footer className="exhibit-navigation">
-        {!isGallery && (
-          <>
-            <button
-              type="button"
-              className="exhibit-nav-previous"
-              onClick={handlePrevious}
-              disabled={page === 0}
-              aria-label={getTranslation(language, 'exhibit.previous')}
-            >
-              <span aria-hidden="true">←</span>
-              {getTranslation(language, 'exhibit.previous')}
-            </button>
-
-            <p className="exhibit-page-status" aria-live="polite">
-              {page + 1} / {pageCount}
-            </p>
-
-            {page < pageCount - 1 ? (
-              <button type="button" className="exhibit-nav-next" onClick={handleNext}>
-                {getTranslation(language, 'exhibit.next')}
-                <span aria-hidden="true">→</span>
-              </button>
-            ) : (
-              <button type="button" className="exhibit-nav-next" onClick={onScanNext}>
-                {getTranslation(language, 'exhibit.scanNext')}
-                <span aria-hidden="true">→</span>
-              </button>
-            )}
-          </>
-        )}
-
-        {isGallery && (
-          <button type="button" className="exhibit-nav-next exhibit-nav-next-full" onClick={onScanNext}>
-            {getTranslation(language, 'exhibit.scanNext')}
-            <span aria-hidden="true">→</span>
+      {!isGallery && (
+        <footer className="exhibit-navigation">
+          <button
+            type="button"
+            className="exhibit-nav-previous"
+            onClick={() => setPage((current) => Math.max(0, current - 1))}
+            disabled={page === 0}
+          >
+            <span aria-hidden="true">←</span>
+            {getTranslation(language, 'exhibit.previous')}
           </button>
-        )}
-      </footer>
+
+          <p className="exhibit-page-status" aria-live="polite">
+            {page + 1} / {pageCount}
+          </p>
+
+          {page < pageCount - 1 && (
+            <button type="button" className="exhibit-nav-next" onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))}>
+              {getTranslation(language, 'exhibit.next')}
+              <span aria-hidden="true">→</span>
+            </button>
+          )}
+        </footer>
+      )}
     </article>
   )
 }
