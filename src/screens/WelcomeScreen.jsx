@@ -1,5 +1,5 @@
 import { getTranslation } from '../i18n/getTranslation.js'
-import heroMirror from '../assets/mirror-hero.png'
+import heroMirror from '../../public/welcome-mirror.webp'
 
 export function WelcomeScreen({ language, onStart }) {
   return (
