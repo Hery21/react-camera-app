@@ -1,14 +1,15 @@
-// Parses scanned QR payloads. Never navigates to arbitrary URLs.
-// Contract: "EXPO-" followed by exactly 3 digits. Case-insensitive input, always returns uppercase ID.
-export function parseQrPayload(raw) {
-  if (typeof raw !== 'string') return { ok: false, reason: 'empty' }
+const MAX_QR_PAYLOAD_LENGTH = 64
+const PSBIKT_PATTERN = /^PSBIKT-\d{3}$/i
 
-  const text = raw.trim()
-  if (!text) return { ok: false, reason: 'empty' }
-  if (text.length > 200) return { ok: false, reason: 'unsupported-format' }
+export function parseQrPayload(value) {
+  if (typeof value !== 'string' || value.trim() === '') {
+    return { ok: false, reason: 'empty' }
+  }
 
-  const match = text.match(/^EXPO-\d{3}$/i)
-  if (!match) return { ok: false, reason: 'unsupported-format' }
+  const normalized = value.trim()
+  if (normalized.length > MAX_QR_PAYLOAD_LENGTH || !PSBIKT_PATTERN.test(normalized)) {
+    return { ok: false, reason: 'unsupported-format' }
+  }
 
-  return { ok: true, exhibitId: text.toUpperCase() }
+  return { ok: true, exhibitId: normalized.toUpperCase() }
 }

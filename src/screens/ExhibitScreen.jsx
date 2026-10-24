@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 
 export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
-  const content = exhibit.content[language] || exhibit.content.en
+  const content = exhibit.content[language] || exhibit.content.id || exhibit.content.en || Object.values(exhibit.content)[0]
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
     if (content.symbolism) {

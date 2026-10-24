@@ -1,7 +1,7 @@
 import { getTranslation } from '../i18n/getTranslation.js'
 
 export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain }) {
-  const content = exhibit.content[language] || exhibit.content.en
+  const content = exhibit.content[language] || exhibit.content.id || exhibit.content.en || Object.values(exhibit.content)[0]
 
   return (
     <section className="scan-result-screen" aria-labelledby="scan-result-title">
