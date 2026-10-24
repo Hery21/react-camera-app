@@ -6,8 +6,6 @@ export function WelcomeScreen({ language, onStart }) {
       <div className="welcome-mirror-stage">
         <img src="/mirror.webp" alt="" className="welcome-hero" />
 
-        <div className="welcome-mirror-face" aria-hidden="true" />
-
         <div className="welcome-glass-copy">
           <h1 id="welcome-title" className="welcome-title">
             {getTranslation(language, 'app.title')}
