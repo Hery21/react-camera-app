@@ -32,7 +32,10 @@
 }
 
 .app--exhibit .app-header-center {
-  justify-self: center;
+  position: absolute;
+  left: 50%;
+  justify-self: auto;
+  transform: translateX(-50%);
 }
 
 .app--exhibit .language-toggle {
@@ -309,9 +312,48 @@
   position: relative;
   z-index: 2;
   display: grid;
-  place-items: center;
-  min-height: 2.2rem;
-  padding: var(--space-1) var(--space-3);
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 2.6rem;
+  padding: var(--space-1) clamp(2.8rem, 11vw, 4.25rem);
+}
+
+.exhibit-section-heading h2 {
+  grid-column: 2;
+}
+
+.exhibit-font-controls {
+  grid-column: 3;
+  justify-self: end;
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.15rem;
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 250, 240, 0.5);
+}
+
+.exhibit-font-controls button {
+  min-width: 36px;
+  min-height: 32px;
+  padding: 0.15rem 0.4rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-rosewood);
+  font: inherit;
+  font-family: var(--font-family-display);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.exhibit-font-controls button:hover:not(:disabled) {
+  background: rgba(212, 175, 55, 0.16);
+}
+
+.exhibit-font-controls button:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .exhibit-section-heading h2 {
@@ -328,7 +370,7 @@
   z-index: 2;
   min-height: 0;
   overflow: hidden;
-  padding: var(--space-2) clamp(2.15rem, 9vw, 3.5rem) var(--space-3);
+  padding: clamp(0.85rem, 2dvh, 1.15rem) clamp(3rem, 12vw, 4.75rem) clamp(1rem, 2.4dvh, 1.4rem);
 }
 
 .exhibit-page-text,
@@ -344,6 +386,21 @@
 
 .exhibit-page-text {
   text-wrap: pretty;
+}
+
+.exhibit-text-size-0 .exhibit-page-text,
+.exhibit-text-size-0 .exhibit-page-measure {
+  font-size: clamp(0.74rem, 1.42dvh, 0.9rem);
+}
+
+.exhibit-text-size-1 .exhibit-page-text,
+.exhibit-text-size-1 .exhibit-page-measure {
+  font-size: clamp(0.82rem, 1.62dvh, 1rem);
+}
+
+.exhibit-text-size-2 .exhibit-page-text,
+.exhibit-text-size-2 .exhibit-page-measure {
+  font-size: clamp(0.92rem, 1.85dvh, 1.12rem);
 }
 
 .exhibit-page-measure {
