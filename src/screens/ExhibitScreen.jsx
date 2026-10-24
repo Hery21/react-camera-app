@@ -119,6 +119,24 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
 
   return (
     <article className={'exhibit-screen exhibit-text-size-' + textSize} aria-labelledby="exhibit-title">
+      <div className="exhibit-top-font-controls" role="group" aria-label={getTranslation(language, 'exhibit.textSize')}>
+        <button
+          type="button"
+          onClick={() => handleTextSizeChange(Math.max(0, textSize - 1))}
+          disabled={textSize === 0}
+          aria-label={getTranslation(language, 'exhibit.decreaseText')}
+        >
+          A−
+        </button>
+        <button
+          type="button"
+          onClick={() => handleTextSizeChange(Math.min(2, textSize + 1))}
+          disabled={textSize === 2}
+          aria-label={getTranslation(language, 'exhibit.increaseText')}
+        >
+          A+
+        </button>
+      </div>
       <img src={decorativeAssets.article.crown} alt="" className="exhibit-crown" aria-hidden="true" />
       <img src={decorativeAssets.article.cloud} alt="" className="exhibit-cloud" aria-hidden="true" />
 
@@ -170,26 +188,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
         </div>
         <div className="exhibit-section-heading">
           <h2 id="exhibit-section-title">{selectedLabel}</h2>
-          {!isGallery && (
-            <div className="exhibit-font-controls" role="group" aria-label={getTranslation(language, 'exhibit.textSize')}>
-              <button
-                type="button"
-                onClick={() => handleTextSizeChange(Math.max(0, textSize - 1))}
-                disabled={textSize === 0}
-                aria-label={getTranslation(language, 'exhibit.decreaseText')}
-              >
-                A−
-              </button>
-              <button
-                type="button"
-                onClick={() => handleTextSizeChange(Math.min(2, textSize + 1))}
-                disabled={textSize === 2}
-                aria-label={getTranslation(language, 'exhibit.increaseText')}
-              >
-                A+
-              </button>
-            </div>
-          )}
         </div>
 
         {isGallery ? (
