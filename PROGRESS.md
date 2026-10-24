@@ -800,3 +800,71 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Removed both obsolete assertions entirely rather than commenting them out. If Scan Next is ever reintroduced, a new assertion should be added at that time with the actual prop name. Also removed the unused onScanNext prop pass in App.jsx so the App-Exhibit prop contract matches the component signature. Recovery ran with --allow-dirty because App.jsx and the three locale files were dirty from earlier failed runs. First failed plan had a 2-space indentation mismatch in the replace target; the second failed because check:flow was out of date with the current ExhibitScreen. Both fixes are now applied.
 **Next part:** Resume roadmap.
 **Commit:** 3c10fba
+
+## Phase 10.5 — Responsive and accessibility acceptance
+
+**Status:** In progress — manual verification required
+**Goal:** Prove the application works cleanly at all target mobile viewports, zoom levels, and accessibility configurations before final deployment.
+**Files changed:** scripts/check-responsive-baseline.mjs (new static self-check), package.json (added check:responsive script).
+**Automated checks:** npm run check:responsive (all assertions pass); npm run lint.
+
+### Manual acceptance checklist
+
+Mark each item as PASS or FAIL. If any item fails, describe the issue.
+
+#### A. Viewport matrix (portrait)
+Test the full visitor flow at each width: 320x568, 360x640, 390x844, 430x932.
+
+- [ ] Welcome screen: title and mirror fit, no horizontal scroll.
+- [ ] Menu screen: Tour pill and disabled pills fit, no horizontal scroll.
+- [ ] Scanner screen: camera fills screen, controls visible, frame corners positioned correctly.
+- [ ] Scan Result screen: image, card, and both buttons visible without scrolling.
+- [ ] Exhibit screen: text visible inside frame, tabs readable, arrows large enough to tap.
+- [ ] Progress dock visible and not overlapping any interactive element.
+
+#### B. Landscape
+Test at 844x390.
+
+- [ ] Scanner: controls remain visible.
+- [ ] Exhibit: reader viewport still functions (may scroll internally).
+
+#### C. Zoom
+Set browser zoom to 200% at 390px width.
+
+- [ ] Text remains readable, no clipping.
+- [ ] Buttons remain tappable.
+- [ ] Language toggle stays within viewport.
+
+#### D. Language switching
+Switch between EN / ID / ZH on every screen.
+
+- [ ] Welcome: title and eyebrow stay the same, tagline changes.
+- [ ] Menu: cards re-render in chosen language.
+- [ ] Scanner: instructions and buttons re-render without restarting camera.
+- [ ] Scan Result: title, period, summary, and buttons re-render.
+- [ ] Exhibit: article content, tabs, and controls re-render. No layout jump or lost scroll position.
+
+#### E. Font size controls
+On the Exhibit screen, cycle through A- / A / A+.
+
+- [ ] Text reflows cleanly at all three sizes.
+- [ ] No horizontal overflow at any size.
+
+#### F. Camera lifecycle
+- [ ] Camera stops when leaving the Scanner screen (Back arrow).
+- [ ] Camera stops after a successful scan.
+- [ ] Camera starts automatically when returning to Scanner.
+- [ ] Permission denied state shows helpful error.
+
+#### G. Keyboard and focus
+Using Tab and Enter only.
+
+- [ ] Language toggle: all three buttons focusable, aria-pressed state visible.
+- [ ] Start Exploring opens Menu.
+- [ ] Tour opens Scanner.
+- [ ] Back arrows work.
+- [ ] Focus ring visible on every interactive element.
+
+**Not checked:** Automated device testing (Playwright, etc.) is out of scope. All checks require real browser interaction.
+**Remaining risks:** If any viewport reveals layout breakage, a targeted CSS fix phase will follow.
+**Next part:** Once all items pass, close Phase 10.5 and proceed to Phase 10.4 (Gallery polish) or Phase 11 (HTTPS deployment).
