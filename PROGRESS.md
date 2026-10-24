@@ -868,3 +868,19 @@ Using Tab and Enter only.
 **Not checked:** Automated device testing (Playwright, etc.) is out of scope. All checks require real browser interaction.
 **Remaining risks:** If any viewport reveals layout breakage, a targeted CSS fix phase will follow.
 **Next part:** Once all items pass, close Phase 10.5 and proceed to Phase 10.4 (Gallery polish) or Phase 11 (HTTPS deployment).
+
+## Style — Menu decorations: frame corners, crown, divider
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Add ornamental frame corners, a crown banner, and a gold divider to the Menu screen so it matches the visual language of Welcome, Exhibit, and Scan Result.
+**Files changed:** src/screens/MenuScreen.jsx (added .menu-frame overlay with four corner images imported from src/assets, .menu-crown, .menu-divider), src/styles/menu.css (appended decoration styles; header z-index raised above frame; menu-screen z-index raised; extra top padding to clear the crown under the header; short-height media query shrinks decorations).
+**User-visible result:** The Menu screen now shows the ornate floral frame corners at all four viewport corners, a crown banner above the "Choose your journey" title, and a gold divider between the title and the pill cards. The frame corners respect safe areas and the progress dock height. Back button and language toggle remain readable above the top corners.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs; npm run check:responsive.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Welcome -> Start Exploring -> Menu appears with the four frame corners visible at viewport edges; (3) crown banner above the title; (4) gold divider between title and cards; (5) back button and language toggle still clickable and above the frame corners; (6) Tour card click opens scanner; (7) disabled cards still show dashed borders; (8) test at 320px width — corners shrink, no horizontal overflow; (9) test short screens (< 700px height) — crown and corners shrink further.
+**Not checked:** npm run build (deferred per user request). Real mobile device layout.
+**Remaining risks:** If the frame corners still visually crowd the back button at very small widths, the header background could be strengthened with a gradient. If the crown at the top competes with the frame corners visually, the crown can be removed while keeping corners. The frame overlay is pointer-events none so all interactions pass through to the underlying content.
+**Decisions made:** Frame corners use position: fixed so they stay pinned to viewport edges while menu scrolls (important for consistency if content grows). z-index: header 10, menu-screen 2, frame 1 — guarantees back button and cards stay interactive and visible over the frame. Frame bottom corners use calc(var(--progress-dock-height) + 6px) to clear the progress dock without a manual pixel offset. Reused existing decorativeAssets entries (crown, divider) instead of adding new asset paths so the asset map stays single-source. Frame corners imported directly from src/assets (matching how ExhibitScreen does it) because those assets are Vite-managed and not part of public/ decorativeAssets map. Opacity 0.92 on corners and 0.9 on crown keeps the ornament visible but not dominating over the paper background. Media query at max-height: 700px shrinks everything to keep the compact layout usable on iPhone SE.
+**Next part:** User visual verification. Then Phase 10.4 (Gallery polish) or Phase 11 (HTTPS deployment).
+**Commit:** 0186914
