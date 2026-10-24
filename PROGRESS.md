@@ -598,3 +598,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Pill shape kept as user requested. Added gradient, inner gold glow, and flourish watermark to make the pill feel ornamented rather than plain. Disabled state uses cream rather than desaturated red so the "coming soon" cards read as intentional placeholders rather than broken active buttons. Badge moved inline with title (was absolutely positioned at corner) because the pill radius would clip it awkwardly. Flourish applied via ::before with pointer-events none to avoid interfering with click.
 **Next part:** Phase 12.3 — Tour integration so that Scanner back returns to Menu when arriving via Tour, and Welcome when arriving directly.
 **Commit:** b1f22d0
+
+## Phase 12.2 — Menu Card Pill Refinement
+
+**Status:** Complete
+**Goal:** Refine menu cards into ornamental pills matching the project aesthetic: vermilion gradient, double gold edge, subtle gold flourish watermark, Playfair title, Inter description, inline Coming Soon badge. Disabled cards use cream + dashed gold border so they read as placeholders rather than dimmed red buttons.
+**Files changed:** src/screens/MenuScreen.jsx (title and badge grouped in .menu-card-head), src/styles/menu.css (rewritten pill card styles).
+**User-visible result:** The four menu options look like jeweled pills with warm red gradient, gold border, and faint gold flourish behind the text. Tour is a solid red pill with hover lift. The three coming-soon pills use cream with dashed gold borders and inline badges.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Start Exploring to open the menu; (3) confirm Tour is a solid red pill with subtle flourish and gold edge; (4) confirm hover lifts it slightly; (5) confirm the three coming-soon pills are cream with dashed gold borders and badges inline with titles; (6) language toggle updates all labels.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The flourish watermark uses button-flourish.webp at 55% size and 16% opacity behind the text. If the asset renders as a small isolated curl (not a wide ornament), it may look like a random mark rather than a decorative frame. Easy to disable or replace with divider-gold.webp if observed. The dashed border on disabled cards could read as unfinished rather than coming soon; one CSS line changes border-style back to solid. Two-column grid at 640px was removed since the pill layout reads better single-column even on tablet.
+**Decisions made:** Pill shape kept as user requested. Added gradient, inner gold glow, and flourish watermark to make the pill feel ornamented rather than plain. Disabled state uses cream rather than desaturated red so the coming-soon cards read as intentional placeholders rather than broken active buttons. Badge moved inline with title because the pill radius would clip it awkwardly when absolutely positioned. Flourish applied via ::before with pointer-events none to avoid interfering with click.
+**Next part:** Phase 12.3 — Tour integration so that Scanner back returns to Menu when arriving via Tour, and Welcome when arriving directly.
+**Commit:** 71223ef
