@@ -60,7 +60,7 @@ const baseExhibits = [
   },
   {
     id: 'PSBIKT-006',
-    coverImage: '/images/exhibits/PSBIKT-006/cover.png',
+    coverImage: '/images/exhibits/PSBIKT-006/cover.webp',
     content: {
       id: {
         title: 'Catur Cina',

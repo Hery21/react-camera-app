@@ -17,7 +17,7 @@ expect(first.ok ? first.exhibit.content.id.title : null, 'Lukisan 8 Kuda', 'firs
 
 const catur = getExhibitById('PSBIKT-006')
 expect(catur.ok, true, 'finds Catur Cina')
-expect(catur.ok ? catur.exhibit.coverImage : null, '/images/exhibits/PSBIKT-006/cover.jpg', 'Catur Cina cover')
+expect(catur.ok ? catur.exhibit.coverImage : null, '/images/exhibits/PSBIKT-006/cover.webp', 'Catur Cina cover')
 
 const last = getExhibitById('PSBIKT-008')
 expect(last.ok, true, 'finds last exhibit')

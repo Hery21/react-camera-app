@@ -31,7 +31,7 @@ expect(exhibits[0].id, 'PSBIKT-001', 'first exhibit id')
 expect(exhibits[0].content.id.title, 'Lukisan 8 Kuda', 'first Indonesian title')
 expect(exhibits[5].id, 'PSBIKT-006', 'Catur Cina id')
 expect(exhibits[5].content.id.title, 'Catur Cina', 'Catur Cina Indonesian title')
-expect(exhibits[5].coverImage, '/images/exhibits/PSBIKT-006/cover.jpg', 'Catur Cina public cover path')
+expect(exhibits[5].coverImage, '/images/exhibits/PSBIKT-006/cover.webp', 'Catur Cina public cover path')
 expect(exhibits[7].id, 'PSBIKT-008', 'last exhibit id')
 expect(exhibits[7].content.id.title, 'Altar', 'last Indonesian title')
 
