@@ -1,0 +1,63 @@
+{
+  "plan": "Phase 2.2 — translation helper with English fallback",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T15:54:29.068Z",
+    "startHead": "52661a7",
+    "hash": {
+      "helper": "ff9baff",
+      "docs": "66950a1"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T15:54:33.788Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/i18n/getTranslation.js",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create scripts/check-i18n.mjs self-check",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "add check:i18n script",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "i18n self-check",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit translation helper",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "record phase 2.2 progress",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "commit phase 2.2 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

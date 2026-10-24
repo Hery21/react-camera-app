@@ -1,0 +1,63 @@
+{
+  "plan": "Phase 3.2 — exhibit lookup helper",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T16:03:21.632Z",
+    "startHead": "e439d7c",
+    "hash": {
+      "lookup": "cc6f5b3",
+      "docs": "a2f18dd"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T16:03:25.810Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/lib/exhibitLookup.js",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create scripts/check-exhibit-lookup.mjs self-check",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "add check:exhibit script",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "exhibit lookup self-check",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit exhibit lookup",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "record phase 3.2 progress",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "commit phase 3.2 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

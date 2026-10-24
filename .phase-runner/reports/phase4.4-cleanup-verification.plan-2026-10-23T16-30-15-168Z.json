@@ -1,0 +1,53 @@
+{
+  "plan": "Phase 4.4 — idempotent cleanup verification",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T16:30:15.267Z",
+    "startHead": "05a56e5",
+    "hash": {
+      "cleanup": "2e55ba5",
+      "docs": "69ae920"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T16:30:28.554Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "extend check-qr-scanner.mjs with cleanup-safety assertions",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "qr scanner self-check with cleanup assertions",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "commit cleanup self-check extension",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "record phase 4.4 progress",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit phase 4.4 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

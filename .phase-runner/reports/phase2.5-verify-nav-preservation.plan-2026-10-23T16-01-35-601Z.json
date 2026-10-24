@@ -1,0 +1,53 @@
+{
+  "plan": "Phase 2.5 — verify language change preserves navigation",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T16:01:35.669Z",
+    "startHead": "b8e938e",
+    "hash": {
+      "navtest": "ed0a576",
+      "docs": "d053c02"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T16:01:39.227Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "add screen state and verification toggle to App.jsx",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "add verification-block styles to App.css",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "commit nav verification",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "record phase 2.5 progress",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit phase 2.5 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

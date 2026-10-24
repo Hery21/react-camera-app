@@ -1,0 +1,68 @@
+{
+  "plan": "Phase 3.1 — QR contract, parser, and trilingual fixtures",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T16:02:05.991Z",
+    "startHead": "d053c02",
+    "hash": {
+      "qr": "ae47515",
+      "docs": "e439d7c"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T16:02:10.995Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/lib/qrPayload.js",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create src/data/exhibits.js fixture data",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "create scripts/check-qr.mjs self-check",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "add check:qr script",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "qr self-check",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "commit qr parser and fixtures",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "record phase 3.1 progress",
+      "status": "ok"
+    },
+    {
+      "step": 10,
+      "label": "commit phase 3.1 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

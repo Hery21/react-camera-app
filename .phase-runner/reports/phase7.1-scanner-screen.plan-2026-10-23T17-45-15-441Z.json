@@ -1,0 +1,93 @@
+{
+  "plan": "Phase 7.1 — extract ScannerScreen with dark theme",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T17:45:15.512Z",
+    "startHead": "29f1ee7",
+    "hash": {
+      "scanner": "8e29d79",
+      "docs": "ea3830f"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T17:45:20.782Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "add scanner-bg color token to theme.css",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "add scanner strings to en.js",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "add scanner strings to id.js (provisional)",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "add scanner strings to zh.js (provisional)",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "update AppShell with onBack and three-column header",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "create src/screens/ScannerScreen.jsx",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "rewrite App.jsx to delegate to ScannerScreen",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "rewrite App.css with scanner dark theme",
+      "status": "ok"
+    },
+    {
+      "step": 10,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 11,
+      "label": "css diagnostic",
+      "status": "ok"
+    },
+    {
+      "step": 12,
+      "label": "phase3 regression",
+      "status": "ok"
+    },
+    {
+      "step": 13,
+      "label": "commit ScannerScreen extraction",
+      "status": "ok"
+    },
+    {
+      "step": 14,
+      "label": "record phase 7.1 progress",
+      "status": "ok"
+    },
+    {
+      "step": 15,
+      "label": "commit phase 7.1 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

@@ -1,0 +1,20 @@
+{
+  "plan": "Phase 2.5 — verify language change preserves navigation",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T15:59:06.119Z",
+    "startHead": "b8e938e",
+    "hash": {},
+    "values": {},
+    "finishedAt": "2026-10-23T15:59:06.174Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    }
+  ],
+  "error": "Unresolved placeholder {{ marginTop: '2rem', padding: '1rem', border: '1px dashed #ccc' }}"
+}

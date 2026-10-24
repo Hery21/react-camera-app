@@ -1,0 +1,58 @@
+{
+  "plan": "Phase 5.3 — shared app shell and language toggle extraction",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T17:23:52.360Z",
+    "startHead": "c47bc05",
+    "hash": {
+      "shell": "e80ca0a",
+      "docs": "37fd577"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T17:23:56.561Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/components/LanguageToggle.jsx",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create src/components/AppShell.jsx",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "rewrite App.jsx to use AppShell",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "commit app shell extraction",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "record phase 5.3 progress",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "commit phase 5.3 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

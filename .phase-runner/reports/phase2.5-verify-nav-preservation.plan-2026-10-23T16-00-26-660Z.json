@@ -1,0 +1,14 @@
+{
+  "plan": "Phase 2.5 — verify language change preserves navigation",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T16:00:26.730Z",
+    "startHead": "b8e938e",
+    "hash": {},
+    "values": {},
+    "finishedAt": "2026-10-23T16:00:26.787Z"
+  },
+  "results": [],
+  "error": "Unresolved placeholder {{...}}"
+}

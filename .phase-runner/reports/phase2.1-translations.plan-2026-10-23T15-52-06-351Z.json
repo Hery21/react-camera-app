@@ -1,0 +1,63 @@
+{
+  "plan": "Phase 2.1 — add en/id/zh translation resources",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T15:52:06.427Z",
+    "startHead": "a6055b0",
+    "hash": {
+      "i18n": "1fb1850",
+      "docs": "52661a7"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T15:52:10.970Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/i18n/locales/en.js",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create src/i18n/locales/id.js",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "create src/i18n/locales/zh.js",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "create src/i18n/translations.js combiner",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit translation resources",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "record phase 2.1 progress",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "commit phase 2.1 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

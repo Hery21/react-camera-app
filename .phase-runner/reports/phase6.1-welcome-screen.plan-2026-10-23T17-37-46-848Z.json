@@ -1,0 +1,78 @@
+{
+  "plan": "Phase 6.1 — welcome screen content and composition",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T17:37:46.921Z",
+    "startHead": "6629945",
+    "hash": {
+      "welcome": "569e2f6",
+      "docs": "ae46b42"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T17:37:51.762Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "extend en.js with welcome block",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "extend id.js with welcome block (provisional)",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "extend zh.js with welcome block (provisional)",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "create src/screens/WelcomeScreen.jsx",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "rewrite App.jsx with Welcome/Spike screen state",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "extend App.css with welcome screen styles",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "phase3 regression",
+      "status": "ok"
+    },
+    {
+      "step": 10,
+      "label": "commit welcome screen",
+      "status": "ok"
+    },
+    {
+      "step": 11,
+      "label": "record phase 6.1 progress",
+      "status": "ok"
+    },
+    {
+      "step": 12,
+      "label": "commit phase 6.1 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

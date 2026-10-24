@@ -1,0 +1,58 @@
+{
+  "plan": "Phase 5.1 — theme tokens and font loading",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T17:18:35.956Z",
+    "startHead": "cbb5a80",
+    "hash": {
+      "theme": "5073d14",
+      "docs": "cae91aa"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T17:18:51.020Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/styles/theme.css",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "rewrite src/index.css to import theme and apply tokens",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "add Google Fonts link to index.html",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "commit theme tokens and fonts",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "record phase 5.1 progress",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "commit phase 5.1 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

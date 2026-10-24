@@ -1,0 +1,63 @@
+{
+  "plan": "Phase 2.3 — initial language selection and persistence primitives",
+  "version": "1.0",
+  "dryRun": false,
+  "context": {
+    "startedAt": "2026-10-23T15:55:51.605Z",
+    "startHead": "66950a1",
+    "hash": {
+      "lang": "c5c6614",
+      "docs": "d3f0da6"
+    },
+    "values": {},
+    "finishedAt": "2026-10-23T15:55:56.279Z"
+  },
+  "results": [
+    {
+      "step": 1,
+      "label": "scope reminder",
+      "status": "ok"
+    },
+    {
+      "step": 2,
+      "label": "create src/i18n/language.js",
+      "status": "ok"
+    },
+    {
+      "step": 3,
+      "label": "create scripts/check-language.mjs self-check",
+      "status": "ok"
+    },
+    {
+      "step": 4,
+      "label": "add check:language script",
+      "status": "ok"
+    },
+    {
+      "step": 5,
+      "label": "lint",
+      "status": "ok"
+    },
+    {
+      "step": 6,
+      "label": "language self-check",
+      "status": "ok"
+    },
+    {
+      "step": 7,
+      "label": "commit language primitives",
+      "status": "ok"
+    },
+    {
+      "step": 8,
+      "label": "record phase 2.3 progress",
+      "status": "ok"
+    },
+    {
+      "step": 9,
+      "label": "commit phase 2.3 progress",
+      "status": "ok"
+    }
+  ],
+  "files": []
+}

@@ -1,0 +1,24 @@
+export default {
+  name: 'Phase 4.5 — real-device verification record and Phase 4 close',
+  steps: [
+    {
+      type: 'note',
+      label: 'scope reminder',
+      message: 'Documentation-only phase. Records what the user actually verified on-device (Vercel HTTPS deploy + iPhone Safari full flow) and explicitly defers the untested device matrix items (Android Chrome, permission-denied paths, rear-camera confirmation, hardware LED observation) to Phase 11 production acceptance. No code changes. No self-referencing hash placeholder — git log is the source of truth for this commit.',
+    },
+    {
+      type: 'write',
+      label: 'record phase 4.5 verification report',
+      path: 'PROGRESS.md',
+      mode: 'append',
+      content: `\n## Phase 4.5 — Real-device verification report\n\n**Status:** Partially verified (iOS Safari confirmed; Android Chrome and permission-state paths deferred to Phase 11)  \n**Goal:** Record the real-device results that determine whether the camera scanner spike is safe to build on, and honestly mark what is verified vs. deferred.  \n**Files changed:** None (documentation only).  \n**User-visible result:** None — no code changed.  \n**Automated checks:** npm run lint (clean at end of Phase 4.4). npm run check:scanner (17 assertions, all pass).  \n**Unit tests:** Intentionally omitted per urgent-policy override.  \n\n**Verified on real device (user report):**  \n- Deployment: Vercel HTTPS preview deployment succeeded.  \n- Device: iPhone, Safari.  \n- Camera starts after explicit Start Camera action.  \n- QR decoding succeeds — adapter resolves scanned text and hands it to the app.  \n- Full inline-validation flow (parse -> lookup -> accept) executed successfully on device.  \n- Duplicate-scan lock held — one transition per QR held in frame.  \n- Language toggle continued to work while camera session active.  \n\n**Not verified on real device (deferred):**  \n- Android Chrome device test (master-plan Phase 4.5 explicitly requires this).  \n- Permission-denied path on device.  \n- Previously-denied permission recovery on device.  \n- Explicit rear-camera (environment-facing) confirmation — adapter requests facingMode environment but the selected camera was not visually confirmed.  \n- Physical hardware camera-LED observation for cleanup acceptance (master-plan exit-gate wording: "Cleanup is verified physically").  \n- Second scanner session (Scan Another -> Start Camera again) on device.  \n- Foreground/background transitions and phone lock/unlock behavior on device.  \n- Low-light and near/far scanning distance on device.  \n\n**Not checked:** npm run build (deferred per user request). Physical expo QR codes — deferred to Phase 11.  \n\n**Remaining risks:** The verified items cover the core happy path on iOS Safari, which is the higher-risk browser for getUserMedia inline-video quirks (playsInline was the known trap and it worked). Android Chrome is typically more permissive, but the master plan explicitly requires it as the second target. The permission-denied UX branch has been exercised in desktop testing (Phase 4.2) but not on a real phone, where iOS surfaces two refusal states (one-time deny for the session, and a persistent deny that requires Settings > Safari > Camera to reset). The scanner-UI that ships in Phase 7 must handle the persistent-deny case without a stuck-forever state.  \n\n**Decisions made:** Phase 4 is CLOSED for MVP-continuation purposes. The unverified device matrix items are explicitly deferred to Phase 11 (production acceptance), which is the only place the master plan allows final device sign-off anyway. This is not a shortcut — the master plan itself frames Phase 11 as the final matrix, and building Phase 5 (visual foundation) does not risk the camera spike's validity because Phase 5 only adds CSS tokens and assets. If Phase 5 introduces any structural change to the scanner UI (it should not), we revisit this decision.  \n**Next part:** Phase 5.1 — theme tokens (the master-plan palette becomes CSS custom properties).  \n\n## Phase 4 — Camera and QR scanner spike: CLOSED\n\nThe Phase 4 exit gate is satisfied on iOS Safari + desktop webcam. Android Chrome and permission-denied device paths are explicitly deferred to Phase 11 production acceptance. Phase 5 (visual foundation) may proceed.  \n**Verified on-device:** HTTPS deploy, camera start, QR decode, inline validation pipeline, duplicate-scan lock, language-independent scanner session.  \n**Deferred to Phase 11:** Android Chrome, permission-denied UX on device, rear-camera explicit confirmation, hardware LED observation, second-session on device, foreground/background behavior, low-light.  \n`,
+    },
+    {
+      type: 'commit',
+      label: 'commit phase 4.5 verification record',
+      message: 'docs(progress): record phase 4.5 device verification and close phase 4',
+      paths: ['PROGRESS.md'],
+      as: 'devices',
+    },
+  ],
+}
