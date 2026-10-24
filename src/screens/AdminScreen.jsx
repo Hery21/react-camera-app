@@ -110,7 +110,7 @@ export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
           <fieldset className="admin-fieldset">
             <legend>Inline Images JSON (Applies to all languages)</legend>
             <p className="admin-fieldset-help">
-              Format: array of objects with afterParagraphIndex (number), src (string), alt (string).
+              Format: array of objects with paragraphIndex (number, 0-based), src (string), alt (string). The image renders at the top of the page that starts with that paragraph.
             </p>
             <textarea
               rows={5}

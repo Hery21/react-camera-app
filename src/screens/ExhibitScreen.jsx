@@ -5,6 +5,8 @@ import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 import { joinSentenceUnits, segmentArticleText } from '../lib/segmentArticleText.js'
 
 const MIN_USABLE_PAGE_HEIGHT = 48
+const INLINE_IMAGE_HEIGHT = 200
+const INLINE_IMAGE_MARGIN = 16
 
 export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
@@ -42,14 +44,14 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
         const next = candidate + part
         measure.textContent = next
         if (candidate && measure.scrollHeight > pageHeight) {
-          emergencyPages.push({ type: 'text', text: candidate.trim() })
+          emergencyPages.push({ type: 'text', text: candidate.trim(), image: unit.image })
           candidate = part
         } else {
           candidate = next
         }
       }
 
-      if (candidate.trim()) emergencyPages.push({ type: 'text', text: candidate.trim() })
+      if (candidate.trim()) emergencyPages.push({ type: 'text', text: candidate.trim(), image: unit.image })
       return emergencyPages
     },
     [language],
@@ -68,37 +70,44 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
     const blocks = segmentArticleText(articleText, language, inlineImages)
     const nextPages = []
     let currentUnits = []
+    let currentImage = null
 
     for (const block of blocks) {
-      if (block.type === 'image') {
-        if (currentUnits.length) {
-          nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits) })
-          currentUnits = []
-        }
-        nextPages.push(block)
-        continue
-      }
+      const imageHeight = currentImage ? INLINE_IMAGE_HEIGHT + INLINE_IMAGE_MARGIN : 0
+      const availableHeight = pageHeight - imageHeight
 
       const candidateUnits = [...currentUnits, block]
       measure.textContent = joinSentenceUnits(candidateUnits)
 
-      if (measure.scrollHeight <= pageHeight) {
+      if (measure.scrollHeight <= availableHeight) {
         currentUnits = candidateUnits
       } else {
-        if (currentUnits.length) nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits) })
+        if (currentUnits.length) {
+          nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits), image: currentImage })
+        }
         measure.textContent = block.text
+        currentImage = block.image
 
-        if (measure.scrollHeight <= pageHeight) {
+        const newImageHeight = currentImage ? INLINE_IMAGE_HEIGHT + INLINE_IMAGE_MARGIN : 0
+        if (measure.scrollHeight <= pageHeight - newImageHeight) {
           currentUnits = [block]
         } else {
-          nextPages.push(...buildEmergencyPages(block, measure, pageHeight))
+          const emergency = buildEmergencyPages(block, measure, pageHeight - newImageHeight)
+          emergency.forEach((ep) => {
+            nextPages.push(ep)
+            currentImage = null
+          })
           currentUnits = []
         }
       }
     }
 
-    if (currentUnits.length) nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits) })
-    if (!nextPages.length) nextPages.push({ type: 'text', text: articleText })
+    if (currentUnits.length) {
+      nextPages.push({ type: 'text', text: joinSentenceUnits(currentUnits), image: currentImage })
+    }
+    if (!nextPages.length) {
+      nextPages.push({ type: 'text', text: articleText, image: null })
+    }
 
     setPages(nextPages)
     setPage((current) => Math.min(current, nextPages.length - 1))
@@ -198,11 +207,10 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
           </div>
         ) : (
           <div className="exhibit-page-viewport" ref={setViewportRef}>
-            {pages[page]?.type === 'image' ? (
-              <img className="exhibit-page-image" src={pages[page].src} alt={pages[page].alt || ''} />
-            ) : (
-              <p className="exhibit-page-text">{pages[page]?.text}</p>
+            {pages[page]?.image && (
+              <img className="exhibit-page-image" src={pages[page].image.src} alt={pages[page].image.alt || ''} />
             )}
+            {pages[page]?.text && <p className="exhibit-page-text">{pages[page].text}</p>}
             <div className="exhibit-page-measure" ref={measureRef} aria-hidden="true" />
           </div>
         )}
