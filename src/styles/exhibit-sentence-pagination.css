@@ -1,0 +1,45 @@
+.exhibit-page-viewport {
+  position: relative;
+}
+
+.exhibit-page-text,
+.exhibit-page-measure {
+  margin: 0;
+  color: var(--color-text);
+  font: inherit;
+  line-height: inherit;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+}
+
+.exhibit-page-text {
+  height: 100%;
+  overflow: hidden;
+}
+
+.exhibit-page-measure {
+  position: absolute;
+  top: 0;
+  left: -10000px;
+  visibility: hidden;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.exhibit-text-size-0 .exhibit-page-text,
+.exhibit-text-size-0 .exhibit-page-measure {
+  font-size: clamp(0.76rem, 2vw, 0.9rem);
+  line-height: 1.5;
+}
+
+.exhibit-text-size-1 .exhibit-page-text,
+.exhibit-text-size-1 .exhibit-page-measure {
+  font-size: clamp(0.84rem, 2.2vw, 1rem);
+  line-height: 1.55;
+}
+
+.exhibit-text-size-2 .exhibit-page-text,
+.exhibit-text-size-2 .exhibit-page-measure {
+  font-size: clamp(0.98rem, 2.6vw, 1.15rem);
+  line-height: 1.62;
+}

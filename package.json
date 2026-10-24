@@ -32,7 +32,8 @@
     "check:article-navigation": "node scripts/check-article-navigation.mjs",
     "check:article-viewport": "node scripts/check-article-viewport.mjs",
     "check:article-control-treatment": "node scripts/check-article-control-treatment.mjs",
-    "check:reader-font-controls": "node scripts/check-reader-font-controls.mjs"
+    "check:reader-font-controls": "node scripts/check-reader-font-controls.mjs",
+    "check:sentence-pagination": "node scripts/check-sentence-pagination.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
