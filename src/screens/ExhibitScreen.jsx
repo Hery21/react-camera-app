@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
-export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
+export function ExhibitScreen({ language, exhibit, onScanNext }) {
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
@@ -127,27 +127,44 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
         )}
       </section>
 
-      {!isGallery && (
-        <div className="exhibit-pagination">
-          <button type="button" onClick={handlePrevious} disabled={page === 0}>
-            {getTranslation(language, 'exhibit.previous')}
-          </button>
-          <p aria-live="polite">
-            {getTranslation(language, 'exhibit.page')} {page + 1} / {pageCount}
-          </p>
-          <button type="button" onClick={handleNext} disabled={page >= pageCount - 1}>
-            {getTranslation(language, 'exhibit.next')}
-          </button>
-        </div>
-      )}
+      <footer className="exhibit-navigation">
+        {!isGallery && (
+          <>
+            <button
+              type="button"
+              className="exhibit-nav-previous"
+              onClick={handlePrevious}
+              disabled={page === 0}
+              aria-label={getTranslation(language, 'exhibit.previous')}
+            >
+              <span aria-hidden="true">←</span>
+              {getTranslation(language, 'exhibit.previous')}
+            </button>
 
-      <footer className="exhibit-actions">
-        <button type="button" className="exhibit-primary" onClick={onScanNext}>
-          {getTranslation(language, 'exhibit.scanNext')}
-        </button>
-        <button type="button" className="exhibit-secondary" onClick={onBackToResult}>
-          {getTranslation(language, 'exhibit.backToResult')}
-        </button>
+            <p className="exhibit-page-status" aria-live="polite">
+              {page + 1} / {pageCount}
+            </p>
+
+            {page < pageCount - 1 ? (
+              <button type="button" className="exhibit-nav-next" onClick={handleNext}>
+                {getTranslation(language, 'exhibit.next')}
+                <span aria-hidden="true">→</span>
+              </button>
+            ) : (
+              <button type="button" className="exhibit-nav-next" onClick={onScanNext}>
+                {getTranslation(language, 'exhibit.scanNext')}
+                <span aria-hidden="true">→</span>
+              </button>
+            )}
+          </>
+        )}
+
+        {isGallery && (
+          <button type="button" className="exhibit-nav-next exhibit-nav-next-full" onClick={onScanNext}>
+            {getTranslation(language, 'exhibit.scanNext')}
+            <span aria-hidden="true">→</span>
+          </button>
+        )}
       </footer>
     </article>
   )

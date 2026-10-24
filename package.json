@@ -28,7 +28,8 @@
     "check:runtime-cleanup": "node scripts/check-runtime-cleanup.mjs",
     "check:branding": "node scripts/check-branding.mjs",
     "check:article-pagination": "node scripts/check-article-pagination.mjs",
-    "check:article-controls": "node scripts/check-article-controls.mjs"
+    "check:article-controls": "node scripts/check-article-controls.mjs",
+    "check:article-navigation": "node scripts/check-article-navigation.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",

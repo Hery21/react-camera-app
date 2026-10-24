@@ -41,7 +41,7 @@ export const zh = {
     symbolism: '象征意义',
     gallery: '图集',
     scanNext: '扫描下一件展品',
-    backToResult: '返回识别结果',
+    backToResult: '返回信息页',
     previous: '上一页',
     next: '下一页',
     page: '页',

@@ -53,7 +53,7 @@ export const en = {
     symbolism: 'Symbolism',
     gallery: 'Gallery',
     scanNext: 'Scan Next Exhibit',
-    backToResult: 'Back to Result',
+    backToResult: 'Back to Info',
     previous: 'Previous',
     next: 'Next',
     page: 'Page',

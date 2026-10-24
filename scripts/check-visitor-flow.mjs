@@ -17,9 +17,15 @@ const checks = [
   ['Result exposes View Details', result.includes('onViewDetails')],
   ['Result exposes Scan Again', result.includes('onScanAgain')],
   ['Article exposes Scan Next', exhibit.includes('onScanNext')],
-  ['Article exposes Back to Result', exhibit.includes('onBackToResult')],
+  [
+    'Article top Back returns to Info',
+    app.includes('handleBackToResult') &&
+      app.includes("screen === 'exhibit' ? handleBackToResult") &&
+      app.includes("setScreen('scan-result')"),
+  ],
   ['Article supports Gallery', exhibit.includes("id: 'gallery'")],
   ['Gallery images are lazy-loaded', exhibit.includes('loading="lazy"')],
+  ['Article navigation is integrated', exhibit.includes('exhibit-navigation') && !exhibit.includes('exhibit-pagination')],
 ]
 
 let failed = false

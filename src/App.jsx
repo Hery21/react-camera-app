@@ -75,7 +75,7 @@ function App() {
           key={selectedExhibit.id + '-' + language}
           language={language}
           exhibit={selectedExhibit}
-          onBackToResult={handleBackToResult}
+
           onScanNext={handleScanNext}
         />
       )}
