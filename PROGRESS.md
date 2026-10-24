@@ -538,3 +538,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Chose a Vite plugin (import.meta.env.DEV-safe by apply: 'serve') rather than a browser File System Access API or IndexedDB approach because the goal is to persist to source code, and only the dev server has filesystem write access. Migrated to JSON for canonical data so the endpoint writes clean serialized data rather than parsing JS source. Reload the page after save (brief 600ms delay) rather than trying to reconcile Vite HMR state with form state — the reload is the simplest correct thing. Lifted editingExhibitId to App.jsx so AppShell's back button can route based on edit state.
 **Next part:** User manual verification. If issues arise, address in a Phase 11.3a follow-up.
 **Commit:** 9b99ee6
+
+## Phase 11.4 — Inline Images on Same Page
+
+**Status:** Code complete; manual check pending
+**Goal:** Render inline images above their complementary paragraph on the same page instead of as standalone pages. Change schema from afterParagraphIndex to paragraphIndex.
+**Files changed:** src/lib/segmentArticleText.js, src/screens/ExhibitScreen.jsx, src/screens/AdminScreen.jsx, src/styles/admin.css.
+**User-visible result:** When an image is defined for paragraph N, it renders at the top of the page that starts with paragraph N. The text paginates around the image with a fixed 200px height reservation. The Admin form help text now uses paragraphIndex (0-based).
+**Automated checks:** npm run lint; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Admin, Edit PSBIKT-001; (3) Add inline image with paragraphIndex 0; (4) Save; (5) scan PSBIKT-001, open article; (6) page 1 should show the image at top plus the first paragraph's text below it; (7) check subsequent pages and confirm no image repeats; (8) change image to paragraphIndex 1 and verify it moves to the page starting with paragraph 2.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** Fixed 200px image height means very tall or very wide source images will letterbox within the 200px box. If a specific exhibit needs a taller image, the constant in ExhibitScreen.jsx can be tuned. If a paragraph is itself taller than the remaining page height (pageHeight - 216px), the emergency splitter kicks in and the image renders only on the first sub-page.
+**Decisions made:** paragraphIndex (0-based) chosen over afterParagraphIndex because it expresses the intent ("this image belongs to this paragraph") rather than a positional drop-point. Fixed 200px image height chosen so pagination math does not depend on measuring images before they load — the tradeoff is potential letterboxing for unusual aspect ratios. Measurement is done against (pageHeight - 216) rather than the full pageHeight whenever the current page has an image, so the text always fits below it.
+**Next part:** Manual verification of image-on-same-page pagination.
+**Commit:** 7a67401
