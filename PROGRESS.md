@@ -493,3 +493,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 ### Phase 15.5: privacy/cleanup
 ### Phase 15.6: optional dev template admin
 
+
+## Phase 11.1 — Admin Dashboard Scaffold
+
+**Status:** Code complete; visual check pending user report  
+**Goal:** Create the foundational UI for a developer-only content management dashboard. Drop the PIN requirement from the original roadmap and rely solely on the Vite dev environment flag.  
+**Files changed:** src/screens/AdminScreen.jsx (new), src/styles/admin.css (new), src/screens/WelcomeScreen.jsx (added dev trigger), src/App.jsx (added admin routing), src/App.css (imported admin styles).  
+**User-visible result:** A small "Open Admin" button appears at the bottom right of the Welcome screen when running locally. Clicking it opens a dashboard listing all 8 exhibits. The dashboard shows the title in EN, ID, and ZH, and flags any missing translations or cover images with a warning badge.  
+**Automated checks:** npm run lint; npm run check:flow; npm run check:mvp.  
+**Unit tests:** Intentionally omitted per urgent-policy override.  
+**Manual checks:** Pending. Required: (1) npm run dev; (2) verify the "Open Admin" button appears on the Welcome screen; (3) click it and verify the dashboard loads and lists all 8 PSBIKT exhibits; (4) verify the missing translations are accurately flagged; (5) click "Exit Admin" to return to Welcome; (6) run npm run build to confirm the admin code is entirely excluded from the production bundle (the button will be invisible).  
+**Not checked:** npm run build (deferred per user request).  
+**Remaining risks:** The admin dashboard currently only reads data. The next phase will need to handle state mutations and generate JSON exports, which requires careful validation to avoid corrupting the data source.  
+**Decisions made:** Dropped the PIN as requested because import.meta.env.DEV guarantees the UI will never render in the Vercel production deployment. The admin screen is currently a simple read-only list. The "Edit" button is present but disabled to establish the UI layout. 
+**Next part:** Phase 11.2 — Admin Edit Form. Wire up state to actually modify the exhibit data and validate it before export.  
+**Commit:** cffb794
