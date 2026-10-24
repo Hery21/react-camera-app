@@ -1,100 +1,150 @@
-.welcome-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(var(--space-2), 2vh, var(--space-4));
-  width: 100%;
-  max-width: var(--max-width-content);
+.app--welcome {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.app--welcome .app-main {
   min-height: 0;
-  padding: clamp(var(--space-2), 2vh, var(--space-4)) 0 var(--space-4);
+  padding: 0 var(--space-3);
+  overflow: hidden;
+}
+
+.welcome-screen {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(0.25rem, 1.1vh, 0.75rem);
+  width: min(100%, 34rem);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0 0 max(var(--space-3), env(safe-area-inset-bottom));
   text-align: center;
 }
 
+.welcome-mirror-stage {
+  position: relative;
+  align-self: stretch;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: min(88vw, 48vh, 430px);
+  min-height: 0;
+}
+
 .welcome-hero {
-  width: min(72vw, 34vh, 340px);
-  height: auto;
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   display: block;
-  flex: 0 1 auto;
   object-fit: contain;
   filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));
 }
 
-.welcome-copy {
+.welcome-mirror-copy {
+  grid-area: 1 / 1;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(var(--space-1), 1.1vh, var(--space-2));
-  width: min(100%, 28rem);
+  justify-content: center;
+  gap: clamp(0.1rem, 0.5vh, 0.35rem);
+  width: 42%;
+  max-height: 36%;
+  margin-top: -12%;
+  color: var(--color-rosewood);
+  text-align: center;
 }
 
-.eyebrow {
+.welcome-eyebrow {
   margin: 0;
-  color: var(--color-antique-gold);
-  font-size: clamp(0.7rem, 1.6vw, 0.8125rem);
-  letter-spacing: 0.16em;
+  color: var(--color-vermilion);
+  font-size: clamp(0.42rem, 1.1vw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
   text-transform: uppercase;
 }
+
 .welcome-title {
   margin: 0;
-  color: var(--color-surface);
+  color: var(--color-rosewood);
   font-family: var(--font-family-display);
-  font-size: clamp(2rem, 8vw, 3rem);
+  font-size: clamp(0.82rem, 3.2vw, 1.45rem);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 0.98;
   text-wrap: balance;
 }
+
 .welcome-tagline {
   margin: 0;
-  color: var(--color-surface);
-  font-size: clamp(0.78rem, 2.6vw, 1rem);
-  letter-spacing: clamp(0.08em, 0.5vw, 0.16em);
+  color: var(--color-vermilion);
+  font-size: clamp(0.4rem, 1.2vw, 0.62rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
   text-transform: uppercase;
-  opacity: 0.9;
 }
+
+.welcome-supporting-copy {
+  display: grid;
+  gap: clamp(0.15rem, 0.6vh, 0.4rem);
+  width: min(100%, 28rem);
+  margin: 0 auto;
+  color: var(--color-surface);
+}
+
 .welcome-subtagline {
   margin: 0;
-  padding-top: var(--space-1);
   color: var(--color-antique-gold);
   font-family: var(--font-family-display);
-  font-size: clamp(0.82rem, 2.3vw, 0.95rem);
+  font-size: clamp(0.72rem, 1.8vh, 0.92rem);
   font-style: italic;
-  line-height: 1.4;
+  line-height: 1.25;
   text-wrap: balance;
 }
+
 .welcome-explanation {
   margin: 0;
-  padding-top: var(--space-1);
   color: var(--color-surface);
-  font-size: clamp(0.86rem, 2.4vw, 1rem);
-  line-height: 1.45;
-  opacity: 0.92;
+  font-size: clamp(0.74rem, 1.8vh, 0.94rem);
+  line-height: 1.3;
+  opacity: 0.94;
   text-wrap: balance;
 }
+
 .welcome-camera-notice {
   margin: 0;
   color: var(--color-surface);
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
-  line-height: 1.35;
+  font-size: clamp(0.62rem, 1.45vh, 0.76rem);
+  line-height: 1.25;
   opacity: 0.65;
   text-wrap: balance;
 }
+
+.welcome-action-dock {
+  width: 100%;
+  padding-top: clamp(0.15rem, 0.5vh, 0.35rem);
+}
+
 .welcome-cta {
   min-height: 48px;
   width: min(100%, 18rem);
-  margin-top: clamp(var(--space-1), 1vh, var(--space-3));
-  padding: var(--space-3) var(--space-6);
+  padding: var(--space-2) var(--space-6);
   background: var(--color-antique-gold);
   color: var(--color-rosewood);
   border: 2px solid var(--color-antique-gold);
   border-radius: var(--radius-pill);
   font: inherit;
-  font-size: 1rem;
+  font-size: clamp(0.88rem, 2vh, 1rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
+
 .welcome-cta:hover {
   background: #b5952f;
   border-color: #b5952f;
@@ -104,68 +154,74 @@
   outline-offset: 3px;
 }
 
-@media (max-width: 420px) {
-  .welcome-screen {
-    justify-content: flex-start;
+@media (max-width: 380px) {
+  .welcome-mirror-stage {
+    width: min(90vw, 45vh, 360px);
   }
-  .welcome-hero {
-    width: min(68vw, 31vh, 280px);
+  .welcome-mirror-copy {
+    width: 44%;
   }
-  .welcome-copy {
-    width: min(100%, 23rem);
+  .welcome-title {
+    font-size: clamp(0.74rem, 4vw, 1.12rem);
+  }
+  .welcome-supporting-copy {
+    width: min(100%, 22rem);
   }
 }
 
 @media (max-height: 740px) and (orientation: portrait) {
   .app--welcome .app-header {
-    padding-top: var(--space-2);
+    padding-top: var(--space-1);
     padding-bottom: 0;
   }
-  .app--welcome .app-main {
-    align-items: start;
-    padding-top: 0;
-    padding-bottom: var(--space-3);
-  }
   .welcome-screen {
-    justify-content: flex-start;
-    gap: var(--space-1);
-    padding-top: 0;
+    gap: 0.2rem;
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
   }
-  .welcome-hero {
-    width: min(58vw, 28vh, 220px);
+  .welcome-mirror-stage {
+    width: min(76vw, 39vh, 300px);
   }
-  .welcome-copy {
-    gap: var(--space-1);
+  .welcome-mirror-copy {
+    margin-top: -11%;
   }
   .welcome-subtagline {
-    padding-top: 0;
+    font-size: clamp(0.64rem, 1.55vh, 0.8rem);
   }
   .welcome-explanation {
-    padding-top: 0;
+    font-size: clamp(0.68rem, 1.55vh, 0.82rem);
+    line-height: 1.22;
+  }
+  .welcome-camera-notice {
+    font-size: clamp(0.58rem, 1.3vh, 0.68rem);
   }
   .welcome-cta {
-    margin-top: var(--space-1);
+    min-height: 44px;
   }
 }
 
-@media (max-height: 620px) and (orientation: portrait) {
-  .welcome-hero {
-    width: min(50vw, 22vh, 170px);
+@media (max-height: 600px) and (orientation: portrait) {
+  .language-toggle-button {
+    min-height: 38px;
   }
-  .welcome-title {
-    font-size: clamp(1.7rem, 8vw, 2.2rem);
+  .welcome-mirror-stage {
+    width: min(62vw, 32vh, 230px);
   }
-  .welcome-tagline {
-    font-size: 0.76rem;
+  .welcome-supporting-copy {
+    gap: 0.1rem;
   }
   .welcome-subtagline {
-    font-size: 0.78rem;
+    font-size: 0.62rem;
   }
   .welcome-explanation {
-    font-size: 0.82rem;
-    line-height: 1.35;
+    font-size: 0.65rem;
+    line-height: 1.18;
   }
   .welcome-camera-notice {
-    font-size: 0.68rem;
+    font-size: 0.56rem;
+    line-height: 1.15;
+  }
+  .welcome-cta {
+    min-height: 42px;
+    padding-block: var(--space-1);
   }
 }
