@@ -18,7 +18,7 @@ export const en = {
     explanation: 'Scan the QR code beside any exhibit to uncover its story.',
     cameraNotice: 'This experience uses your camera. You will be asked for permission when you start.',
     subTagline: 'More than just a scan, it is a journey through heritage.',
-    cta: 'Start Exploring',
+    cta: 'Start Scanning',
   },
   scanner: {
     label: 'Exhibit QR scanner',

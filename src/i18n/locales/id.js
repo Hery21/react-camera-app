@@ -19,7 +19,7 @@ export const id = {
     explanation: 'Pindai kode QR di samping setiap pameran untuk mengungkap ceritanya.',
     cameraNotice: 'Pengalaman ini menggunakan kamera Anda. Anda akan diminta izin saat memulai.',
     subTagline: 'Lebih dari sekadar pindai, ini adalah perjalanan melalui warisan budaya.',
-    cta: 'Mulai Menjelajah',
+    cta: 'Mulai Memindai',
   },
   scanner: {
     label: 'Pemindai kode QR pameran',
