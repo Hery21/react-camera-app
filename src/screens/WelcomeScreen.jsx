@@ -9,6 +9,7 @@ export function WelcomeScreen({ language, onStart }) {
 
         <div className="welcome-glass-copy">
           <p className="welcome-eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
+          <p className="welcome-stand">{getTranslation(language, 'app.stand')}</p>
           <h1 id="welcome-title" className="welcome-title">
             {getTranslation(language, 'app.title')}
           </h1>
