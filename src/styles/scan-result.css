@@ -1,57 +1,92 @@
-.app--scan-result .app-main {
-  align-items: start;
+.app--scan-result {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
   background-color: var(--color-warm-ivory);
   background-image: url('/paper-bg.webp');
   background-position: center top;
   background-size: cover;
 }
 
+.app--scan-result .app-header {
+  position: relative;
+  z-index: 20;
+  flex: 0 0 auto;
+  padding: max(var(--space-2), env(safe-area-inset-top)) var(--space-3) var(--space-1);
+  background: transparent;
+}
+
+.app--scan-result .app-main {
+  display: block;
+  min-height: 0;
+  padding: 0 var(--space-3) max(var(--space-2), env(safe-area-inset-bottom));
+  overflow: hidden;
+  background: transparent;
+}
+
+.app--scan-result .language-toggle,
+.app--scan-result .app-header-back {
+  border-color: rgba(212, 175, 55, 0.82);
+  background: rgba(255, 250, 240, 0.62);
+  box-shadow: 0 0.25rem 0.8rem rgba(74, 46, 38, 0.08);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
 .scan-result-screen {
   position: relative;
   width: min(100%, 36rem);
+  height: 100%;
+  min-height: 0;
   margin: 0 auto;
-  padding: var(--space-3) 0 var(--space-8);
 }
 
 .scan-result-floral-corner {
   position: absolute;
-  z-index: 2;
-  top: -0.5rem;
+  z-index: 3;
+  top: -0.6rem;
   right: -0.5rem;
-  width: clamp(5.5rem, 26vw, 9rem);
+  width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
-  opacity: 0.92;
+  opacity: 0.86;
   pointer-events: none;
 }
 
 .scan-result-card {
   position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1.15fr) auto auto auto auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
-  border: 1px solid rgba(212, 175, 55, 0.78);
-  border-radius: 1.25rem;
-  background-color: rgba(255, 250, 240, 0.92);
-  background-image: url('/paper-bg.webp');
+  border: 1px solid rgba(212, 175, 55, 0.72);
+  border-radius: 1.1rem;
+  background-color: rgba(255, 250, 240, 0.58);
+  background-image: linear-gradient(rgba(255, 250, 240, 0.18), rgba(247, 234, 217, 0.1)), url('/paper-bg.webp');
   background-position: center;
   background-size: cover;
-  box-shadow: 0 1rem 2.5rem rgba(74, 46, 38, 0.15);
+  box-shadow: 0 0.75rem 2rem rgba(74, 46, 38, 0.12);
 }
 
 .scan-result-artifact-area {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: clamp(15rem, 50vh, 22rem);
-  padding: var(--space-6) var(--space-4) var(--space-8);
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(0.35rem, 1.4dvh, 0.8rem) var(--space-3) clamp(1.2rem, 3.4dvh, 2rem);
 }
 
 .scan-result-medallion {
   position: absolute;
   z-index: 1;
-  top: 50%;
+  top: 48%;
   left: 50%;
-  width: min(74%, 19rem);
-  height: auto;
-  transform: translate(-50%, -56%);
+  width: min(62%, 15rem, 28dvh);
+  max-height: 90%;
+  transform: translate(-50%, -54%);
+  object-fit: contain;
   pointer-events: none;
 }
 
@@ -59,9 +94,9 @@
 .scan-result-placeholder {
   position: relative;
   z-index: 2;
-  width: min(51%, 12.5rem);
+  width: min(42%, 10rem, 18dvh);
   aspect-ratio: 1;
-  margin-top: -0.8rem;
+  margin-top: -0.2rem;
   border-radius: 50%;
 }
 
@@ -75,17 +110,17 @@
   place-items: center;
   background: radial-gradient(circle, rgba(255, 250, 240, 0.95), rgba(247, 234, 217, 0.72));
   color: var(--color-rosewood);
-  font-size: 0.8rem;
+  font-size: clamp(0.58rem, 1.5dvh, 0.75rem);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 .scan-result-pedestal {
   position: absolute;
   z-index: 3;
-  bottom: 0.8rem;
+  bottom: clamp(0.1rem, 0.8dvh, 0.45rem);
   left: 50%;
-  width: min(54%, 14rem);
+  width: min(44%, 11rem, 20dvh);
   height: auto;
   transform: translateX(-50%);
   pointer-events: none;
@@ -94,16 +129,16 @@
 .scan-result-copy {
   position: relative;
   z-index: 2;
-  padding: var(--space-3) var(--space-6) var(--space-4);
+  padding: clamp(0.25rem, 0.8dvh, 0.5rem) var(--space-4) clamp(0.35rem, 1dvh, 0.65rem);
   text-align: center;
 }
 
 .scan-result-kicker {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 clamp(0.1rem, 0.4dvh, 0.25rem);
   color: var(--color-vermilion);
-  font-size: 0.85rem;
+  font-size: clamp(0.68rem, 1.55dvh, 0.82rem);
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -111,50 +146,56 @@
   margin: 0;
   color: var(--color-rosewood);
   font-family: var(--font-family-display);
-  font-size: clamp(1.8rem, 7vw, 2.75rem);
-  line-height: 1.05;
+  font-size: clamp(1.25rem, 4.2dvh, 2.35rem);
+  line-height: 1.02;
   text-wrap: balance;
 }
 
 .scan-result-period {
-  margin: var(--space-2) 0 0;
+  margin: 0.15rem 0 0;
   color: var(--color-rosewood);
+  font-size: clamp(0.7rem, 1.55dvh, 0.86rem);
   opacity: 0.72;
 }
 
 .scan-result-summary {
+  display: -webkit-box;
   max-width: 28rem;
-  margin: var(--space-3) auto 0;
+  margin: clamp(0.15rem, 0.55dvh, 0.35rem) auto 0;
+  overflow: hidden;
   color: var(--color-text);
-  font-size: 0.95rem;
-  line-height: 1.55;
+  font-size: clamp(0.72rem, 1.7dvh, 0.9rem);
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .content-language-notice {
-  margin: 0 var(--space-6) var(--space-3);
-  padding: var(--space-2) var(--space-3);
+  margin: 0 var(--space-4) var(--space-1);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--color-antique-gold);
   border-radius: var(--radius-sm);
-  background: rgba(247, 234, 217, 0.84);
+  background: rgba(247, 234, 217, 0.72);
   color: var(--color-rosewood);
-  font-size: 0.8rem;
-  line-height: 1.4;
+  font-size: clamp(0.62rem, 1.45dvh, 0.76rem);
+  line-height: 1.3;
   text-align: center;
 }
 
 .scan-result-divider {
   display: block;
-  width: min(78%, 24rem);
-  height: auto;
-  margin: 0 auto var(--space-3);
+  width: min(68%, 20rem);
+  max-height: 1.25rem;
+  margin: 0 auto var(--space-1);
+  object-fit: contain;
   pointer-events: none;
 }
 
 .scan-result-actions {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: 0 var(--space-6) var(--space-6);
+  gap: clamp(0.25rem, 0.7dvh, 0.45rem);
+  padding: 0 var(--space-4) clamp(var(--space-2), 1.4dvh, var(--space-3));
 }
 
 .scan-result-primary-wrap {
@@ -166,9 +207,10 @@
 .scan-result-button-flourish {
   position: absolute;
   z-index: 0;
-  width: min(112%, 22rem);
-  height: auto;
-  opacity: 0.52;
+  width: min(104%, 19rem);
+  max-height: 3rem;
+  opacity: 0.42;
+  object-fit: contain;
   pointer-events: none;
 }
 
@@ -176,9 +218,10 @@
 .scan-result-secondary {
   position: relative;
   z-index: 1;
-  min-height: 48px;
+  min-height: 42px;
   border-radius: var(--radius-pill);
   font: inherit;
+  font-size: clamp(0.78rem, 1.7dvh, 0.95rem);
   font-weight: 700;
   cursor: pointer;
 }
@@ -188,14 +231,14 @@
   border: 1px solid var(--color-vermilion);
   background: var(--color-vermilion);
   color: var(--color-surface);
-  box-shadow: 0 0.35rem 0.9rem rgba(134, 24, 24, 0.2);
+  box-shadow: 0 0.25rem 0.7rem rgba(134, 24, 24, 0.18);
 }
 
 .scan-result-secondary {
   width: min(100%, 18rem);
   margin: 0 auto;
   border: 1px solid var(--color-antique-gold);
-  background: rgba(255, 250, 240, 0.7);
+  background: rgba(255, 250, 240, 0.6);
   color: var(--color-rosewood);
 }
 
@@ -213,21 +256,43 @@
   outline-offset: 3px;
 }
 
-@media (max-width: 360px) {
-  .scan-result-screen {
-    padding-top: var(--space-2);
+@media (max-height: 700px) and (orientation: portrait) {
+  .app--scan-result .app-header {
+    padding-top: max(var(--space-1), env(safe-area-inset-top));
+    padding-bottom: 0;
   }
 
   .scan-result-artifact-area {
-    min-height: 13rem;
-    padding-inline: var(--space-2);
+    padding-top: 0.2rem;
+    padding-bottom: 1rem;
   }
 
-  .scan-result-copy {
-    padding-inline: var(--space-4);
+  .scan-result-summary {
+    -webkit-line-clamp: 2;
   }
 
-  .scan-result-actions {
-    padding-inline: var(--space-4);
+  .scan-result-divider {
+    max-height: 0.9rem;
+  }
+}
+
+@media (orientation: landscape) {
+  .app--scan-result {
+    height: auto;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  .app--scan-result .app-main {
+    overflow: visible;
+  }
+
+  .scan-result-screen {
+    height: auto;
+    padding-bottom: var(--space-6);
+  }
+
+  .scan-result-card {
+    height: auto;
   }
 }
