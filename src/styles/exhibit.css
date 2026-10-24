@@ -128,10 +128,10 @@
 
 .app--exhibit .app-main {
   position: absolute;
-  inset: var(--exhibit-header-height) 0 0;
+  inset: var(--exhibit-header-height) 0 var(--progress-dock-height);
   display: block;
   min-height: 0;
-  padding: 0 var(--space-3) max(var(--space-2), env(safe-area-inset-bottom));
+  padding: 0 var(--space-3) var(--space-1);
   overflow: hidden;
   background: transparent;
 }

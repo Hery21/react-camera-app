@@ -41,12 +41,12 @@
   right: 0;
 }
 .frame-bl {
-  bottom: 6.5rem;
+  bottom: calc(6.5rem + var(--progress-dock-height));
   left: 0;
 }
 .frame-br {
   right: 0;
-  bottom: 6.5rem;
+  bottom: calc(6.5rem + var(--progress-dock-height));
 }
 .scanner-scan-target {
   position: absolute;
@@ -100,7 +100,7 @@
   position: absolute;
   z-index: 30;
   right: 0;
-  bottom: 0;
+  bottom: var(--progress-dock-height);
   left: 0;
   display: flex;
   flex-direction: column;
@@ -211,7 +211,7 @@
   }
   .frame-bl,
   .frame-br {
-    bottom: 5.25rem;
+    bottom: calc(5.25rem + var(--progress-dock-height));
   }
   .scanner-bottom-panel {
     padding-top: var(--space-4);

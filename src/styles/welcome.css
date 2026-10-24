@@ -11,7 +11,7 @@
 .app--welcome .app-main {
   position: relative;
   min-height: 0;
-  padding: 0;
+  padding: 0 0 var(--progress-dock-height);
   overflow: hidden;
 }
 

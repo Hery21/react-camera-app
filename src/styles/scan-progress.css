@@ -1,24 +1,38 @@
-.scan-progress {
+:root {
+  --progress-dock-height: clamp(2.65rem, 6.5dvh, 3.25rem);
+  --progress-dock-gap: 0.3rem;
+}
+
+.scan-progress-dock {
   position: fixed;
   z-index: 70;
-  bottom: max(0.45rem, env(safe-area-inset-bottom));
-  left: 50%;
+  right: env(safe-area-inset-right);
+  bottom: env(safe-area-inset-bottom);
+  left: env(safe-area-inset-left);
+  display: grid;
+  place-items: center;
+  height: var(--progress-dock-height);
+  padding: var(--progress-dock-gap) var(--space-3);
+  pointer-events: none;
+}
+
+.scan-progress {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 4.25rem;
   min-height: 30px;
-  transform: translateX(-50%);
-  padding: 0.3rem 0.7rem;
+  padding: 0.28rem 0.65rem;
   border: 1px solid rgba(212, 175, 55, 0.88);
   border-radius: var(--radius-pill);
-  background: rgba(255, 250, 240, 0.86);
+  background: rgba(255, 250, 240, 0.88);
   color: var(--color-rosewood);
   box-shadow: 0 0.2rem 0.7rem rgba(74, 46, 38, 0.15);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
-  font-size: clamp(0.68rem, 1.55dvh, 0.8rem);
+  font-size: clamp(0.7rem, 1.55dvh, 0.82rem);
   line-height: 1;
-  pointer-events: none;
 }
 
 .scan-progress-icon {
@@ -28,12 +42,8 @@
   fill: currentColor;
 }
 
-.scan-progress-label {
-  font-weight: 600;
-}
-
 .scan-progress-count {
-  min-width: 2.2rem;
+  min-width: 2.15rem;
   color: var(--color-vermilion);
   font-variant-numeric: tabular-nums;
   text-align: center;
@@ -41,10 +51,21 @@
 
 .app--scanner .scan-progress {
   border-color: rgba(212, 175, 55, 0.95);
-  background: rgba(26, 18, 16, 0.7);
+  background: rgba(26, 18, 16, 0.76);
   color: var(--color-surface);
 }
 
 .app--scanner .scan-progress-count {
   color: var(--color-antique-gold);
+}
+
+@media (max-height: 640px) and (orientation: portrait) {
+  :root {
+    --progress-dock-height: 2.45rem;
+  }
+
+  .scan-progress {
+    min-height: 28px;
+    padding-block: 0.22rem;
+  }
 }
