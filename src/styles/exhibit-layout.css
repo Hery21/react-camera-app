@@ -36,21 +36,10 @@
   overflow: hidden;
 }
 
-.app--exhibit .exhibit-reader-heading {
-  flex: 0 0 auto;
-}
-
 .app--exhibit .exhibit-page-viewport {
   position: relative;
   flex: 1 1 0;
   min-height: 0;
-  overflow: hidden;
-}
-
-.app--exhibit .exhibit-page-text {
-  position: absolute;
-  inset: 0;
-  height: auto;
   overflow: hidden;
 }
 
