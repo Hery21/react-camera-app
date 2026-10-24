@@ -62,15 +62,9 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
       <img src={decorativeAssets.article.cloud} alt="" className="exhibit-cloud" aria-hidden="true" />
 
       <header className="exhibit-hero">
-        {exhibit.coverImage && (
-          <div className="exhibit-cover-wrap">
-            <img className="exhibit-cover" src={exhibit.coverImage} alt={content?.coverAlt || ''} />
-          </div>
-        )}
         <div className="exhibit-heading">
           <h1 id="exhibit-title">{content?.title}</h1>
           {content?.period && <p className="exhibit-period">{content.period}</p>}
-          {content?.summary && <p className="exhibit-summary">{content.summary}</p>}
         </div>
       </header>
 
@@ -99,6 +93,11 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
           <img src={frameBl} alt="" className="exhibit-reader-corner exhibit-reader-corner-bl" />
           <img src={frameBr} alt="" className="exhibit-reader-corner exhibit-reader-corner-br" />
         </div>
+        {exhibit.coverImage && (
+          <div className="exhibit-article-cover-wrap">
+            <img className="exhibit-article-cover" src={exhibit.coverImage} alt={content?.coverAlt || ''} />
+          </div>
+        )}
         <div className="exhibit-section-heading">
           <h2 id="exhibit-section-title">{selectedLabel}</h2>
         </div>
