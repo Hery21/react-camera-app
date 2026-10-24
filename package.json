@@ -26,7 +26,8 @@
     "check:mvp": "node scripts/check-mvp-integrity.mjs",
     "verify:dev": "npm run format:check && npm run check:mvp && npm run check:flow && npm run check:scanner && npm run check:qr && npm run check:exhibit-languages && npm run check:content-readiness && npm run check:i18n && npm run lint",
     "check:runtime-cleanup": "node scripts/check-runtime-cleanup.mjs",
-    "check:branding": "node scripts/check-branding.mjs"
+    "check:branding": "node scripts/check-branding.mjs",
+    "check:article-pagination": "node scripts/check-article-pagination.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",

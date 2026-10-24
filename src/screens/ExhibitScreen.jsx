@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
@@ -6,16 +6,65 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
   const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
-    if (content.symbolism) {
-      available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
-    }
-    if (exhibit.gallery?.length) {
-      available.push({ id: 'gallery', label: getTranslation(language, 'exhibit.gallery') })
-    }
+    if (content.symbolism) available.push({ id: 'symbolism', label: getTranslation(language, 'exhibit.symbolism') })
+    if (exhibit.gallery?.length) available.push({ id: 'gallery', label: getTranslation(language, 'exhibit.gallery') })
     return available
   }, [content.symbolism, exhibit.gallery, language])
+
   const [activeSection, setActiveSection] = useState('story')
+  const [page, setPage] = useState(0)
+  const [pageCount, setPageCount] = useState(1)
+  const viewportRef = useRef(null)
+  const textRef = useRef(null)
+  const cleanupRef = useRef(null)
   const selectedSection = sections.some((section) => section.id === activeSection) ? activeSection : sections[0].id
+  const isGallery = selectedSection === 'gallery'
+  const articleText = selectedSection === 'symbolism' ? content.symbolism : content.story
+  const pageStyle = { '--exhibit-page': page }
+
+  const measurePages = useCallback(() => {
+    const viewport = viewportRef.current
+    const text = textRef.current
+    if (!viewport || !text || isGallery) return undefined
+
+    const update = () => {
+      const width = viewport.clientWidth
+      if (!width) return
+      const nextCount = Math.max(1, Math.ceil(text.scrollWidth / width))
+      setPageCount(nextCount)
+      setPage((current) => Math.min(current, nextCount - 1))
+    }
+
+    const observer = new ResizeObserver(update)
+    observer.observe(viewport)
+    observer.observe(text)
+    requestAnimationFrame(update)
+    return () => observer.disconnect()
+  }, [isGallery])
+
+  const setViewportRef = useCallback(
+    (node) => {
+      if (cleanupRef.current) cleanupRef.current()
+      cleanupRef.current = null
+      viewportRef.current = node
+      if (node) cleanupRef.current = measurePages()
+    },
+    [measurePages],
+  )
+
+  function handleSectionChange(sectionId) {
+    setActiveSection(sectionId)
+    setPage(0)
+    setPageCount(1)
+  }
+
+  function handlePrevious() {
+    setPage((current) => Math.max(0, current - 1))
+  }
+
+  function handleNext() {
+    setPage((current) => Math.min(pageCount - 1, current + 1))
+  }
 
   return (
     <article className="exhibit-screen" aria-labelledby="exhibit-title">
@@ -29,7 +78,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
           <p className="exhibit-eyebrow">{getTranslation(language, 'exhibit.articleLabel')}</p>
           <h1 id="exhibit-title">{content.title}</h1>
           {content.period && <p className="exhibit-period">{content.period}</p>}
-          {content.summary && <p className="exhibit-summary">{content.summary}</p>}
         </div>
       </header>
 
@@ -48,7 +96,7 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
               type="button"
               className="exhibit-tab"
               aria-pressed={selectedSection === section.id}
-              onClick={() => setActiveSection(section.id)}
+              onClick={() => handleSectionChange(section.id)}
             >
               {section.label}
             </button>
@@ -56,9 +104,9 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
         </nav>
       )}
 
-      <section className="exhibit-article-copy">
-        <h2>{sections.find((section) => section.id === selectedSection)?.label}</h2>
-        {selectedSection === 'gallery' ? (
+      <section className="exhibit-reader" aria-labelledby="exhibit-section-title">
+        <h2 id="exhibit-section-title">{sections.find((section) => section.id === selectedSection)?.label}</h2>
+        {isGallery ? (
           <div className="exhibit-gallery">
             {exhibit.gallery.map((image) => {
               const imageContent = image.content?.[language] || image.content?.en || {}
@@ -71,9 +119,27 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
             })}
           </div>
         ) : (
-          <p>{selectedSection === 'symbolism' ? content.symbolism : content.story}</p>
+          <div className="exhibit-page-viewport" ref={setViewportRef}>
+            <div className="exhibit-page-track" ref={textRef} style={pageStyle}>
+              {articleText}
+            </div>
+          </div>
         )}
       </section>
+
+      {!isGallery && (
+        <div className="exhibit-pagination">
+          <button type="button" onClick={handlePrevious} disabled={page === 0}>
+            {getTranslation(language, 'exhibit.previous')}
+          </button>
+          <p aria-live="polite">
+            {getTranslation(language, 'exhibit.page')} {page + 1} / {pageCount}
+          </p>
+          <button type="button" onClick={handleNext} disabled={page >= pageCount - 1}>
+            {getTranslation(language, 'exhibit.next')}
+          </button>
+        </div>
+      )}
 
       <footer className="exhibit-actions">
         <button type="button" className="exhibit-primary" onClick={onScanNext}>
