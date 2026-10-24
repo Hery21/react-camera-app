@@ -644,3 +644,19 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Split AdminScreen into three components to satisfy react-hooks/set-state-in-effect (React 19 lint rule). The original single-component useEffect + setState pattern was flagged as a cascading-render risk. The new structure uses useState lazy initializer for form data and key={editingExhibitId} for forced remount on exhibit switch. Added isNew detection in the edit view by checking whether editingExhibitId matches any exhibit. Kept save flow unchanged; the existing Vite /api/admin/save endpoint already upserts by id. allowEmpty: true on commit because after the recovery the two committed files are byte-identical to the failed run's writes.
 **Next part:** Resume roadmap.
 **Commit:** a8a6b4e
+
+## Fix — Missing exhibit, scanner, and progress translations
+
+**Status:** Complete
+**Goal:** Fix the Exhibit screen showing raw keys (exhibit.story, exhibit.scanNext, etc.) by adding the missing exhibit namespace keys. Also added the missing scanner error/recovery keys and progress.scanned, which would have shown the same symptom the moment the scanner error state or scan progress aria-label was triggered.
+**Root cause:** getTranslation returns the key verbatim when no translation exists. The exhibit, scanner, and progress namespaces were missing keys that ExhibitScreen.jsx, ScannerScreen.jsx, ScanProgress.jsx, and App.jsx already referenced. Exhibit screen was visibly broken because it renders many of those keys as visible text (tabs, CTAs, aria-labels).
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (14 exhibit keys, 12 scanner keys, 1 progress key each, plus structural preservation of existing keys).
+**User-visible result:** Exhibit screen tabs now show Story / Symbolism / Gallery, buttons show Scan Next Exhibit / Back to Result, the A-/A+ controls have proper aria-labels, the prev/next page arrows have proper aria-labels. Scanner error state shows proper titles and messages for permission-denied, camera-unavailable, and generic errors, plus a Return Home button. Scan progress dock aria-label reads Scanned 3/8 instead of progress.scanned 3/8.
+**Automated checks:** npm run lint; npm run check:i18n (24 content-agnostic assertions; adding new keys does not break them).
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open any exhibit article, verify tabs and buttons read in the active language; (2) switch to ID and ZH, verify all exhibit labels translate; (3) deny camera permission in a fresh browser session, verify the error state shows the proper localized title and message; (4) inspect scan progress aria-label in DevTools.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** scanner.viewDetails and scanner.scanAnother remain as duplicates of result.viewDetails and result.scanAgain; not removed to avoid touching working call sites. The scanner.unknownExhibitMessage and invalidCodeMessage templates use {id} placeholder for the exhibit id; if the id itself ever contains braces that would conflict with the runner's template string interpolation, but exhibit ids are PSBIKT-NNN format so this is not a concern in practice.
+**Decisions made:** Added all three missing namespaces in one plan rather than waiting for each to surface separately. The exhibit, scanner, and progress missing keys are all the same class of bug — getTranslation returning the key because the translation is absent. Doing them together prevents the user from encountering the same symptom three more times in different screens. Scanner.back updated from 'Back to welcome' to 'Back to menu' to match the new back routing (scanner now returns to Menu, not Welcome).
+**Next part:** Resume roadmap.
+**Commit:** cc93400
