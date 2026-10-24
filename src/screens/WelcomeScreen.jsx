@@ -4,9 +4,8 @@ import heroMirror from '../assets/mirror-hero.png'
 export function WelcomeScreen({ language, onStart }) {
   return (
     <section className="welcome-screen" aria-labelledby="welcome-title">
-      <div className="welcome-mirror">
+      <div className="welcome-mirror-stage">
         <img src={heroMirror} alt="" className="welcome-hero" />
-
         <div className="welcome-glass-copy">
           <p className="welcome-eyebrow">{getTranslation(language, 'app.eyebrow')}</p>
           <h1 id="welcome-title" className="welcome-title">
@@ -14,7 +13,9 @@ export function WelcomeScreen({ language, onStart }) {
           </h1>
           <p className="welcome-tagline">{getTranslation(language, 'app.tagline')}</p>
         </div>
+      </div>
 
+      <div className="welcome-action-dock">
         <button type="button" className="welcome-cta" onClick={onStart}>
           {getTranslation(language, 'welcome.cta')}
         </button>
