@@ -7,11 +7,15 @@ import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
 import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
+import { ScanProgress } from './components/ScanProgress.jsx'
+import { exhibits } from './data/exhibits.js'
+import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } from './lib/scanProgress.js'
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
   const [screen, setScreen] = useState('welcome')
   const [selectedExhibit, setSelectedExhibit] = useState(null)
+  const [scannedExhibitIds, setScannedExhibitIds] = useState(() => loadScannedExhibitIds(exhibits.map((exhibit) => exhibit.id)))
 
   useEffect(() => {
     applyDocumentLanguage(language)
@@ -33,6 +37,11 @@ function App() {
   }
 
   function handleExhibitDetected(exhibit) {
+    setScannedExhibitIds((current) => {
+      const next = addScannedExhibitId(current, exhibit.id)
+      saveScannedExhibitIds(next)
+      return next
+    })
     setSelectedExhibit(exhibit)
     setScreen('scan-result')
   }
@@ -82,6 +91,7 @@ function App() {
           onScanNext={handleScanAgain}
         />
       )}
+      <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>
   )
 }

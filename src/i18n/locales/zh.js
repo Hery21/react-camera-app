@@ -52,5 +52,8 @@ export const zh = {
     translationUnavailable: '此展品暂未提供所选语言版本。当前显示',
   },
   errors: {},
+  progress: {
+    scanned: '已扫描',
+  },
   accessibility: {},
 }

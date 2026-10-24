@@ -64,5 +64,8 @@ export const en = {
     translationUnavailable: 'This exhibit is not yet available in the selected language. Showing',
   },
   errors: {},
+  progress: {
+    scanned: 'Scanned',
+  },
   accessibility: {},
 }

@@ -61,5 +61,8 @@ export const id = {
     translationUnavailable: 'Pameran ini belum tersedia dalam bahasa yang dipilih. Menampilkan',
   },
   errors: {},
+  progress: {
+    scanned: 'Dipindai',
+  },
   accessibility: {},
 }
