@@ -154,6 +154,12 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
       )}
 
       <section className="exhibit-reader" aria-labelledby="exhibit-section-title">
+        <div className="exhibit-reader-frame" aria-hidden="true">
+          <img src="/src/assets/frame-tl.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-tl" />
+          <img src="/src/assets/frame-tr.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-tr" />
+          <img src="/src/assets/frame-bl.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-bl" />
+          <img src="/src/assets/frame-br.webp" alt="" className="exhibit-reader-corner exhibit-reader-corner-br" />
+        </div>
         <div className="exhibit-section-heading">
           <h2 id="exhibit-section-title">{selectedLabel}</h2>
         </div>
