@@ -47,6 +47,7 @@ The interface should feel traditional, warm, playful, and welcoming—not like a
 **Purpose:** Explain the experience and invite the visitor to begin.
 
 Content and behavior:
+
 - Title: **The Storytelling Mirror**.
 - Short explanation: “Scan an exhibit to uncover its story.”
 - Main action: **Start Exploring**.
@@ -54,6 +55,7 @@ Content and behavior:
 - Brief camera-use explanation before requesting permission; do not request camera permission on initial page load.
 
 Acceptance criteria:
+
 - A first-time visitor can tell what to do without assistance.
 - Start Exploring opens the camera tour.
 - Decorative imagery does not push the main action below an unreasonable amount of scrolling on a phone.
@@ -63,6 +65,7 @@ Acceptance criteria:
 **Purpose:** Scan the QR code beside an exhibit.
 
 Content and behavior:
+
 - Live rear-camera view, with an ornate but restrained scanning frame.
 - Instructions: “Point your camera at the exhibit QR code.”
 - Back/close control and a clear retry path.
@@ -72,6 +75,7 @@ Content and behavior:
 - Validate the decoded payload before using it to look up exhibit data.
 
 Error states:
+
 - Camera permission denied.
 - Camera unavailable or browser does not support camera access.
 - Camera starts but no QR code is recognized yet.
@@ -79,6 +83,7 @@ Error states:
 - QR is validly formatted but does not match a known exhibit.
 
 Acceptance criteria:
+
 - The live camera remains visible and the QR target is not covered by ornaments.
 - A successful scan leads to the correct exhibit information.
 - A failed scan gives an understandable next action rather than a blank screen.
@@ -89,6 +94,7 @@ Acceptance criteria:
 **Purpose:** Reveal the story behind the scanned artifact.
 
 Content:
+
 - Exhibit name, image, and optional period/origin/category.
 - Short summary, followed by the full story.
 - Optional **Story**, **Symbolism**, and **Gallery** tabs/sections when content exists.
@@ -97,6 +103,7 @@ Content:
 - Back action returns to the scanner without requiring a full restart.
 
 Acceptance criteria:
+
 - Unknown exhibit IDs show a friendly not-found state.
 - Missing optional copy/images do not break the layout.
 - Long text remains readable on small screens.
@@ -107,6 +114,7 @@ Acceptance criteria:
 **Purpose:** Let visitors make a personal keepsake from exhibit images.
 
 Smallest useful version:
+
 - Add exhibit images from scanned items; optionally capture or select a photo if approved for the event.
 - Display them in one or two predefined collage layouts.
 - Remove an image and change the order.
@@ -115,6 +123,7 @@ Smallest useful version:
 - Show a clear fallback when export/share is unsupported.
 
 Acceptance criteria:
+
 - The collage works with a small, defined maximum number of images.
 - The user can remove an image and recover from an export failure.
 - The user knows whether the image was saved, shared, or could not be exported.
@@ -167,6 +176,7 @@ If the expo already has printed QR codes, inspect a few real payloads before dec
 - **Tests:** add small tests for QR payload validation, exhibit lookup, and important navigation/error behavior. Test scanner lifecycle on physical devices; automated unit tests cannot fully replace real-camera checks.
 
 References:
+
 - [Ponytail repository and principles](https://github.com/dietrichgebert/ponytail)
 - [Ponytail compact project rules (`AGENTS.md`)](https://github.com/DietrichGebert/ponytail/blob/main/AGENTS.md)
 - [`@zxing/browser` package and browser scanning examples](https://www.npmjs.com/package/@zxing/browser)
@@ -183,15 +193,15 @@ References:
 
 ### Starting palette
 
-| Token | Hex | Intended use |
-|---|---|---|
-| `--color-vermilion` | `#B32222` | Main actions and lacquer-red accents |
-| `--color-rosewood` | `#4A2E26` | Frame, dark text, deep surfaces |
-| `--color-antique-gold` | `#D4AF37` | Fine borders and ornamental detail |
-| `--color-warm-ivory` | `#F7EAD9` | Main reading background |
+| Token                    | Hex       | Intended use                                  |
+| ------------------------ | --------- | --------------------------------------------- |
+| `--color-vermilion`      | `#B32222` | Main actions and lacquer-red accents          |
+| `--color-rosewood`       | `#4A2E26` | Frame, dark text, deep surfaces               |
+| `--color-antique-gold`   | `#D4AF37` | Fine borders and ornamental detail            |
+| `--color-warm-ivory`     | `#F7EAD9` | Main reading background                       |
 | `--color-peranakan-teal` | `#2C9C8D` | Small floral accents and secondary highlights |
-| `--color-blush-pink` | `#E7A7B3` | Floral accent only |
-| `--color-text` | `#2A211D` | Body text on light surfaces |
+| `--color-blush-pink`     | `#E7A7B3` | Floral accent only                            |
+| `--color-text`           | `#2A211D` | Body text on light surfaces                   |
 
 These are starting tokens, not a requirement to use every color on every screen. Prioritize contrast and keep the camera viewport visually quiet.
 
@@ -265,11 +275,13 @@ The layout is a starting point, not a mandate. Keep a file where it is if moving
 Apply the project `AGENTS.md` on every change.
 
 Before coding:
+
 1. Define the exact user-visible behavior being changed.
 2. Read the files and existing callers that the change touches.
 3. Identify likely regressions, data-loss risks, security boundaries, and accessibility needs.
 
 While coding:
+
 1. Prefer the smallest complete implementation.
 2. Reuse existing code and browser capabilities before adding dependencies.
 3. Do not implement speculative flexibility or features that are not in scope.
@@ -278,6 +290,7 @@ While coding:
 6. If a deliberate shortcut has a known limit, mark it with `shortcut: <the limit>, <when to upgrade>`.
 
 After coding:
+
 1. Run the available lint, test, and production-build commands.
 2. Manually check the affected flow at phone width and with keyboard navigation.
 3. For scanner changes, test camera permission denial, successful scan, invalid payload, duplicate scan prevention, and stopping the camera after navigation.
@@ -288,45 +301,53 @@ Never remove validation at trust boundaries, error handling needed to avoid data
 ## 11. Development milestones
 
 ### Milestone 0 — Confirm inputs
+
 - [ ] Confirm the expo's real QR payload format (inspect existing printed codes if available).
 - [ ] Collect approved exhibit content and image assets.
 - [ ] Define target devices/browsers and whether selfies are allowed in the collage.
 
 ### Milestone 1 — Create the Vite project
+
 - [ ] Create a React + JavaScript Vite app.
 - [ ] Keep the starter setup unless a concrete need requires changing it.
 - [ ] Add project `AGENTS.md` and keep this `plan.md` at the root.
 - [ ] Run the starter app and production build.
 
 ### Milestone 2 — Camera scanner proof-of-concept
+
 - [ ] Install and try the selected scanner library.
 - [ ] Test camera access on iOS Safari and Android Chrome via HTTPS.
 - [ ] Confirm rear-camera selection, cleanup, and duplicate-scan behavior.
 - [ ] Do not begin detailed scanner ornamentation until this works.
 
 ### Milestone 3 — Visual foundation and Welcome
+
 - [ ] Add palette/typography CSS variables and responsive global styles.
 - [ ] Implement the mirror/tassel hero visual and welcome call to action.
 - [ ] Check narrow and large phone widths.
 
 ### Milestone 4 — Camera Tour
+
 - [ ] Implement real camera preview and scan frame.
 - [ ] Add permission, unavailable-camera, invalid-code, retry, and stop states.
 - [ ] Test on physical devices.
 
 ### Milestone 5 — Exhibit Information
+
 - [ ] Create a small sample `exhibits.js` dataset from approved content.
 - [ ] Validate QR value and resolve it to an exhibit.
 - [ ] Implement the information layout and Scan Next Exhibit path.
 - [ ] Test missing and unknown exhibit data.
 
 ### Milestone 6 — Stabilize the MVP
+
 - [ ] Check all required flows and error states.
 - [ ] Add small automated tests for validation and data lookup.
 - [ ] Run lint, tests, and production build.
 - [ ] Deploy to HTTPS and test the deployed site.
 
 ### Milestone 7 — Optional collage
+
 - [ ] Confirm exact allowed inputs (exhibit images only or visitor photos too).
 - [ ] Implement collection, remove/reorder, and a small number of layouts.
 - [ ] Export/share and fallback behavior.

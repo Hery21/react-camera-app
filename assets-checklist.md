@@ -31,13 +31,13 @@
 
 ## 2. Brand and signature illustration assets
 
-| ID | Asset | Priority | Suggested format | Notes / acceptance criteria |
-|---|---|---|---|---|
-| B01 | **Hero ornate hand mirror** | MVP | Transparent PNG or WebP | Front-facing mirror with lacquer-red accents, dark carved rosewood, antique-gold filigree, colorful floral inlay, and one clearly visible hanging red silk tassel. Isolated from its background so it can sit on ivory or red surfaces. |
-| B02 | **Camera mirror frame overlay** | MVP | Transparent PNG/WebP, or SVG if cleanly vectorized | A frame with a large transparent opening for the live camera. Decorative details sit at the edges; tassels must not cover the QR targeting area. Keep the center fully transparent. This may be a simplified version of B01, not necessarily the same image. |
-| B03 | **Small mirror emblem** | MVP | SVG or transparent PNG | Simplified recognizable mirror-and-tassel mark for compact placements. Could be derived from B01 if it remains legible at small sizes. |
-| B04 | Wordmark / app title lockup | Nice to have | HTML text + CSS preferred; SVG only if custom lettering is essential | Prefer rendering “The Storytelling Mirror” as accessible HTML text, not baking essential text into an image. |
-| B05 | Isolated tassel ornament | Later | Transparent PNG/WebP or SVG | Reusable hanging tassel for small accents or transitions. Skip if the hero/frame already includes one and duplication looks excessive. |
+| ID  | Asset                           | Priority     | Suggested format                                                     | Notes / acceptance criteria                                                                                                                                                                                                                                  |
+| --- | ------------------------------- | ------------ | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| B01 | **Hero ornate hand mirror**     | MVP          | Transparent PNG or WebP                                              | Front-facing mirror with lacquer-red accents, dark carved rosewood, antique-gold filigree, colorful floral inlay, and one clearly visible hanging red silk tassel. Isolated from its background so it can sit on ivory or red surfaces.                      |
+| B02 | **Camera mirror frame overlay** | MVP          | Transparent PNG/WebP, or SVG if cleanly vectorized                   | A frame with a large transparent opening for the live camera. Decorative details sit at the edges; tassels must not cover the QR targeting area. Keep the center fully transparent. This may be a simplified version of B01, not necessarily the same image. |
+| B03 | **Small mirror emblem**         | MVP          | SVG or transparent PNG                                               | Simplified recognizable mirror-and-tassel mark for compact placements. Could be derived from B01 if it remains legible at small sizes.                                                                                                                       |
+| B04 | Wordmark / app title lockup     | Nice to have | HTML text + CSS preferred; SVG only if custom lettering is essential | Prefer rendering “The Storytelling Mirror” as accessible HTML text, not baking essential text into an image.                                                                                                                                                 |
+| B05 | Isolated tassel ornament        | Later        | Transparent PNG/WebP or SVG                                          | Reusable hanging tassel for small accents or transitions. Skip if the hero/frame already includes one and duplication looks excessive.                                                                                                                       |
 
 ### Visual direction for the mirror
 
@@ -49,16 +49,16 @@
 
 ## 3. Decorative surfaces and ornaments
 
-| ID | Asset | Priority | Suggested format | Usage |
-|---|---|---|---|---|
-| D01 | Light parchment / paper texture | Later | Small seamless WebP or CSS gradient | Background for reading panels or the collage canvas. A plain ivory CSS background is enough for the MVP. |
-| D02 | Dark rosewood texture | Later | Small seamless WebP | Use sparingly on the mirror frame or selected header surfaces. A CSS color and shadow may be sufficient. |
-| D03 | Red lacquer texture | Later | Small seamless WebP | Accent panel or decorative background, not behind long text. |
-| D04 | Peranakan floral corner ornament | MVP | SVG if simple; transparent PNG/WebP if painted/complex | One or two reusable corner decorations for welcome and information panels. |
-| D05 | Floral divider / separator | Later | SVG or CSS | Separates content sections without adding large images. Can be a CSS line with a small floral emblem. |
-| D06 | Gold filigree border/corner | Later | SVG or CSS | Fine decorative corners and thin borders. Keep borders subtle around text and away from the camera's scanning region. |
-| D07 | Porcelain floral pattern | Later | SVG or seamless WebP | Small accent used in information screens or collage, not a mandatory full-screen background. |
-| D08 | Paper edge / torn-paper effect | Optional | CSS or SVG | Only for the collage scrapbook style if it improves the result. Not needed for the initial screens. |
+| ID  | Asset                            | Priority | Suggested format                                       | Usage                                                                                                                 |
+| --- | -------------------------------- | -------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| D01 | Light parchment / paper texture  | Later    | Small seamless WebP or CSS gradient                    | Background for reading panels or the collage canvas. A plain ivory CSS background is enough for the MVP.              |
+| D02 | Dark rosewood texture            | Later    | Small seamless WebP                                    | Use sparingly on the mirror frame or selected header surfaces. A CSS color and shadow may be sufficient.              |
+| D03 | Red lacquer texture              | Later    | Small seamless WebP                                    | Accent panel or decorative background, not behind long text.                                                          |
+| D04 | Peranakan floral corner ornament | MVP      | SVG if simple; transparent PNG/WebP if painted/complex | One or two reusable corner decorations for welcome and information panels.                                            |
+| D05 | Floral divider / separator       | Later    | SVG or CSS                                             | Separates content sections without adding large images. Can be a CSS line with a small floral emblem.                 |
+| D06 | Gold filigree border/corner      | Later    | SVG or CSS                                             | Fine decorative corners and thin borders. Keep borders subtle around text and away from the camera's scanning region. |
+| D07 | Porcelain floral pattern         | Later    | SVG or seamless WebP                                   | Small accent used in information screens or collage, not a mandatory full-screen background.                          |
+| D08 | Paper edge / torn-paper effect   | Optional | CSS or SVG                                             | Only for the collage scrapbook style if it improves the result. Not needed for the initial screens.                   |
 
 **Recommendation:** Start with flat colors and CSS borders/shadows. Add texture only after the layout works; large or repeated textures increase file size and can make text harder to read.
 

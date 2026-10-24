@@ -204,7 +204,7 @@ export const translations = {
     result: {},
     exhibit: {},
     errors: {},
-    accessibility: {}
+    accessibility: {},
   },
   id: {
     app: {},
@@ -214,8 +214,8 @@ export const translations = {
     result: {},
     exhibit: {},
     errors: {},
-    accessibility: {}
-  }
+    accessibility: {},
+  },
 }
 ```
 
@@ -1420,7 +1420,6 @@ Current known state:
 - Real QR payloads and approved bilingual exhibit content still need confirmation.
 
 Start with **Phase 0.1**. Do not install the scanner package or build the ornamented screens until the baseline and quality gates are complete. After Phase 1, implement localization before QR content and camera work so every subsequent screen is bilingual by construction.
-
 
 ---
 
