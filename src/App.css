@@ -4,11 +4,11 @@
 @import './styles/menu.css';
 @import './styles/scanner.css';
 @import './styles/scan-result.css';
-@import './styles/exhibit.css';
+@import './styles/admin.css';
 @import './styles/exhibit-navigation.css';
 @import './styles/exhibit-viewport.css';
 @import './styles/exhibit-reader-controls.css';
 @import './styles/exhibit-sentence-pagination.css';
 @import './styles/exhibit-layout.css';
 @import './styles/exhibit-controls.css';
-@import './styles/admin.css';
+@import './styles/exhibit.css';

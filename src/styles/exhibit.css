@@ -560,3 +560,59 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   Cascade overrides — April 2026
+   These rules MUST come last in import order so they win past
+   the earlier exhibit-layout.css and exhibit-sentence-pagination.css
+   rules. Specificity boosted with .app--exhibit prefix and
+   !important used deliberately because the same selectors appear
+   in files imported after exhibit.css.
+   ============================================================ */
+
+.app--exhibit .exhibit-page-viewport {
+  padding-top: clamp(2rem, 4dvh, 2.5rem) !important;
+  padding-bottom: clamp(2rem, 4.5dvh, 2.5rem) !important;
+  padding-left: clamp(2rem, 10vw, 4rem) !important;
+  padding-right: clamp(2rem, 10vw, 4rem) !important;
+}
+
+.app--exhibit .exhibit-page-scroll-area {
+  padding-left: 0 !important;
+  padding-right: 8px !important;
+}
+
+.app--exhibit .exhibit-page-text,
+.app--exhibit .exhibit-page-text p {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  max-width: 100% !important;
+}
+
+.app--exhibit .exhibit-page-navigation {
+  grid-template-columns: 64px 1fr 64px !important;
+  min-height: 3.5rem !important;
+}
+
+.app--exhibit .exhibit-page-arrow {
+  width: 64px !important;
+  height: 52px !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.app--exhibit .exhibit-page-arrow img {
+  width: 60px !important;
+  height: auto !important;
+  max-height: 48px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.app--exhibit .exhibit-page-status {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
