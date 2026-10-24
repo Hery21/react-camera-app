@@ -5,7 +5,6 @@ Use this as the primary continuation prompt. Also attach the live files listed n
 ## Project
 
 - React + Vite + JavaScript mobile web app.
-- Windows repo: `D:\Hery\experiment\react-camera-app-chinese-mirror`
 - Target: portrait mobile browsers, deployed through Vercel.
 - Languages: English (`en`), Bahasa Indonesia (`id`), Simplified Chinese (`zh`).
 - QR namespace: `PSBIKT-NNN`.
