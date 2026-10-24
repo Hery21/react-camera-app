@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { createQrScanner } from '../lib/qrScanner.js'
 import { parseQrPayload } from '../lib/qrPayload.js'
@@ -32,15 +32,6 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
   const scannerRef = useRef(null)
   const acceptedRef = useRef(false)
 
-  useEffect(() => {
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.stop()
-        scannerRef.current = null
-      }
-    }
-  }, [])
-
   function stopScanner() {
     if (scannerRef.current) {
       scannerRef.current.stop()
@@ -49,28 +40,31 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
     acceptedRef.current = false
   }
 
-  function handleDecode(text) {
-    if (acceptedRef.current) return
+  const handleDecode = useCallback(
+    (text) => {
+      if (acceptedRef.current) return
 
-    const parsed = parseQrPayload(text)
-    if (!parsed.ok) {
-      setInlineError({ kind: 'invalid-code', detail: '' })
-      return
-    }
+      const parsed = parseQrPayload(text)
+      if (!parsed.ok) {
+        setInlineError({ kind: 'invalid-code', detail: '' })
+        return
+      }
 
-    const lookup = getExhibitById(parsed.exhibitId)
-    if (!lookup.ok) {
-      setInlineError({ kind: 'unknown-exhibit', detail: parsed.exhibitId })
-      return
-    }
+      const lookup = getExhibitById(parsed.exhibitId)
+      if (!lookup.ok) {
+        setInlineError({ kind: 'unknown-exhibit', detail: parsed.exhibitId })
+        return
+      }
 
-    acceptedRef.current = true
-    stopScanner()
-    setInlineError(null)
-    onExhibitDetected(lookup.exhibit)
-  }
+      acceptedRef.current = true
+      stopScanner()
+      setInlineError(null)
+      onExhibitDetected(lookup.exhibit)
+    },
+    [onExhibitDetected],
+  )
 
-  async function handleStart() {
+  const handleStart = useCallback(async () => {
     if (!videoRef.current) return
 
     stopScanner()
@@ -95,7 +89,23 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
       setCameraErrorKind(classifyCameraError(error))
       setScannerState('error')
     }
-  }
+  }, [handleDecode])
+
+  useEffect(() => {
+    let cancelled = false
+
+    queueMicrotask(() => {
+      if (!cancelled) void handleStart()
+    })
+
+    return () => {
+      cancelled = true
+      if (scannerRef.current) {
+        scannerRef.current.stop()
+        scannerRef.current = null
+      }
+    }
+  }, [handleStart])
 
   function handleStop() {
     stopScanner()
