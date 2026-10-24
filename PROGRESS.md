@@ -739,3 +739,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Chose to empty the three problematic legacy files rather than patch them because the underlying JSX changed when we moved from auto-pagination to manual pages. Those files described a DOM structure that no longer exists. Flexbox column layout for .exhibit-screen because the child count varies with conditionals — grid with fixed row template cannot adapt. Flexbox also matches the natural flow: hero, divider, tabs, reader take remaining space, navigation, floral, actions. The .exhibit-reader and .exhibit-page-viewport use flex: 1 1 0 !important so they reliably take remaining space regardless of what other files contain. Arrows at 100px are the largest size that still fits comfortably on a 320px phone with readable page counter.
 **Next part:** After manual verification, optionally delete the empty stub files and update App.css imports (a small follow-up). Or resume roadmap.
 **Commit:** fd0f4db
+
+## Style — Tighten reader padding and justify text
+
+**Status:** Complete
+**Goal:** Reduce the excessive horizontal and vertical space around the reader to fit more text per page, and justify the paragraph text for a cleaner book-like appearance.
+**Files changed:** src/styles/exhibit.css.
+**User-visible result:** The text inside the reader is now justified. The horizontal padding inside the viewport is reduced to standard spacing tokens (var(--space-3)), giving the text more width. The hero section, section heading, navigation, and footer have reduced vertical padding and min-heights, leaving more vertical space for the reader itself.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) open any exhibit article; (3) verify text is justified and takes up more width; (4) verify the header and footer sections are more compact; (5) verify arrows are still large.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The reader header (title + cover) is slightly shorter, which may look cramped on very short screens. If so, the media query at the bottom can be adjusted. The inter-word justification may look stretched on extremely narrow screens (320px), but standard browser behavior handles this gracefully.
+**Decisions made:** Swapped the custom clamp() functions for standard spacing tokens where possible to align with the rest of the design system. Applied text-justify: inter-word which is the most compatible cross-browser setting for justification.
+**Next part:** Resume roadmap.
+**Commit:** 1bd33dd
