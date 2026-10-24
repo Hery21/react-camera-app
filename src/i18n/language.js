@@ -1,7 +1,7 @@
 // Language primitives shared by App.jsx wiring (Phase 2.4) and any future screen.
 // No React, no DOM side effects on import.
 export const SUPPORTED_LANGUAGES = ['en', 'id', 'zh']
-export const DEFAULT_LANGUAGE = 'en'
+export const DEFAULT_LANGUAGE = 'id'
 export const STORAGE_KEY = 'storytelling-mirror-language'
 
 function isValidLanguage(value) {
