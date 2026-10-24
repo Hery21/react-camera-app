@@ -1,12 +1,6 @@
 // Small self-check for src/i18n/language.js. Not a test framework.
 // Run: node scripts/check-language.mjs   (or: npm run check:language)
-import {
-  DEFAULT_LANGUAGE,
-  STORAGE_KEY,
-  SUPPORTED_LANGUAGES,
-  mapBrowserLanguage,
-  pickInitialLanguage,
-} from '../src/i18n/language.js'
+import { DEFAULT_LANGUAGE, STORAGE_KEY, SUPPORTED_LANGUAGES, mapBrowserLanguage, pickInitialLanguage } from '../src/i18n/language.js'
 
 let failed = 0
 

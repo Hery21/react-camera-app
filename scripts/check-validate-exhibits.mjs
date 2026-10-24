@@ -44,8 +44,8 @@ const minimalValid = {
   content: {
     en: { title: 'A', summary: 'B', story: 'C', coverAlt: 'D' },
     id: { title: 'A', summary: 'B', story: 'C', coverAlt: 'D' },
-    zh: { title: 'A', summary: 'B', story: 'C', coverAlt: 'D' }
-  }
+    zh: { title: 'A', summary: 'B', story: 'C', coverAlt: 'D' },
+  },
 }
 
 // Happy path
@@ -59,8 +59,8 @@ const withPeriod = {
   content: {
     en: { ...minimalValid.content.en, period: 'X' },
     id: { ...minimalValid.content.id, period: 'X' },
-    zh: { ...minimalValid.content.zh, period: 'X' }
-  }
+    zh: { ...minimalValid.content.zh, period: 'X' },
+  },
 }
 expectOk(validateExhibits([withPeriod]), 'optional period allowed')
 
@@ -69,8 +69,8 @@ const withSymbolism = {
   content: {
     en: { ...minimalValid.content.en, symbolism: 'X' },
     id: { ...minimalValid.content.id, symbolism: 'X' },
-    zh: { ...minimalValid.content.zh, symbolism: 'X' }
-  }
+    zh: { ...minimalValid.content.zh, symbolism: 'X' },
+  },
 }
 expectOk(validateExhibits([withSymbolism]), 'optional symbolism allowed')
 
@@ -82,10 +82,10 @@ const withGallery = {
       content: {
         en: { alt: 'A' },
         id: { alt: 'A' },
-        zh: { alt: 'A' }
-      }
-    }
-  ]
+        zh: { alt: 'A' },
+      },
+    },
+  ],
 }
 expectOk(validateExhibits([withGallery]), 'valid gallery accepted')
 
@@ -94,8 +94,8 @@ const emptyEnTitle = {
   ...minimalValid,
   content: {
     ...minimalValid.content,
-    en: { ...minimalValid.content.en, title: '' }
-  }
+    en: { ...minimalValid.content.en, title: '' },
+  },
 }
 expectFail(validateExhibits([emptyEnTitle]), 'empty en.title', 'content.en.title')
 
@@ -103,8 +103,8 @@ const missingZh = {
   ...minimalValid,
   content: {
     en: minimalValid.content.en,
-    id: minimalValid.content.id
-  }
+    id: minimalValid.content.id,
+  },
 }
 expectFail(validateExhibits([missingZh]), 'missing zh block', 'content.zh')
 
@@ -112,8 +112,8 @@ const missingIdStory = {
   ...minimalValid,
   content: {
     ...minimalValid.content,
-    id: { ...minimalValid.content.id, story: undefined }
-  }
+    id: { ...minimalValid.content.id, story: undefined },
+  },
 }
 expectFail(validateExhibits([missingIdStory]), 'missing id.story', 'content.id.story')
 
@@ -121,8 +121,8 @@ const whitespaceOnlySummary = {
   ...minimalValid,
   content: {
     ...minimalValid.content,
-    zh: { ...minimalValid.content.zh, summary: '   ' }
-  }
+    zh: { ...minimalValid.content.zh, summary: '   ' },
+  },
 }
 expectFail(validateExhibits([whitespaceOnlySummary]), 'whitespace-only zh.summary rejected', 'content.zh.summary')
 
@@ -158,10 +158,10 @@ const badGallerySrc = {
       content: {
         en: { alt: 'A' },
         id: { alt: 'A' },
-        zh: { alt: 'A' }
-      }
-    }
-  ]
+        zh: { alt: 'A' },
+      },
+    },
+  ],
 }
 expectFail(validateExhibits([badGallerySrc]), 'gallery item empty src', 'gallery[0].src')
 
@@ -172,10 +172,10 @@ const badGalleryMissingZh = {
       src: '/g.webp',
       content: {
         en: { alt: 'A' },
-        id: { alt: 'A' }
-      }
-    }
-  ]
+        id: { alt: 'A' },
+      },
+    },
+  ],
 }
 expectFail(validateExhibits([badGalleryMissingZh]), 'gallery item missing zh block', 'gallery[0].content.zh')
 
@@ -187,10 +187,10 @@ const badGalleryEmptyAlt = {
       content: {
         en: { alt: 'A' },
         id: { alt: 'A' },
-        zh: { alt: '' }
-      }
-    }
-  ]
+        zh: { alt: '' },
+      },
+    },
+  ],
 }
 expectFail(validateExhibits([badGalleryEmptyAlt]), 'gallery item empty zh.alt', 'gallery[0].content.zh.alt')
 

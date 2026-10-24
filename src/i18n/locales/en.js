@@ -3,7 +3,7 @@ export const en = {
   app: {
     eyebrow: 'Cultural Expo',
     title: 'The Storytelling Mirror',
-    tagline: 'Scan · Explore · Discover'
+    tagline: 'Scan · Explore · Discover',
   },
   language: {
     label: 'Language',
@@ -12,13 +12,13 @@ export const en = {
     zh: '中文',
     enFullName: 'English',
     idFullName: 'Bahasa Indonesia',
-    zhFullName: 'Mandarin Chinese'
+    zhFullName: 'Mandarin Chinese',
   },
   welcome: {
     explanation: 'Scan the QR code beside any exhibit to uncover its story.',
     cameraNotice: 'This experience uses your camera. You will be asked for permission when you start.',
     subTagline: 'More than just a scan, it is a journey through heritage.',
-    cta: 'Start Exploring'
+    cta: 'Start Exploring',
   },
   scanner: {
     label: 'Exhibit QR scanner',
@@ -34,7 +34,8 @@ export const en = {
     scanAnother: 'Scan Another',
     matched: 'Matched',
     permissionDeniedTitle: 'Camera access is blocked',
-    permissionDeniedMessage: 'Camera access is required to scan exhibit codes. Allow camera access for this site in your browser or device settings, then try again.',
+    permissionDeniedMessage:
+      'Camera access is required to scan exhibit codes. Allow camera access for this site in your browser or device settings, then try again.',
     cameraUnavailableTitle: 'Camera unavailable',
     cameraUnavailableMessage: 'No usable camera was found on this device.',
     scannerErrorTitle: 'Unable to start the camera',
@@ -43,10 +44,10 @@ export const en = {
     invalidCodeMessage: 'This QR code is not supported by this experience. Keep the camera pointed at an exhibit QR code.',
     unknownExhibitTitle: 'Exhibit not available',
     unknownExhibitMessage: 'Exhibit {id} was recognized, but it is not available in this guide. Keep scanning another exhibit code.',
-    keepScanning: 'Keep scanning'
+    keepScanning: 'Keep scanning',
   },
   result: {},
   exhibit: {},
   errors: {},
-  accessibility: {}
+  accessibility: {},
 }

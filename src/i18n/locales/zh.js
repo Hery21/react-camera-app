@@ -5,7 +5,7 @@ export const zh = {
   app: {
     eyebrow: '文化展览',
     title: 'The Storytelling Mirror',
-    tagline: '扫描 · 探索 · 发现'
+    tagline: '扫描 · 探索 · 发现',
   },
   language: {
     label: '语言',
@@ -14,13 +14,13 @@ export const zh = {
     zh: '中文',
     enFullName: 'English',
     idFullName: 'Bahasa Indonesia',
-    zhFullName: '中文'
+    zhFullName: '中文',
   },
   welcome: {
     explanation: '扫描任何展品旁边的二维码，揭开它的故事。',
     cameraNotice: '此体验需要使用您的相机。开始时系统会请求您的许可。',
     subTagline: '不只是扫描，更是一段穿越文化传承的旅程。',
-    cta: '开始探索'
+    cta: '开始探索',
   },
   scanner: {
     label: '展品二维码扫描器',
@@ -45,10 +45,10 @@ export const zh = {
     invalidCodeMessage: '此二维码不受本体验支持。请将相机对准展品二维码。',
     unknownExhibitTitle: '展品暂不可用',
     unknownExhibitMessage: '已识别展品 {id}，但该展品尚未收录在本指南中。请继续扫描其他展品二维码。',
-    keepScanning: '继续扫描'
+    keepScanning: '继续扫描',
   },
   result: {},
   exhibit: {},
   errors: {},
-  accessibility: {}
+  accessibility: {},
 }

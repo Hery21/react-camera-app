@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import {
-  applyDocumentLanguage,
-  getInitialLanguage,
-  persistLanguage,
-} from './i18n/language.js'
+import { applyDocumentLanguage, getInitialLanguage, persistLanguage } from './i18n/language.js'
 import { AppShell } from './components/AppShell.jsx'
 import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
 import { ScannerScreen } from './screens/ScannerScreen.jsx'
@@ -50,15 +46,9 @@ function App() {
       screen={screen}
       onBack={screen === 'scanner' || screen === 'scan-result' ? handleBackToWelcome : undefined}
     >
-      {screen === 'welcome' && (
-        <WelcomeScreen language={language} onStart={handleStartExploring} />
-      )}
+      {screen === 'welcome' && <WelcomeScreen language={language} onStart={handleStartExploring} />}
       {screen === 'scanner' && (
-        <ScannerScreen
-          language={language}
-          onReturnHome={handleBackToWelcome}
-          onExhibitDetected={handleExhibitDetected}
-        />
+        <ScannerScreen language={language} onReturnHome={handleBackToWelcome} onExhibitDetected={handleExhibitDetected} />
       )}
       {screen === 'scan-result' && selectedExhibit && (
         <section className="scan-result-bridge" aria-live="polite">

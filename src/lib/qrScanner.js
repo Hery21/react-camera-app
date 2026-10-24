@@ -31,19 +31,15 @@ export function createQrScanner() {
       if (stopped) return
       const reader = new BrowserQRCodeReader()
 
-      controls = await reader.decodeFromConstraints(
-        { video: { facingMode: 'environment' } },
-        videoElement,
-        (result) => {
-          if (stopped) return
-          if (!result) return
-          const text = result.getText()
-          if (typeof text !== 'string' || text.length === 0) return
-          if (text === lastText) return
-          lastText = text
-          if (onDecode) onDecode(text)
-        }
-      )
+      controls = await reader.decodeFromConstraints({ video: { facingMode: 'environment' } }, videoElement, (result) => {
+        if (stopped) return
+        if (!result) return
+        const text = result.getText()
+        if (typeof text !== 'string' || text.length === 0) return
+        if (text === lastText) return
+        lastText = text
+        if (onDecode) onDecode(text)
+      })
     } catch (err) {
       if (stopped) return
       if (onError) onError(err)

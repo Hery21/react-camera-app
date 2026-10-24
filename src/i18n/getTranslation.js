@@ -12,9 +12,10 @@ function warnOnce(kind, language, key) {
   const signature = kind + ':' + language + ':' + key
   if (warned.has(signature)) return
   warned.add(signature)
-  const message = kind === 'fallback'
-    ? '[i18n] "' + key + '" missing for "' + language + '", using English fallback'
-    : '[i18n] "' + key + '" missing in all languages'
+  const message =
+    kind === 'fallback'
+      ? '[i18n] "' + key + '" missing for "' + language + '", using English fallback'
+      : '[i18n] "' + key + '" missing in all languages'
   console.warn(message)
 }
 

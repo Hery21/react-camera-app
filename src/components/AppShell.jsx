@@ -13,12 +13,7 @@ export function AppShell({ language, onLanguageChange, screen, onBack, children 
       <header className="app-header">
         <div className="app-header-left">
           {onBack && (
-            <button
-              type="button"
-              className="app-header-back"
-              onClick={onBack}
-              aria-label={getTranslation(language, 'scanner.back')}
-            >
+            <button type="button" className="app-header-back" onClick={onBack} aria-label={getTranslation(language, 'scanner.back')}>
               {'\u2190'}
             </button>
           )}

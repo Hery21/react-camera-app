@@ -104,7 +104,6 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
     setInlineError(null)
   }
 
-
   function handleReturnHome() {
     stopScanner()
     onReturnHome()
@@ -134,10 +133,7 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
   const cameraError = getCameraErrorContent()
 
   return (
-    <section
-      className="scanner-screen"
-      aria-label={getTranslation(language, 'scanner.label')}
-    >
+    <section className="scanner-screen" aria-label={getTranslation(language, 'scanner.label')}>
       <div className="scanner-video-wrapper">
         <video ref={videoRef} className="scanner-video" playsInline muted />
         <div className="scanner-frame-overlay" aria-hidden="true">
@@ -152,11 +148,7 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
           <span className="scanner-target-corner scanner-target-bl" />
           <span className="scanner-target-corner scanner-target-br" />
         </div>
-        {scannerState === 'idle' && (
-          <p className="scanner-overlay-text">
-            {getTranslation(language, 'scanner.cameraOff')}
-          </p>
-        )}
+        {scannerState === 'idle' && <p className="scanner-overlay-text">{getTranslation(language, 'scanner.cameraOff')}</p>}
         {scannerState === 'requesting' && (
           <p className="scanner-overlay-text" role="status">
             {getTranslation(language, 'scanner.requesting')}
@@ -199,11 +191,7 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
                   {getTranslation(language, 'scanner.tryAgain')}
                 </button>
               )}
-              <button
-                type="button"
-                className="scanner-button scanner-button-secondary"
-                onClick={handleReturnHome}
-              >
+              <button type="button" className="scanner-button scanner-button-secondary" onClick={handleReturnHome}>
                 {getTranslation(language, 'scanner.returnHome')}
               </button>
             </div>
@@ -214,9 +202,7 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
               <strong>
                 {getTranslation(
                   language,
-                  inlineError.kind === 'unknown-exhibit'
-                    ? 'scanner.unknownExhibitTitle'
-                    : 'scanner.invalidCodeTitle',
+                  inlineError.kind === 'unknown-exhibit' ? 'scanner.unknownExhibitTitle' : 'scanner.invalidCodeTitle',
                 )}
               </strong>
               <span>

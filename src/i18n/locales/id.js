@@ -4,7 +4,7 @@ export const id = {
   app: {
     eyebrow: 'Pameran Budaya',
     title: 'The Storytelling Mirror',
-    tagline: 'Pindai · Jelajahi · Temukan'
+    tagline: 'Pindai · Jelajahi · Temukan',
   },
   language: {
     label: 'Bahasa',
@@ -13,13 +13,13 @@ export const id = {
     zh: '中文',
     enFullName: 'English',
     idFullName: 'Bahasa Indonesia',
-    zhFullName: 'Bahasa Mandarin'
+    zhFullName: 'Bahasa Mandarin',
   },
   welcome: {
     explanation: 'Pindai kode QR di samping setiap pameran untuk mengungkap ceritanya.',
     cameraNotice: 'Pengalaman ini menggunakan kamera Anda. Anda akan diminta izin saat memulai.',
     subTagline: 'Lebih dari sekadar pindai, ini adalah perjalanan melalui warisan budaya.',
-    cta: 'Mulai Menjelajah'
+    cta: 'Mulai Menjelajah',
   },
   scanner: {
     label: 'Pemindai kode QR pameran',
@@ -35,7 +35,8 @@ export const id = {
     scanAnother: 'Pindai Lagi',
     matched: 'Cocok',
     permissionDeniedTitle: 'Akses kamera diblokir',
-    permissionDeniedMessage: 'Akses kamera diperlukan untuk memindai kode pameran. Izinkan akses kamera untuk situs ini melalui pengaturan browser atau perangkat, lalu coba lagi.',
+    permissionDeniedMessage:
+      'Akses kamera diperlukan untuk memindai kode pameran. Izinkan akses kamera untuk situs ini melalui pengaturan browser atau perangkat, lalu coba lagi.',
     cameraUnavailableTitle: 'Kamera tidak tersedia',
     cameraUnavailableMessage: 'Tidak ada kamera yang dapat digunakan pada perangkat ini.',
     scannerErrorTitle: 'Kamera tidak dapat dinyalakan',
@@ -44,10 +45,10 @@ export const id = {
     invalidCodeMessage: 'Kode QR ini tidak didukung oleh pengalaman ini. Arahkan kamera ke kode QR pameran.',
     unknownExhibitTitle: 'Pameran tidak tersedia',
     unknownExhibitMessage: 'Pameran {id} dikenali, tetapi belum tersedia dalam panduan ini. Lanjutkan memindai kode pameran lain.',
-    keepScanning: 'Lanjutkan memindai'
+    keepScanning: 'Lanjutkan memindai',
   },
   result: {},
   exhibit: {},
   errors: {},
-  accessibility: {}
+  accessibility: {},
 }

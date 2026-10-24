@@ -8,11 +8,7 @@ import { getTranslation } from '../i18n/getTranslation.js'
 // English UI.
 export function LanguageToggle({ language, onLanguageChange }) {
   return (
-    <div
-      className="language-toggle"
-      role="group"
-      aria-label={getTranslation(language, 'language.label')}
-    >
+    <div className="language-toggle" role="group" aria-label={getTranslation(language, 'language.label')}>
       {SUPPORTED_LANGUAGES.map((code) => (
         <button
           key={code}

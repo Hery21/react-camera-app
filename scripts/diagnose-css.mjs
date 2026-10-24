@@ -25,19 +25,17 @@ check('theme.css exists', existsSync(themePath), themePath)
 if (existsSync(themePath)) {
   const theme = readFileSync(themePath, 'utf8')
   const themeLines = theme.split('\n')
-  const badComments = themeLines
-    .map((raw, i) => ({ raw, n: i + 1 }))
-    .filter(({ raw }) => raw.trim().startsWith('//'))
+  const badComments = themeLines.map((raw, i) => ({ raw, n: i + 1 })).filter(({ raw }) => raw.trim().startsWith('//'))
   check(
     'theme.css has no // comments (only /* */ is valid CSS)',
     badComments.length === 0,
-    badComments.length > 0 ? badComments.length + ' line(s): ' + badComments.map((b) => b.n).join(', ') : ''
+    badComments.length > 0 ? badComments.length + ' line(s): ' + badComments.map((b) => b.n).join(', ') : '',
   )
   check('theme.css has :root block', /:root\s*\{/.test(theme))
   check('theme.css defines --color-warm-ivory', /--color-warm-ivory\s*:/.test(theme))
   check('theme.css defines --font-family-body', /--font-family-body\s*:/.test(theme))
   console.log('\n--- theme.css first 5 lines (raw) ---')
-  themeLines.slice(0, 5).forEach((l, i) => console.log((i + 1) + ': ' + JSON.stringify(l)))
+  themeLines.slice(0, 5).forEach((l, i) => console.log(i + 1 + ': ' + JSON.stringify(l)))
 }
 
 // index.css
@@ -48,7 +46,7 @@ const firstNonEmpty = indexLines.findIndex((l) => l.trim().length > 0)
 check(
   'index.css @import is first non-empty line',
   firstNonEmpty >= 0 && indexLines[firstNonEmpty].trim().startsWith('@import'),
-  firstNonEmpty >= 0 ? JSON.stringify(indexLines[firstNonEmpty]) : 'empty file'
+  firstNonEmpty >= 0 ? JSON.stringify(indexLines[firstNonEmpty]) : 'empty file',
 )
 const indexBadComments = indexLines.filter((l) => l.trim().startsWith('//'))
 check('index.css has no // comments', indexBadComments.length === 0)
