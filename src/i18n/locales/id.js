@@ -51,7 +51,11 @@ export const id = {
     unknownExhibit: 'Pameran tidak dikenal',
     keepScanning: 'terus pindai'
   },
-  result: {},
+  result: {
+    detected: 'Item terdeteksi!',
+    viewDetails: 'Lihat Detail',
+    scanAgain: 'Pindai Lagi'
+  },
   exhibit: {},
   errors: {},
   accessibility: {}

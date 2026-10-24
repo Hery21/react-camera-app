@@ -51,7 +51,11 @@ export const zh = {
     unknownExhibit: '未知展品',
     keepScanning: '继续扫描'
   },
-  result: {},
+  result: {
+    detected: '已识别展品！',
+    viewDetails: '查看详情',
+    scanAgain: '再次扫描'
+  },
   exhibit: {},
   errors: {},
   accessibility: {}

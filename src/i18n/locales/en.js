@@ -51,7 +51,11 @@ export const en = {
     unknownExhibit: 'Unknown exhibit',
     keepScanning: 'keep scanning'
   },
-  result: {},
+  result: {
+    detected: 'Item detected!',
+    viewDetails: 'View Details',
+    scanAgain: 'Scan Again'
+  },
   exhibit: {},
   errors: {},
   accessibility: {}
