@@ -754,3 +754,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Swapped the custom clamp() functions for standard spacing tokens where possible to align with the rest of the design system. Applied text-justify: inter-word which is the most compatible cross-browser setting for justification.
 **Next part:** Resume roadmap.
 **Commit:** 1bd33dd
+
+## Change — Default language Bahasa Indonesia
+
+**Status:** Complete
+**Goal:** Change the fallback language for unknown browsers from English to Bahasa Indonesia. Preserve browser detection so that en-* browsers still default to English, zh-* browsers still default to Chinese, and id-* browsers still default to Indonesian. Only the fallback for empty, null, undefined, or unsupported browser languages changes.
+**Files changed:** src/i18n/language.js (DEFAULT_LANGUAGE = 'id'), index.html (lang="id" on html tag), scripts/check-language.mjs (updated expected values for the new default).
+**User-visible result:** First-time visitors with a browser language other than en/id/zh now see the app in Bahasa Indonesia. Visitors with English, Indonesian, or Chinese browsers continue to see their preferred language. Existing stored preferences are unaffected — if a user previously chose English, they still get English on subsequent visits.
+**Automated checks:** npm run lint; npm run check:language (24 assertions); npm run check:i18n (24 assertions — getTranslation fallback is English by design and unchanged).
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) In a fresh browser profile with browser language set to French (or DevTools Emulation), open the app — should show Indonesian; (2) with browser set to English, should show English; (3) with browser set to Chinese, should show Chinese; (4) with browser set to Indonesian, should show Indonesian; (5) click a language toggle — preference persists across reload; (6) verify html lang attribute updates.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** If the user actually wanted ALL first-time visitors to see Indonesian regardless of browser, this plan does not achieve that — English browsers would still get English. That interpretation was rejected as worse UX; if the user confirms they want Indonesian to override browser detection, a follow-up can reorder the logic so browser detection is skipped.
+**Decisions made:** Browser detection preserved because a Chinese-speaking visitor with zh-CN browser should see Chinese first, not Indonesian. An English-speaking visitor should see English. Only truly unknown browsers fall back to Indonesian. Storage key unchanged so existing user preferences survive the change. getTranslation fallback stays English (helper-level) because that is a separate design contract from getInitialLanguage — translations should always be able to fall back to English for missing keys within a valid language, but the app entry-point language should default to Indonesian for the expo audience.
+**Next part:** Phase 10.5 — responsive and accessibility acceptance (verify 320/360/390/430px widths and 200% zoom after the reader CSS changes).
+**Commit:** 0631e3d
