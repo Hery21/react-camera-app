@@ -7,6 +7,7 @@ import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
 import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
+import { AdminScreen } from './screens/AdminScreen.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
 import { exhibits } from './data/exhibits.js'
 import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } from './lib/scanProgress.js'
@@ -29,6 +30,10 @@ function App() {
 
   function handleStartExploring() {
     setScreen('scanner')
+  }
+
+  function handleStartAdmin() {
+    setScreen('admin')
   }
 
   function handleBackToWelcome() {
@@ -69,13 +74,19 @@ function App() {
           ? handleBackToResult
           : screen === 'scan-result'
             ? handleScanAgain
-            : screen === 'scanner'
+            : screen === 'scanner' || screen === 'admin'
               ? handleBackToWelcome
               : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
-      {screen === 'welcome' && <WelcomeScreen language={language} onStart={handleStartExploring} />}
+      {screen === 'welcome' && (
+        <WelcomeScreen 
+          language={language} 
+          onStart={handleStartExploring} 
+          onStartAdmin={handleStartAdmin}
+        />
+      )}
       {screen === 'scanner' && (
         <ScannerScreen language={language} onReturnHome={handleBackToWelcome} onExhibitDetected={handleExhibitDetected} />
       )}
@@ -91,6 +102,8 @@ function App() {
           onScanNext={handleScanAgain}
         />
       )}
+      {screen === 'admin' && <AdminScreen onBack={handleBackToWelcome} />}
+      
       <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>
   )

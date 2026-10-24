@@ -1,6 +1,6 @@
 import { getTranslation } from '../i18n/getTranslation.js'
 
-export function WelcomeScreen({ language, onStart }) {
+export function WelcomeScreen({ language, onStart, onStartAdmin }) {
   return (
     <section className="welcome-screen" aria-labelledby="welcome-title">
       <div className="welcome-mirror-stage">
@@ -17,6 +17,12 @@ export function WelcomeScreen({ language, onStart }) {
         <button type="button" className="welcome-cta" onClick={onStart}>
           {getTranslation(language, 'welcome.cta')}
         </button>
+
+        {import.meta.env.DEV && onStartAdmin && (
+          <button type="button" className="dev-admin-trigger" onClick={onStartAdmin}>
+            Open Admin
+          </button>
+        )}
       </div>
 
       <p className="sr-only">{getTranslation(language, 'welcome.cameraNotice')}</p>
