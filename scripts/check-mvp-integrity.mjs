@@ -1,0 +1,54 @@
+import { readFileSync } from 'node:fs'
+
+const files = [
+  'src/App.jsx',
+  'src/screens/ScannerScreen.jsx',
+  'src/screens/ScanResultScreen.jsx',
+  'src/screens/ExhibitScreen.jsx',
+  'src/lib/qrPayload.js',
+  'src/data/exhibits.js',
+]
+
+let failed = false
+
+function fail(message) {
+  console.error('FAIL ' + message)
+  failed = true
+}
+
+function pass(message) {
+  console.log('OK  ' + message)
+}
+
+const contents = new Map(files.map((file) => [file, readFileSync(file, 'utf8')]))
+
+for (const [file, content] of contents) {
+  if (content.includes('EXPO-')) fail(file + ' still contains obsolete EXPO identifier')
+  else pass(file + ' has no obsolete EXPO identifier')
+}
+
+const app = contents.get('src/App.jsx')
+const scanner = contents.get('src/screens/ScannerScreen.jsx')
+const result = contents.get('src/screens/ScanResultScreen.jsx')
+const exhibit = contents.get('src/screens/ExhibitScreen.jsx')
+
+if (app.includes("setScreen('scanner')") && app.includes("setScreen('scan-result')") && app.includes("setScreen('exhibit')"))
+  pass('App contains scanner, result, and exhibit transitions')
+else fail('App is missing an MVP screen transition')
+
+if (scanner.includes('onExhibitDetected') && scanner.includes('scannerRef.current.stop()'))
+  pass('Scanner reports success and retains cleanup')
+else fail('Scanner success or cleanup contract missing')
+
+if (result.includes('onViewDetails') && result.includes('onScanAgain')) pass('Scan Result retains both actions')
+else fail('Scan Result action contract missing')
+
+if (exhibit.includes('onScanNext') && exhibit.includes("id: 'gallery'")) pass('Exhibit retains scan-next and Gallery support')
+else fail('Exhibit article contract incomplete')
+
+if (failed) {
+  console.error('MVP integrity self-check failed')
+  process.exit(1)
+}
+
+console.log('All MVP integrity self-checks passed')
