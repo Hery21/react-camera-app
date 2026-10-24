@@ -769,3 +769,19 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Browser detection preserved because a Chinese-speaking visitor with zh-CN browser should see Chinese first, not Indonesian. An English-speaking visitor should see English. Only truly unknown browsers fall back to Indonesian. Storage key unchanged so existing user preferences survive the change. getTranslation fallback stays English (helper-level) because that is a separate design contract from getInitialLanguage — translations should always be able to fall back to English for missing keys within a valid language, but the app entry-point language should default to Indonesian for the expo audience.
 **Next part:** Phase 10.5 — responsive and accessibility acceptance (verify 320/360/390/430px widths and 200% zoom after the reader CSS changes).
 **Commit:** 0631e3d
+
+## Fix — Restore Indonesian brand strings untranslated
+
+**Status:** Complete
+**Goal:** Restore app.title to "Pekan Seni Budaya 2026" and app.eyebrow to "Ikatan Keluarga Tionghoa" as identical strings across EN, ID, and ZH locale files.
+**Root cause:** An earlier session had these proper nouns as the brand strings, but later plans that added missing namespaces (result, exhibit, scanner) inadvertently reverted app.title and app.eyebrow to "The Storytelling Mirror" and the translated "Cultural Expo" / "Pameran Budaya" / "文化展览". The proper nouns were lost during that refactor.
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (app.title and app.eyebrow only; tagline remains translated per language).
+**User-visible result:** The welcome screen now displays "Ikatan Keluarga Tionghoa" as the eyebrow and "Pekan Seni Budaya 2026" as the title in every language. Taglines remain translated (Scan Explore Discover / Pindai Jelajahi Temukan / 扫描 探索 发现).
+**Automated checks:** npm run lint; npm run check:i18n (24 content-agnostic assertions — content changes do not break them); npm run check:language (24 assertions — unchanged).
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) open Welcome at default browser width — verify title and eyebrow display the two Indonesian strings; (3) toggle language to EN, ID, ZH — title and eyebrow stay the same; (4) verify title fits inside the mirror stage without overflow on 320px width.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** "Pekan Seni Budaya 2026" is roughly twice as long as "The Storytelling Mirror" in character count. The mirror stage uses .welcome-title font-size: clamp(1.2rem, 6cqw, 2.5rem) with text-wrap: balance, which should wrap the longer string cleanly inside the mirror face. If the string overflows on narrow phones, the title font clamp can be reduced. Also worth verifying the eyebrow "Ikatan Keluarga Tionghoa" still fits at the smaller clamp(0.6rem, 2.5cqw, 1rem) size.
+**Decisions made:** Kept the strings identical across all three languages because they are proper nouns for the event and the organizing body — translating them would be incorrect. The tagline ("Scan · Explore · Discover") remains translated per language as before; only the brand strings are intentionally untranslated.
+**Next part:** Manual visual verification on Welcome at 320px and 390px widths. If title overflows, may need a small CSS clamp adjustment.
+**Commit:** 8bea221
