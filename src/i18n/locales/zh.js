@@ -1,6 +1,6 @@
 // Mandarin Chinese (Simplified) UI strings. Exhibit content lives in src/data/exhibits.js, not here.
-// All values here are provisional pending native-speaker review and expo team approval.
-// Brand name intentionally kept in English until an approved Chinese name is supplied.
+// Cultural wording remains subject to native-speaker and expo-team approval.
+// Brand name intentionally remains English until an approved Chinese name is supplied.
 export const zh = {
   app: {
     eyebrow: '文化展览',
@@ -23,6 +23,7 @@ export const zh = {
     cta: '开始探索'
   },
   scanner: {
+    label: '展品二维码扫描器',
     back: '返回首页',
     instructions: '将相机对准展品二维码。',
     start: '开启相机',
@@ -30,13 +31,20 @@ export const zh = {
     starting: '启动中…',
     requesting: '正在请求相机权限…',
     cameraOff: '相机已关闭',
-    error: '相机错误',
     tryAgain: '重试',
-    cancel: '取消',
+    returnHome: '返回首页',
     scanAnother: '再次扫描',
     matched: '已匹配',
-    invalidCode: '无效代码',
-    unknownExhibit: '未知展品',
+    permissionDeniedTitle: '相机访问已被阻止',
+    permissionDeniedMessage: '需要相机权限才能扫描展品二维码。请在浏览器或设备设置中允许此网站访问相机，然后重试。',
+    cameraUnavailableTitle: '相机不可用',
+    cameraUnavailableMessage: '此设备上未找到可用的相机。',
+    scannerErrorTitle: '无法启动相机',
+    scannerErrorMessage: '无法启动相机。请检查相机访问权限，然后重试。',
+    invalidCodeTitle: '不是展品二维码',
+    invalidCodeMessage: '此二维码不受本体验支持。请将相机对准展品二维码。',
+    unknownExhibitTitle: '展品暂不可用',
+    unknownExhibitMessage: '已识别展品 {id}，但该展品尚未收录在本指南中。请继续扫描其他展品二维码。',
     keepScanning: '继续扫描'
   },
   result: {},

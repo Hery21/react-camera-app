@@ -41,7 +41,7 @@ function App() {
       {screen === 'welcome' ? (
         <WelcomeScreen language={language} onStart={handleStartExploring} />
       ) : (
-        <ScannerScreen language={language} />
+        <ScannerScreen language={language} onReturnHome={handleBackToWelcome} />
       )}
     </AppShell>
   )

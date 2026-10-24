@@ -1,5 +1,5 @@
 // Bahasa Indonesia UI strings. Exhibit content lives in src/data/exhibits.js, not here.
-// Values marked with (provisional) are pending expo team approval.
+// Cultural wording remains subject to expo-team approval.
 export const id = {
   app: {
     eyebrow: 'Pameran Budaya',
@@ -22,6 +22,7 @@ export const id = {
     cta: 'Mulai Menjelajah'
   },
   scanner: {
+    label: 'Pemindai kode QR pameran',
     back: 'Kembali ke beranda',
     instructions: 'Arahkan kamera Anda ke kode QR pameran.',
     start: 'Nyalakan Kamera',
@@ -29,14 +30,21 @@ export const id = {
     starting: 'Memulai…',
     requesting: 'Meminta izin kamera…',
     cameraOff: 'Kamera mati',
-    error: 'Kesalahan kamera',
     tryAgain: 'Coba Lagi',
-    cancel: 'Batal',
+    returnHome: 'Kembali ke Beranda',
     scanAnother: 'Pindai Lagi',
     matched: 'Cocok',
-    invalidCode: 'Kode tidak valid',
-    unknownExhibit: 'Pameran tidak dikenal',
-    keepScanning: 'terus pindai'
+    permissionDeniedTitle: 'Akses kamera diblokir',
+    permissionDeniedMessage: 'Akses kamera diperlukan untuk memindai kode pameran. Izinkan akses kamera untuk situs ini melalui pengaturan browser atau perangkat, lalu coba lagi.',
+    cameraUnavailableTitle: 'Kamera tidak tersedia',
+    cameraUnavailableMessage: 'Tidak ada kamera yang dapat digunakan pada perangkat ini.',
+    scannerErrorTitle: 'Kamera tidak dapat dinyalakan',
+    scannerErrorMessage: 'Kamera tidak dapat dinyalakan. Periksa akses kamera lalu coba lagi.',
+    invalidCodeTitle: 'Bukan kode pameran',
+    invalidCodeMessage: 'Kode QR ini tidak didukung oleh pengalaman ini. Arahkan kamera ke kode QR pameran.',
+    unknownExhibitTitle: 'Pameran tidak tersedia',
+    unknownExhibitMessage: 'Pameran {id} dikenali, tetapi belum tersedia dalam panduan ini. Lanjutkan memindai kode pameran lain.',
+    keepScanning: 'Lanjutkan memindai'
   },
   result: {},
   exhibit: {},
