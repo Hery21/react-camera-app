@@ -12,6 +12,7 @@ import { ScannerScreen } from './screens/ScannerScreen.jsx'
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
   const [screen, setScreen] = useState('welcome')
+  const [selectedExhibit, setSelectedExhibit] = useState(null)
 
   useEffect(() => {
     applyDocumentLanguage(language)
@@ -28,7 +29,18 @@ function App() {
   }
 
   function handleBackToWelcome() {
+    setSelectedExhibit(null)
     setScreen('welcome')
+  }
+
+  function handleExhibitDetected(exhibit) {
+    setSelectedExhibit(exhibit)
+    setScreen('scan-result')
+  }
+
+  function handleScanAgain() {
+    setSelectedExhibit(null)
+    setScreen('scanner')
   }
 
   return (
@@ -36,12 +48,26 @@ function App() {
       language={language}
       onLanguageChange={handleLanguageChange}
       screen={screen}
-      onBack={screen === 'scanner' ? handleBackToWelcome : undefined}
+      onBack={screen === 'scanner' || screen === 'scan-result' ? handleBackToWelcome : undefined}
     >
-      {screen === 'welcome' ? (
+      {screen === 'welcome' && (
         <WelcomeScreen language={language} onStart={handleStartExploring} />
-      ) : (
-        <ScannerScreen language={language} onReturnHome={handleBackToWelcome} />
+      )}
+      {screen === 'scanner' && (
+        <ScannerScreen
+          language={language}
+          onReturnHome={handleBackToWelcome}
+          onExhibitDetected={handleExhibitDetected}
+        />
+      )}
+      {screen === 'scan-result' && selectedExhibit && (
+        <section className="scan-result-bridge" aria-live="polite">
+          <p>{selectedExhibit.id}</p>
+          <h1>{selectedExhibit.content[language]?.title || selectedExhibit.content.en.title}</h1>
+          <button type="button" className="scanner-button" onClick={handleScanAgain}>
+            Scan Again
+          </button>
+        </section>
       )}
     </AppShell>
   )

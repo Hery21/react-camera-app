@@ -24,10 +24,9 @@ function formatTranslation(language, key, replacements = {}) {
   return value
 }
 
-export function ScannerScreen({ language, onReturnHome }) {
+export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
   const [scannerState, setScannerState] = useState('idle')
   const [inlineError, setInlineError] = useState(null)
-  const [result, setResult] = useState(null)
   const [cameraErrorKind, setCameraErrorKind] = useState(null)
   const videoRef = useRef(null)
   const scannerRef = useRef(null)
@@ -68,7 +67,7 @@ export function ScannerScreen({ language, onReturnHome }) {
     acceptedRef.current = true
     stopScanner()
     setInlineError(null)
-    setResult({ exhibit: lookup.exhibit, parsedId: parsed.exhibitId })
+    onExhibitDetected(lookup.exhibit)
   }
 
   async function handleStart() {
@@ -79,7 +78,6 @@ export function ScannerScreen({ language, onReturnHome }) {
     scannerRef.current = scanner
     setCameraErrorKind(null)
     setInlineError(null)
-    setResult(null)
     setScannerState('requesting')
 
     try {
@@ -104,15 +102,8 @@ export function ScannerScreen({ language, onReturnHome }) {
     setScannerState('idle')
     setCameraErrorKind(null)
     setInlineError(null)
-    setResult(null)
   }
 
-  function handleScanAnother() {
-    stopScanner()
-    setResult(null)
-    setInlineError(null)
-    setScannerState('idle')
-  }
 
   function handleReturnHome() {
     stopScanner()
@@ -140,28 +131,7 @@ export function ScannerScreen({ language, onReturnHome }) {
     }
   }
 
-  const resultContent = result
-    ? result.exhibit.content[language] || result.exhibit.content.en
-    : null
   const cameraError = getCameraErrorContent()
-
-  if (result && resultContent) {
-    return (
-      <section className="scanner-result" aria-live="polite">
-        <p className="scanner-result-meta">
-          {getTranslation(language, 'scanner.matched')}: {result.parsedId}
-        </p>
-        <h2 className="scanner-result-title">{resultContent.title}</h2>
-        {resultContent.period && (
-          <p className="scanner-result-period">{resultContent.period}</p>
-        )}
-        <p className="scanner-result-summary">{resultContent.summary}</p>
-        <button type="button" className="scanner-button" onClick={handleScanAnother}>
-          {getTranslation(language, 'scanner.scanAnother')}
-        </button>
-      </section>
-    )
-  }
 
   return (
     <section
