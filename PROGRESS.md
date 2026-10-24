@@ -553,3 +553,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** paragraphIndex (0-based) chosen over afterParagraphIndex because it expresses the intent ("this image belongs to this paragraph") rather than a positional drop-point. Fixed 200px image height chosen so pagination math does not depend on measuring images before they load — the tradeoff is potential letterboxing for unusual aspect ratios. Measurement is done against (pageHeight - 216) rather than the full pageHeight whenever the current page has an image, so the text always fits below it.
 **Next part:** Manual verification of image-on-same-page pagination.
 **Commit:** 7a67401
+
+## Phase 11.5 — Manual Pagination and Page Builder
+
+**Status:** Code complete; manual check pending
+**Goal:** Give the author explicit control over exactly how many pages exist per article and what content (text and/or image) appears on each page. Enable internal scrolling if a page exceeds the viewport height.
+**Files changed:** src/screens/ExhibitScreen.jsx (removed segmentArticleText logic, uses content.pages directly, scroll area within page viewport), src/screens/AdminScreen.jsx (page builder UI with language tabs, add/remove page, per-page image and text), src/styles/admin.css (page builder styles, scroll area), src/styles/exhibit.css (exhibit-page-scroll-area).
+**User-visible result:** The reader renders exactly the pages defined in the data model. If text overflows, the page scrolls internally. The Admin form has EN/ID/ZH tabs, a page list per language with Image Path, Image Alt, and Text fields, plus Add Page and Remove Page buttons.
+**Automated checks:** npm run lint; npm run check:mvp.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Admin, Edit PSBIKT-006; (3) See new page builder; add a page with image + text; (4) Save; (5) verify reader shows image and text on the same page; (6) add long text to a page and verify internal scroll within the page viewport.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The page builder requires manual entry of image paths. Existing exhibits without a pages array fall back to a single page from the legacy story field. Image renders at max-width 100% with auto height, so tall images cause the page to scroll.
+**Decisions made:** Manual pages replace automatic sentence-based pagination for author control. Data model is content[lang].pages as an array of { text, image? } objects. The reader drops segmentArticleText, ResizeObserver, and measurement complexity. Page text split into paragraphs on newline for readability. Recovery fixed a template literal escaping bug: split newline must be written as split(' backslash n ') so the source gets a real escaped newline.
+**Next part:** Manual verification of the page builder and reader.
+**Commit:** 56bfa3a
