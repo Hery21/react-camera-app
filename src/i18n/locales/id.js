@@ -47,7 +47,11 @@ export const id = {
     unknownExhibitMessage: 'Pameran {id} dikenali, tetapi belum tersedia dalam panduan ini. Lanjutkan memindai kode pameran lain.',
     keepScanning: 'Lanjutkan memindai',
   },
-  result: {},
+  result: {
+    detected: 'Pameran ditemukan!',
+    viewDetails: 'Lihat Detail',
+    scanAgain: 'Pindai Lagi',
+  },
   exhibit: {},
   errors: {},
   accessibility: {},

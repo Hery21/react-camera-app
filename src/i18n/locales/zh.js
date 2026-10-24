@@ -47,7 +47,11 @@ export const zh = {
     unknownExhibitMessage: '已识别展品 {id}，但该展品尚未收录在本指南中。请继续扫描其他展品二维码。',
     keepScanning: '继续扫描',
   },
-  result: {},
+  result: {
+    detected: '已识别展品！',
+    viewDetails: '查看详情',
+    scanAgain: '再次扫描',
+  },
   exhibit: {},
   errors: {},
   accessibility: {},

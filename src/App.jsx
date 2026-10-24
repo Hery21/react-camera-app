@@ -4,6 +4,7 @@ import { applyDocumentLanguage, getInitialLanguage, persistLanguage } from './i1
 import { AppShell } from './components/AppShell.jsx'
 import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
 import { ScannerScreen } from './screens/ScannerScreen.jsx'
+import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 
 function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
@@ -39,24 +40,28 @@ function App() {
     setScreen('scanner')
   }
 
+  function handleViewDetails() {
+    setScreen('exhibit')
+  }
+
   return (
     <AppShell
       language={language}
       onLanguageChange={handleLanguageChange}
       screen={screen}
-      onBack={screen === 'scanner' || screen === 'scan-result' ? handleBackToWelcome : undefined}
+      onBack={screen === 'scanner' || screen === 'scan-result' || screen === 'exhibit' ? handleBackToWelcome : undefined}
     >
       {screen === 'welcome' && <WelcomeScreen language={language} onStart={handleStartExploring} />}
       {screen === 'scanner' && (
         <ScannerScreen language={language} onReturnHome={handleBackToWelcome} onExhibitDetected={handleExhibitDetected} />
       )}
       {screen === 'scan-result' && selectedExhibit && (
-        <section className="scan-result-bridge" aria-live="polite">
-          <p>{selectedExhibit.id}</p>
+        <ScanResultScreen language={language} exhibit={selectedExhibit} onViewDetails={handleViewDetails} onScanAgain={handleScanAgain} />
+      )}
+      {screen === 'exhibit' && selectedExhibit && (
+        <section className="exhibit-bridge">
           <h1>{selectedExhibit.content[language]?.title || selectedExhibit.content.en.title}</h1>
-          <button type="button" className="scanner-button" onClick={handleScanAgain}>
-            Scan Again
-          </button>
+          <p>{selectedExhibit.content[language]?.story || selectedExhibit.content.en.story}</p>
         </section>
       )}
     </AppShell>

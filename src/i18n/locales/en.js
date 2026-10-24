@@ -46,7 +46,11 @@ export const en = {
     unknownExhibitMessage: 'Exhibit {id} was recognized, but it is not available in this guide. Keep scanning another exhibit code.',
     keepScanning: 'Keep scanning',
   },
-  result: {},
+  result: {
+    detected: 'Item detected!',
+    viewDetails: 'View Details',
+    scanAgain: 'Scan Again',
+  },
   exhibit: {},
   errors: {},
   accessibility: {},
