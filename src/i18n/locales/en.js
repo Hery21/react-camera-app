@@ -1,8 +1,8 @@
 // English UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const en = {
   app: {
-    eyebrow: 'Cultural Expo',
-    title: 'The Storytelling Mirror',
+    eyebrow: 'Ikatan Keluarga Tionghoa',
+    title: 'Pekan Seni Budaya 2026',
     tagline: 'Scan · Explore · Discover'
   },
   language: {

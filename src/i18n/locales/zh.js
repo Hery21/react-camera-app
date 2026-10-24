@@ -1,8 +1,8 @@
 // Mandarin Chinese (Simplified) UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const zh = {
   app: {
-    eyebrow: '文化展览',
-    title: 'The Storytelling Mirror',
+    eyebrow: 'Ikatan Keluarga Tionghoa',
+    title: 'Pekan Seni Budaya 2026',
     tagline: '扫描 · 探索 · 发现'
   },
   language: {

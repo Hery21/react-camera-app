@@ -1,8 +1,8 @@
 // Bahasa Indonesia UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const id = {
   app: {
-    eyebrow: 'Pameran Budaya',
-    title: 'The Storytelling Mirror',
+    eyebrow: 'Ikatan Keluarga Tionghoa',
+    title: 'Pekan Seni Budaya 2026',
     tagline: 'Pindai · Jelajahi · Temukan'
   },
   language: {
