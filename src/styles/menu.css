@@ -13,85 +13,146 @@
 
 .menu-screen {
   width: 100%;
-  max-width: 32rem;
+  max-width: 30rem;
   margin: 0 auto;
-  padding: var(--space-4) 0;
+  padding: var(--space-2) 0;
   text-align: center;
 }
 
 .menu-title {
-  margin: 0 0 var(--space-6);
+  margin: 0 0 var(--space-5);
   font-family: var(--font-family-display);
   color: var(--color-rosewood);
   font-size: clamp(1.4rem, 4vw, 2rem);
+  letter-spacing: 0.01em;
 }
 
 .menu-cards {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-3);
 }
 
+/* Pill card: vermilion gradient + double gold edge + subtle flourish watermark */
 .menu-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-1);
-  padding: var(--space-4);
-  border: 1px solid var(--color-antique-gold);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-rosewood);
+  padding: var(--space-3) var(--space-6);
+  border: 2px solid var(--color-antique-gold);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-vermilion) 0%, var(--color-vermilion-dark) 100%);
+  color: var(--color-surface);
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Gold flourish watermark behind content */
+.menu-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/button-flourish.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 55%;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.menu-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.menu-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
 }
 
 .menu-card-title {
   font-family: var(--font-family-display);
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: var(--color-vermilion);
+  letter-spacing: 0.02em;
+  color: var(--color-surface);
 }
 
 .menu-card-desc {
-  font-size: 0.9rem;
-  color: var(--color-text);
-  opacity: 0.8;
+  font-size: 0.875rem;
+  color: var(--color-surface);
+  opacity: 0.85;
+  line-height: 1.35;
+}
+
+.menu-card-badge {
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(26, 18, 16, 0.35);
+  border: 1px solid var(--color-antique-gold);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-antique-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .menu-card-active:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(74, 46, 38, 0.15);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.22),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.65);
 }
 
-.menu-card-disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.menu-card-badge {
-  position: absolute;
-  top: var(--space-2);
-  right: var(--space-2);
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--color-warm-ivory);
-  border: 1px solid var(--color-antique-gold);
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--color-rosewood);
+.menu-card-active:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.5);
 }
 
 .menu-card:focus-visible {
-  outline: 2px solid var(--color-vermilion);
+  outline: 3px solid var(--color-antique-gold);
   outline-offset: 3px;
 }
 
-@media (min-width: 640px) {
-  .menu-cards {
-    grid-template-columns: 1fr 1fr;
-  }
+/* Disabled cards read as placeholders, not as a dimmed red button */
+.menu-card-disabled {
+  background: var(--color-surface);
+  border: 2px dashed rgba(212, 175, 55, 0.7);
+  color: var(--color-rosewood);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.menu-card-disabled::before {
+  display: none;
+}
+
+.menu-card-disabled .menu-card-title {
+  color: var(--color-rosewood);
+}
+
+.menu-card-disabled .menu-card-desc {
+  color: var(--color-rosewood);
+  opacity: 0.7;
+}
+
+.menu-card-disabled .menu-card-badge {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.55);
+  color: var(--color-rosewood);
 }
