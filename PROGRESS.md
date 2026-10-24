@@ -676,3 +676,18 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Decisions made:** Added overflow-wrap, word-wrap, and word-break together (belt and suspenders) because browser support for each keyword varies slightly and the cost of redundancy is zero. Added the p selector separately so existing paragraphs get the same treatment as the wrapper. Arrow images went from 2rem to 2.75rem (32px to 44px) inside 48x48 buttons — 44px is the iOS recommended minimum touch target height. Navigation grid columns updated from 3rem to 48px to keep the arrows visually centered. min-width: 0 on the scroll area is the classic flex/grid fix for "child refuses to shrink below content width" — it is what actually allows overflow-x: hidden to work.
 **Next part:** Resume roadmap.
 **Commit:** 11cda9b
+
+## Fix — Reader text padding, arrow sizes, and single CTA
+
+**Status:** Complete
+**Goal:** Force text further from the reader frame edge, enlarge prev/next arrows, and remove the redundant Scan Next button leaving only Back to Result.
+**Files changed:** src/screens/ExhibitScreen.jsx (removed onScanNext button and prop), src/styles/exhibit.css (increased .exhibit-page-viewport inline padding to 7vw, added .exhibit-page-scroll-area overflow-x hidden, forced .exhibit-page-arrow to 48px button with 32px img, changed .exhibit-actions to flex center).
+**User-visible result:** Text has generous side margins inside the reader card. Arrows are noticeably bigger and have a 48px tap target. The footer shows a single centered Back to Result button.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open any exhibit article; (2) confirm text has clear left and right margins inside the frame; (3) confirm arrows are 32px and easy to tap; (4) confirm only Back to Result is visible at the bottom; (5) switch to Chinese and confirm wrapping is clean.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The 7vw inline padding on .exhibit-page-viewport may be too generous on very narrow phones (320px yields ~22px on each side). If observed, it can be dialed back to 5vw. The primary button removal leaves onScanNext as an unused prop from App.jsx; a future cleanup can drop it from the parent, but doing so now would touch more files than necessary.
+**Decisions made:** Used explicit pixel values for the arrows (48px button, 32px img) rather than rem to survive any root font-size weirdness. Changed .exhibit-actions from a 2-column grid to flex centered because only one button remains. Increased .exhibit-page-viewport inline padding from 5.5vw to 7vw so text sits comfortably away from the ornate frame even at narrow widths. Kept word-break: break-word on the text wrapper so mixed CJK/Latin strings cannot overflow.
+**Next part:** Resume roadmap.
+**Commit:** 57a8b6b
