@@ -14,7 +14,7 @@ const checks = [
   ['App wires article Back to Result', app.includes('onBackToResult={handleBackToResult}')],
   ['Scanner reports accepted exhibit upward', scanner.includes('onExhibitDetected')],
   ['Scanner auto-start is scheduled', scanner.includes('queueMicrotask') && scanner.includes('handleStart')],
-  ['Scanner cleanup still stops adapter', scanner.includes('scannerRef.current.stop()')],
+  ['Scanner cleanup still stops adapter', scanner.includes('releaseCamera') && scanner.includes('scannerRef.current = null')],
   ['Result exposes View Details', result.includes('onViewDetails')],
   ['Result exposes Scan Again', result.includes('onScanAgain')],
   ['Article top Back returns to Result', app.includes("screen === 'exhibit'") && app.includes('handleBackToResult')],

@@ -16,34 +16,42 @@ function check(label, condition, detail) {
 }
 
 // 1. handleExhibitDetected must be wrapped in useCallback in App.jsx.
-//    Without this, every parent render (e.g. language change) recreates
-//    the handler, cascading through ScannerScreen's useCallback chain and
-//    re-triggering the auto-start effect, restarting the camera.
 check(
   'handleExhibitDetected is memoized with useCallback',
   /const handleExhibitDetected = useCallback\(/.test(app),
   'expected useCallback around handleExhibitDetected in App.jsx',
 )
 
-// 2. ScannerScreen uses the latest-ref pattern for auto-start so language
-//    changes cannot restart the camera.
-check(
-  'ScannerScreen uses handleStartRef',
-  scanner.includes('handleStartRef'),
-  'expected handleStartRef latest-ref pattern in ScannerScreen',
-)
-
+// 2. ScannerScreen uses latest-ref pattern and empty-deps auto-start effect.
+check('ScannerScreen uses handleStartRef', scanner.includes('handleStartRef'))
 check(
   'Auto-start effect has empty deps',
   /\}, \[\]\)\s*$/m.test(scanner.split('// Auto-start once on mount')[1] || ''),
-  'expected auto-start effect to end with "}, [])"',
 )
 
-// 3. Adapter guards against the stop-during-start race.
+// 3. ScannerScreen explicitly releases tracks on unmount.
+check(
+  'ScannerScreen cleanup releases tracks and srcObject',
+  scanner.includes('releaseCamera') &&
+    (scanner.includes('srcObject = null') || scanner.includes('srcObject=null')),
+  'expected releaseCamera helper with srcObject nulling',
+)
+
+check(
+  'releaseCamera stops every media track',
+  scanner.includes('getTracks') && scanner.includes('track.stop'),
+)
+
+// 4. Adapter releases pending controls if stopped mid-init.
 check(
   'qrScanner releases pending controls if stopped mid-init',
   adapter.includes('pendingControls') && adapter.includes('if (stopped)'),
-  'expected pendingControls handling in qrScanner.start()',
+)
+
+// 5. Adapter nulls srcObject in the pendingControls race path.
+check(
+  'qrScanner nulls srcObject in race path',
+  adapter.includes('srcObject = null'),
 )
 
 if (failed > 0) {

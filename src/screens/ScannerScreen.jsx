@@ -23,6 +23,37 @@ function formatTranslation(language, key, replacements = {}) {
   return value
 }
 
+// Belt-and-suspenders camera release. Called on every exit path. Stops the
+// adapter (which stops @zxing/browser's controls) AND explicitly stops every
+// media track AND detaches the video element's srcObject. Some browsers
+// (notably Safari) do not turn off the camera LED until srcObject is nulled.
+function releaseCamera(videoElement, scanner) {
+  if (scanner) {
+    try {
+      scanner.stop()
+    } catch {
+      // ignore
+    }
+  }
+  if (videoElement) {
+    try {
+      const stream = videoElement.srcObject
+      if (stream && typeof stream.getTracks === 'function') {
+        stream.getTracks().forEach((track) => {
+          try {
+            track.stop()
+          } catch {
+            // ignore
+          }
+        })
+      }
+      videoElement.srcObject = null
+    } catch {
+      // ignore
+    }
+  }
+}
+
 export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
   const [scannerState, setScannerState] = useState('idle')
   const [inlineError, setInlineError] = useState(null)
@@ -32,10 +63,8 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
   const acceptedRef = useRef(false)
 
   function stopScanner() {
-    if (scannerRef.current) {
-      scannerRef.current.stop()
-      scannerRef.current = null
-    }
+    releaseCamera(videoRef.current, scannerRef.current)
+    scannerRef.current = null
     acceptedRef.current = false
   }
 
@@ -92,27 +121,26 @@ export function ScannerScreen({ language, onReturnHome, onExhibitDetected }) {
 
   // Latest-ref pattern: keeps the auto-start effect's dependency array empty
   // so language changes (which re-render the parent App) cannot re-trigger
-  // the effect and restart the camera. The ref always holds the latest
-  // handleStart closure, so if its deps ever change the newest version is used.
+  // the effect and restart the camera.
   const handleStartRef = useRef(handleStart)
   useEffect(() => {
     handleStartRef.current = handleStart
   }, [handleStart])
 
-  // Auto-start once on mount. Empty deps mean this effect runs exactly once
-  // when ScannerScreen mounts and cleanup runs exactly once on unmount.
-  // Language changes do NOT re-trigger this effect.
+  // Auto-start once on mount. Empty deps means this effect runs exactly once
+  // when ScannerScreen mounts, and cleanup runs exactly once on unmount.
+  // Cleanup explicitly stops every media track and detaches srcObject so the
+  // camera LED turns off immediately regardless of adapter state.
   useEffect(() => {
     let cancelled = false
+    const videoElement = videoRef.current
     queueMicrotask(() => {
       if (!cancelled) void handleStartRef.current()
     })
     return () => {
       cancelled = true
-      if (scannerRef.current) {
-        scannerRef.current.stop()
-        scannerRef.current = null
-      }
+      releaseCamera(videoElement, scannerRef.current)
+      scannerRef.current = null
     }
   }, [])
 

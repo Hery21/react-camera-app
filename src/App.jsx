@@ -65,10 +65,10 @@ function App() {
     }
   }
 
-  // Stable reference: ScannerScreen's auto-start effect depends on this
-  // handler indirectly (via handleDecode -> handleStart). If this were
-  // recreated on every render, any App state change (language, etc.) would
-  // restart the scanner's camera. useCallback keeps it stable across renders.
+  // Stable reference across renders. If this were a plain function, every
+  // App re-render (language change, etc.) would create a new onExhibitDetected,
+  // cascading through ScannerScreen's useCallback chain and re-triggering the
+  // auto-start effect — restarting the camera mid-session.
   const handleExhibitDetected = useCallback((exhibit) => {
     setScannedExhibitIds((current) => {
       const next = addScannedExhibitId(current, exhibit.id)

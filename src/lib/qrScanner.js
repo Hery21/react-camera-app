@@ -11,15 +11,15 @@
 // - onDecode fires at most once per distinct decoded text (deduped against
 //   the previous text) so a held QR does not fire 60 times per second.
 // - The adapter does NOT auto-stop after decode; the screen decides when to
-//   accept a result and calls stop(). Rejecting an invalid payload keeps the
-//   scanner alive so the visitor can try a different exhibit.
+//   accept a result and calls stop().
 // - Dynamic import of @zxing/browser keeps this module Node-safe (for the
 //   self-check) and lets Vite split the ~150 KB decoder out of the initial
 //   bundle.
-// - The start() method guards against the race where stop() is called while
-//   the dynamic import or decodeFromConstraints is still pending. Without
-//   this guard, the pending controls would be assigned to a stopped scanner
-//   and the media stream would never be released.
+// - Race guard: if stop() is called while the dynamic import or
+//   decodeFromConstraints is still pending, the pending controls are
+//   released as soon as they resolve. Without this guard the media stream
+//   would be assigned to a stopped scanner and never released, leaving the
+//   camera LED on after the user leaves the scanner screen.
 
 export function createQrScanner() {
   let controls = null
@@ -50,12 +50,30 @@ export function createQrScanner() {
       )
 
       // If stop() was called while the stream was initializing, immediately
-      // release the pending controls to prevent the media stream leaking.
+      // release the pending controls. Also detach the video element's
+      // srcObject so the browser fully releases the camera LED indicator.
       if (stopped) {
         try {
           pendingControls.stop()
         } catch {
           // ignore — stream may already be gone
+        }
+        try {
+          if (videoElement && videoElement.srcObject) {
+            const stream = videoElement.srcObject
+            if (stream && typeof stream.getTracks === 'function') {
+              stream.getTracks().forEach((track) => {
+                try {
+                  track.stop()
+                } catch {
+                  // ignore
+                }
+              })
+            }
+            videoElement.srcObject = null
+          }
+        } catch {
+          // ignore
         }
         return
       }
