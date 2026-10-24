@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
-import { getExhibitContent } from '../lib/getExhibitContent.js'
+import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
 export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext }) {
-  const content = getExhibitContent(exhibit, language)
+  const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
   const sections = useMemo(() => {
     const available = [{ id: 'story', label: getTranslation(language, 'exhibit.story') }]
     if (content.symbolism) {
@@ -32,6 +32,13 @@ export function ExhibitScreen({ language, exhibit, onBackToResult, onScanNext })
           {content.summary && <p className="exhibit-summary">{content.summary}</p>}
         </div>
       </header>
+
+      {isFallback && (
+        <p className="content-language-notice exhibit-language-notice" role="status">
+          {getTranslation(language, 'exhibit.translationUnavailable')} {getTranslation(language, 'language.' + sourceLanguage + 'FullName')}
+          .
+        </p>
+      )}
 
       {sections.length > 1 && (
         <nav className="exhibit-tabs" aria-label={getTranslation(language, 'exhibit.sections')}>

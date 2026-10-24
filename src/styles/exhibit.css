@@ -51,6 +51,14 @@
   margin: var(--space-4) 0 0;
   line-height: 1.6;
 }
+.exhibit-language-notice {
+  width: 100%;
+  margin: 0;
+  border-right: 1px solid var(--color-antique-gold);
+  border-left: 1px solid var(--color-antique-gold);
+  border-radius: 0;
+}
+
 .exhibit-tabs {
   display: flex;
   gap: var(--space-1);

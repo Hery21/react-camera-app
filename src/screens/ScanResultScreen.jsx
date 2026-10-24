@@ -1,8 +1,8 @@
 import { getTranslation } from '../i18n/getTranslation.js'
-import { getExhibitContent } from '../lib/getExhibitContent.js'
+import { resolveExhibitContent } from '../lib/getExhibitContent.js'
 
 export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain }) {
-  const content = getExhibitContent(exhibit, language)
+  const { content, sourceLanguage, isFallback } = resolveExhibitContent(exhibit, language)
 
   return (
     <section className="scan-result-screen" aria-labelledby="scan-result-title">
@@ -22,6 +22,13 @@ export function ScanResultScreen({ language, exhibit, onViewDetails, onScanAgain
           {content.period && <p className="scan-result-period">{content.period}</p>}
           {content.summary && <p className="scan-result-summary">{content.summary}</p>}
         </div>
+
+        {isFallback && (
+          <p className="content-language-notice" role="status">
+            {getTranslation(language, 'exhibit.translationUnavailable')}{' '}
+            {getTranslation(language, 'language.' + sourceLanguage + 'FullName')}.
+          </p>
+        )}
 
         <div className="scan-result-actions">
           <button type="button" className="scan-result-primary" onClick={onViewDetails}>

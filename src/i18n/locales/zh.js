@@ -60,6 +60,7 @@ export const zh = {
     gallery: '图集',
     scanNext: '扫描下一件展品',
     backToResult: '返回识别结果',
+    translationUnavailable: '此展品暂未提供所选语言版本。当前显示',
   },
   errors: {},
   accessibility: {},

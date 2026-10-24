@@ -59,6 +59,7 @@ export const en = {
     gallery: 'Gallery',
     scanNext: 'Scan Next Exhibit',
     backToResult: 'Back to Result',
+    translationUnavailable: 'This exhibit is not yet available in the selected language. Showing',
   },
   errors: {},
   accessibility: {},

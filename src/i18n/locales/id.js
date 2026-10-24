@@ -60,6 +60,7 @@ export const id = {
     gallery: 'Galeri',
     scanNext: 'Pindai Pameran Berikutnya',
     backToResult: 'Kembali ke Hasil',
+    translationUnavailable: 'Pameran ini belum tersedia dalam bahasa yang dipilih. Menampilkan',
   },
   errors: {},
   accessibility: {},
