@@ -4,6 +4,7 @@ import { getTranslation } from './i18n/getTranslation.js'
 import { applyDocumentLanguage, getInitialLanguage, persistLanguage } from './i18n/language.js'
 import { AppShell } from './components/AppShell.jsx'
 import { WelcomeScreen } from './screens/WelcomeScreen.jsx'
+import { MenuScreen } from './screens/MenuScreen.jsx'
 import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
@@ -30,6 +31,10 @@ function App() {
   }
 
   function handleStartExploring() {
+    setScreen('menu')
+  }
+
+  function handleSelectTour() {
     setScreen('scanner')
   }
 
@@ -40,6 +45,10 @@ function App() {
   function handleBackToWelcome() {
     setSelectedExhibit(null)
     setAdminEditingExhibitId(null)
+    setScreen('welcome')
+  }
+
+  function handleMenuBack() {
     setScreen('welcome')
   }
 
@@ -86,9 +95,11 @@ function App() {
             ? handleScanAgain
             : screen === 'scanner'
               ? handleBackToWelcome
-              : screen === 'admin'
-                ? handleAdminBack
-                : undefined
+              : screen === 'menu'
+                ? handleMenuBack
+                : screen === 'admin'
+                  ? handleAdminBack
+                  : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
@@ -99,6 +110,7 @@ function App() {
           onStartAdmin={handleStartAdmin}
         />
       )}
+      {screen === 'menu' && <MenuScreen language={language} onSelectTour={handleSelectTour} />}
       {screen === 'scanner' && (
         <ScannerScreen language={language} onReturnHome={handleBackToWelcome} onExhibitDetected={handleExhibitDetected} />
       )}

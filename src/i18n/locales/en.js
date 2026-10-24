@@ -1,8 +1,9 @@
 // English UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const en = {
   app: {
-    eyebrow: 'Ikatan Keluarga Tionghoa',
-    title: 'Pekan Seni Budaya 2026',
+    eyebrow: 'Cultural Expo',
+    title: 'The Storytelling Mirror',
+    tagline: 'Scan · Explore · Discover'
   },
   language: {
     label: 'Language',
@@ -11,16 +12,28 @@ export const en = {
     zh: '中文',
     enFullName: 'English',
     idFullName: 'Bahasa Indonesia',
-    zhFullName: 'Mandarin Chinese',
+    zhFullName: 'Mandarin Chinese'
   },
   welcome: {
     explanation: 'Scan the QR code beside any exhibit to uncover its story.',
     cameraNotice: 'This experience uses your camera. You will be asked for permission when you start.',
     subTagline: 'More than just a scan, it is a journey through heritage.',
-    cta: 'Start Scanning',
+    cta: 'Start Exploring'
+  },
+  menu: {
+    title: 'Choose your journey',
+    tour: 'Tour',
+    tourDesc: 'Scan exhibits to explore their stories',
+    info: 'Extra Information',
+    infoDesc: 'Learn more about Peranakan culture',
+    quiz: 'Quiz',
+    quizDesc: 'Test what you have learned',
+    collage: 'Photo and Collage',
+    collageDesc: 'Take a keepsake home',
+    comingSoon: 'Coming soon',
+    back: 'Back to welcome'
   },
   scanner: {
-    label: 'Exhibit QR scanner',
     back: 'Back to welcome',
     instructions: 'Point your camera at the exhibit QR code.',
     start: 'Start Camera',
@@ -28,44 +41,18 @@ export const en = {
     starting: 'Starting…',
     requesting: 'Requesting camera…',
     cameraOff: 'Camera off',
+    error: 'Camera error',
     tryAgain: 'Try Again',
-    returnHome: 'Return Home',
+    cancel: 'Cancel',
     scanAnother: 'Scan Another',
+    viewDetails: 'View Details',
     matched: 'Matched',
-    permissionDeniedTitle: 'Camera access is blocked',
-    permissionDeniedMessage:
-      'Camera access is required to scan exhibit codes. Allow camera access for this site in your browser or device settings, then try again.',
-    cameraUnavailableTitle: 'Camera unavailable',
-    cameraUnavailableMessage: 'No usable camera was found on this device.',
-    scannerErrorTitle: 'Unable to start the camera',
-    scannerErrorMessage: 'The camera could not be started. Check camera access and try again.',
-    invalidCodeTitle: 'Not an exhibit code',
-    invalidCodeMessage: 'This QR code is not supported by this experience. Keep the camera pointed at an exhibit QR code.',
-    unknownExhibitTitle: 'Exhibit not available',
-    unknownExhibitMessage: 'Exhibit {id} was recognized, but it is not available in this guide. Keep scanning another exhibit code.',
-    keepScanning: 'Keep scanning',
+    invalidCode: 'Invalid code',
+    unknownExhibit: 'Unknown exhibit',
+    keepScanning: 'keep scanning'
   },
-  result: { detected: 'Item detected!', viewDetails: 'View Details', scanAgain: 'Scan Again' },
-  exhibit: {
-    articleLabel: 'Exhibit Story',
-    sections: 'Exhibit sections',
-    story: 'Story',
-    symbolism: 'Symbolism',
-    gallery: 'Gallery',
-    scanNext: 'Scan Next Exhibit',
-    backToInfo: 'Back to Info',
-    textSize: 'Text size',
-    decreaseText: 'Decrease text size',
-    increaseText: 'Increase text size',
-    backToResult: 'Back to Info',
-    previous: 'Previous',
-    next: 'Next',
-    page: 'Page',
-    translationUnavailable: 'This exhibit is not yet available in the selected language. Showing',
-  },
+  result: {},
+  exhibit: {},
   errors: {},
-  progress: {
-    scanned: 'Scanned',
-  },
-  accessibility: {},
+  accessibility: {}
 }

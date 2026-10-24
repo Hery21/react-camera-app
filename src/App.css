@@ -1,6 +1,7 @@
 @import './styles/app-shell.css';
 @import './styles/scan-progress.css';
 @import './styles/welcome.css';
+@import './styles/menu.css';
 @import './styles/scanner.css';
 @import './styles/scan-result.css';
 @import './styles/exhibit.css';

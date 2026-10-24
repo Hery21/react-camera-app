@@ -1,6 +1,10 @@
 // Bahasa Indonesia UI strings. Exhibit content lives in src/data/exhibits.js, not here.
 export const id = {
-  app: { eyebrow: 'Ikatan Keluarga Tionghoa', title: 'Pekan Seni Budaya 2026' },
+  app: {
+    eyebrow: 'Pameran Budaya',
+    title: 'The Storytelling Mirror',
+    tagline: 'Pindai · Jelajahi · Temukan'
+  },
   language: {
     label: 'Bahasa',
     en: 'EN',
@@ -8,16 +12,28 @@ export const id = {
     zh: '中文',
     enFullName: 'English',
     idFullName: 'Bahasa Indonesia',
-    zhFullName: 'Bahasa Mandarin',
+    zhFullName: 'Bahasa Mandarin'
   },
   welcome: {
     explanation: 'Pindai kode QR di samping setiap pameran untuk mengungkap ceritanya.',
     cameraNotice: 'Pengalaman ini menggunakan kamera Anda. Anda akan diminta izin saat memulai.',
     subTagline: 'Lebih dari sekadar pindai, ini adalah perjalanan melalui warisan budaya.',
-    cta: 'Mulai Memindai',
+    cta: 'Mulai Menjelajah'
+  },
+  menu: {
+    title: 'Pilih perjalanan Anda',
+    tour: 'Tur',
+    tourDesc: 'Pindai pameran untuk menjelajahi ceritanya',
+    info: 'Informasi Tambahan',
+    infoDesc: 'Pelajari lebih lanjut tentang budaya Peranakan',
+    quiz: 'Kuis',
+    quizDesc: 'Uji apa yang telah Anda pelajari',
+    collage: 'Foto dan Kolase',
+    collageDesc: 'Bawa pulang kenang-kenangan',
+    comingSoon: 'Segera hadir',
+    back: 'Kembali ke beranda'
   },
   scanner: {
-    label: 'Pemindai kode QR pameran',
     back: 'Kembali ke beranda',
     instructions: 'Arahkan kamera Anda ke kode QR pameran.',
     start: 'Nyalakan Kamera',
@@ -25,44 +41,18 @@ export const id = {
     starting: 'Memulai…',
     requesting: 'Meminta izin kamera…',
     cameraOff: 'Kamera mati',
+    error: 'Kesalahan kamera',
     tryAgain: 'Coba Lagi',
-    returnHome: 'Kembali ke Beranda',
+    cancel: 'Batal',
     scanAnother: 'Pindai Lagi',
+    viewDetails: 'Lihat Detail',
     matched: 'Cocok',
-    permissionDeniedTitle: 'Akses kamera diblokir',
-    permissionDeniedMessage:
-      'Akses kamera diperlukan untuk memindai kode pameran. Izinkan akses kamera untuk situs ini melalui pengaturan browser atau perangkat, lalu coba lagi.',
-    cameraUnavailableTitle: 'Kamera tidak tersedia',
-    cameraUnavailableMessage: 'Tidak ada kamera yang dapat digunakan pada perangkat ini.',
-    scannerErrorTitle: 'Kamera tidak dapat dinyalakan',
-    scannerErrorMessage: 'Kamera tidak dapat dinyalakan. Periksa akses kamera lalu coba lagi.',
-    invalidCodeTitle: 'Bukan kode pameran',
-    invalidCodeMessage: 'Kode QR ini tidak didukung oleh pengalaman ini. Arahkan kamera ke kode QR pameran.',
-    unknownExhibitTitle: 'Pameran tidak tersedia',
-    unknownExhibitMessage: 'Pameran {id} dikenali, tetapi belum tersedia dalam panduan ini. Lanjutkan memindai kode pameran lain.',
-    keepScanning: 'Lanjutkan memindai',
+    invalidCode: 'Kode tidak valid',
+    unknownExhibit: 'Pameran tidak dikenal',
+    keepScanning: 'terus pindai'
   },
-  result: { detected: 'Pameran ditemukan!', viewDetails: 'Lihat Detail', scanAgain: 'Pindai Lagi' },
-  exhibit: {
-    articleLabel: 'Cerita Pameran',
-    sections: 'Bagian pameran',
-    story: 'Cerita',
-    symbolism: 'Simbolisme',
-    gallery: 'Galeri',
-    scanNext: 'Pindai Pameran Berikutnya',
-    backToInfo: 'Kembali ke Info',
-    textSize: 'Ukuran teks',
-    decreaseText: 'Perkecil ukuran teks',
-    increaseText: 'Perbesar ukuran teks',
-    backToResult: 'Kembali ke Info',
-    previous: 'Sebelumnya',
-    next: 'Berikutnya',
-    page: 'Halaman',
-    translationUnavailable: 'Pameran ini belum tersedia dalam bahasa yang dipilih. Menampilkan',
-  },
+  result: {},
+  exhibit: {},
   errors: {},
-  progress: {
-    scanned: 'Dipindai',
-  },
-  accessibility: {},
+  accessibility: {}
 }
