@@ -16,6 +16,7 @@ function App() {
   const [language, setLanguage] = useState(getInitialLanguage)
   const [screen, setScreen] = useState('welcome')
   const [selectedExhibit, setSelectedExhibit] = useState(null)
+  const [adminEditingExhibitId, setAdminEditingExhibitId] = useState(null)
   const [scannedExhibitIds, setScannedExhibitIds] = useState(() => loadScannedExhibitIds(exhibits.map((exhibit) => exhibit.id)))
 
   useEffect(() => {
@@ -38,7 +39,16 @@ function App() {
 
   function handleBackToWelcome() {
     setSelectedExhibit(null)
+    setAdminEditingExhibitId(null)
     setScreen('welcome')
+  }
+
+  function handleAdminBack() {
+    if (adminEditingExhibitId) {
+      setAdminEditingExhibitId(null)
+    } else {
+      handleBackToWelcome()
+    }
   }
 
   function handleExhibitDetected(exhibit) {
@@ -74,16 +84,18 @@ function App() {
           ? handleBackToResult
           : screen === 'scan-result'
             ? handleScanAgain
-            : screen === 'scanner' || screen === 'admin'
+            : screen === 'scanner'
               ? handleBackToWelcome
-              : undefined
+              : screen === 'admin'
+                ? handleAdminBack
+                : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
       {screen === 'welcome' && (
-        <WelcomeScreen 
-          language={language} 
-          onStart={handleStartExploring} 
+        <WelcomeScreen
+          language={language}
+          onStart={handleStartExploring}
           onStartAdmin={handleStartAdmin}
         />
       )}
@@ -102,8 +114,15 @@ function App() {
           onScanNext={handleScanAgain}
         />
       )}
-      {screen === 'admin' && <AdminScreen onBack={handleBackToWelcome} />}
-      
+      {screen === 'admin' && (
+        <AdminScreen
+          editingExhibitId={adminEditingExhibitId}
+          onEdit={setAdminEditingExhibitId}
+          onDone={() => setAdminEditingExhibitId(null)}
+          onBack={handleBackToWelcome}
+        />
+      )}
+
       <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>
   )

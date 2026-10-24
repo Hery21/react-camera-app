@@ -1,65 +1,87 @@
 import { useState } from 'react'
 import { exhibits } from '../data/exhibits.js'
 
-export function AdminScreen({ onBack }) {
-  const [editingId, setEditingId] = useState(null)
+export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
   const [formData, setFormData] = useState(null)
+  const [saveStatus, setSaveStatus] = useState(null)
 
-  function handleEdit(exhibit) {
-    setEditingId(exhibit.id)
-    setFormData(JSON.parse(JSON.stringify(exhibit)))
+  const editingExhibit = editingExhibitId ? exhibits.find((ex) => ex.id === editingExhibitId) : null
+
+  if (editingExhibit && !formData) {
+    setFormData(JSON.parse(JSON.stringify(editingExhibit)))
   }
 
   function handleChange(e) {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   function handleLangChange(lang, field, value) {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       content: {
         ...prev.content,
-        [lang]: { ...prev.content[lang], [field]: value }
-      }
+        [lang]: { ...prev.content[lang], [field]: value },
+      },
     }))
   }
 
   function handleImagesChange(e) {
     try {
       const parsed = JSON.parse(e.target.value)
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         content: {
           ...prev.content,
-          en: { ...prev.content.en, inlineImages: parsed }
-        }
+          en: { ...prev.content.en, inlineImages: parsed },
+        },
       }))
     } catch {
       // Ignore invalid JSON while typing
     }
   }
 
-  function handleExport() {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(formData, null, 2))
-    const downloadAnchorNode = document.createElement('a')
-    downloadAnchorNode.setAttribute('href', dataStr)
-    downloadAnchorNode.setAttribute('download', formData.id + '.json')
-    document.body.appendChild(downloadAnchorNode)
-    downloadAnchorNode.click()
-    downloadAnchorNode.remove()
+  async function handleSave() {
+    setSaveStatus('saving')
+    try {
+      const res = await fetch('/api/admin/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ exhibit: formData }),
+      })
+      if (!res.ok) {
+        throw new Error('Save failed with status ' + res.status)
+      }
+      setSaveStatus('saved')
+      setTimeout(() => {
+        window.location.reload()
+      }, 600)
+    } catch (err) {
+      setSaveStatus('error: ' + String(err))
+    }
   }
 
-  if (editingId && formData) {
+  function handleDone() {
+    setFormData(null)
+    setSaveStatus(null)
+    onDone()
+  }
+
+  if (editingExhibitId && formData) {
     return (
       <section className="admin-screen">
         <header className="admin-header">
-          <h1>Editing {editingId}</h1>
+          <h1>Editing {editingExhibitId}</h1>
           <div className="admin-header-actions">
-            <button type="button" onClick={handleExport} className="admin-btn-primary">Export JSON</button>
-            <button type="button" onClick={() => setEditingId(null)} className="admin-btn-secondary">Done</button>
+            <button type="button" onClick={handleSave} className="admin-btn-primary" disabled={saveStatus === 'saving'}>
+              {saveStatus === 'saving' ? 'Saving...' : 'Save'}
+            </button>
+            <button type="button" onClick={handleDone} className="admin-btn-secondary">Done</button>
           </div>
         </header>
+
+        {saveStatus === 'saved' && <p className="admin-save-status admin-save-status-ok">Saved. Reloading to reflect source change...</p>}
+        {saveStatus && saveStatus.startsWith('error') && <p className="admin-save-status admin-save-status-err">{saveStatus}</p>}
 
         <div className="admin-form">
           <label>
@@ -67,7 +89,7 @@ export function AdminScreen({ onBack }) {
             <input type="text" name="coverImage" value={formData.coverImage || ''} onChange={handleChange} />
           </label>
 
-          {['en', 'id', 'zh'].map(lang => (
+          {['en', 'id', 'zh'].map((lang) => (
             <fieldset key={lang} className="admin-fieldset">
               <legend>{lang.toUpperCase()}</legend>
               <label>
@@ -116,9 +138,11 @@ export function AdminScreen({ onBack }) {
             </div>
             <div className="admin-card-body">
               <p><strong>EN:</strong> {exhibit.content.en?.title || 'Missing'}</p>
+              <p><strong>ID:</strong> {exhibit.content.id?.title || 'Missing'}</p>
+              <p><strong>ZH:</strong> {exhibit.content.zh?.title || 'Missing'}</p>
             </div>
             <div className="admin-card-actions">
-              <button type="button" className="admin-btn-primary" onClick={() => handleEdit(exhibit)}>Edit</button>
+              <button type="button" className="admin-btn-primary" onClick={() => onEdit(exhibit.id)}>Edit</button>
             </div>
           </div>
         ))}
