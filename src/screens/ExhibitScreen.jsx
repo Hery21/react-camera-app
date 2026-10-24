@@ -44,10 +44,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
     setTextSize(nextSize)
   }
 
-  // Clamp displayed page index to the current language's page count so
-  // switching languages (which can change pages.length) does not show an
-  // out-of-range page. State may drift higher than length, but the next
-  // prev/next click corrects it because handlers use safePage as the base.
   const safePage = Math.min(page, pages.length - 1)
   const currentPage = pages[safePage] || {}
   const paragraphs = currentPage.text ? currentPage.text.split('\n') : []
@@ -93,11 +89,6 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
           <img src={frameBl} alt="" className="exhibit-reader-corner exhibit-reader-corner-bl" />
           <img src={frameBr} alt="" className="exhibit-reader-corner exhibit-reader-corner-br" />
         </div>
-        {exhibit.coverImage && (
-          <div className="exhibit-article-cover-wrap">
-            <img className="exhibit-article-cover" src={exhibit.coverImage} alt={content?.coverAlt || ''} />
-          </div>
-        )}
         <div className="exhibit-section-heading">
           <h2 id="exhibit-section-title">{selectedLabel}</h2>
         </div>
@@ -117,6 +108,9 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
         ) : (
           <div className="exhibit-page-viewport">
             <div className="exhibit-page-scroll-area">
+              {safePage === 0 && selectedSection === 'story' && exhibit.coverImage && (
+                <img className="exhibit-page-cover" src={exhibit.coverImage} alt={content?.coverAlt || ''} />
+              )}
               {currentPage.image?.src && (
                 <img className="exhibit-page-image" src={currentPage.image.src} alt={currentPage.image.alt || ''} />
               )}
