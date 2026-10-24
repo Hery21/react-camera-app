@@ -19,7 +19,8 @@
     "check:scanner": "node scripts/check-qr-scanner.mjs",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "check:flow": "node scripts/check-visitor-flow.mjs"
+    "check:flow": "node scripts/check-visitor-flow.mjs",
+    "check:exhibit-content": "node scripts/check-exhibit-content.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
