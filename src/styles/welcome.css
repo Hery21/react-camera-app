@@ -1,18 +1,10 @@
-/* Welcome screen — Phase 6.2b visual refactor.
-   Three goals:
-   1. Brocade background image.
-   2. Language toggle blended with the ornate mirror theme.
-   3. All welcome text sized and positioned with container queries
-      relative to the mirror stage (cqw), NOT the viewport, so text
-      stays anchored inside the mirror at every zoom level. */
-
 .app--welcome {
   height: 100dvh;
   overflow: hidden;
   background-color: var(--color-vermilion-dark);
   background-image: url('/red-brocade-bg.webp');
-  background-size: cover;
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -23,14 +15,12 @@
   overflow: hidden;
 }
 
-/* Header floats over the mirror crown instead of stacking above it, so
-   the composition reads as one continuous piece rather than two boxes. */
 .app--welcome .app-header {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   z-index: 10;
+  top: 0;
+  right: 0;
+  left: 0;
   padding: var(--space-3) var(--space-4);
   background: linear-gradient(to bottom, rgba(26, 18, 16, 0.45), transparent);
   pointer-events: none;
@@ -41,11 +31,9 @@
   pointer-events: auto;
 }
 
-/* Language toggle restyled to blend with the ornate frame: semi-transparent
-   rosewood pill with gold border, cream text, gold active state. */
 .app--welcome .language-toggle {
-  background: rgba(74, 46, 38, 0.55);
   border: 1px solid var(--color-antique-gold);
+  background: rgba(74, 46, 38, 0.55);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
@@ -66,26 +54,15 @@
 .welcome-screen {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   text-align: center;
 }
 
-/* Mirror stage is a container-query context.
-   Width strategy:
-   - Portrait: fit viewport width (capped at 40rem so it does not become
-     comically large on a tablet).
-   - Landscape: cap by viewport height (0.75 multiplier assumes the mirror
-     image is roughly 3:4 width-to-height) so the ornate frame never
-     overflows.
-   Aspect-ratio: 3 / 4 matches the current welcome-mirror.webp. If the
-   image is a different ratio, update BOTH the aspect-ratio value AND the
-   0.75 multiplier in the width calc below. */
 .welcome-mirror-stage {
   position: relative;
-  width: min(100vw, calc(100dvh * 0.75), 40rem);
+  width: min(106vw, 44rem);
   aspect-ratio: 3 / 4;
   container-type: inline-size;
 }
@@ -99,19 +76,16 @@
   filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.4));
 }
 
-/* Text block anchored inside the mirror face using percentages of the
-   stage's own height — works at any zoom because the stage height is
-   fixed by aspect-ratio, not by content. */
 .welcome-glass-copy {
   position: absolute;
-  top: 22%;
+  top: 27%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
   display: flex;
+  width: 58%;
+  transform: translateX(-50%);
   flex-direction: column;
   align-items: center;
-  gap: 1cqw;
+  gap: 1.2cqw;
   color: var(--color-surface);
   text-align: center;
   text-shadow: 0 1px 5px rgba(74, 46, 38, 0.55);
@@ -122,7 +96,7 @@
   margin: 0;
   color: var(--color-antique-gold);
   font-family: var(--font-family-display);
-  font-size: clamp(0.65rem, 2.2cqw, 1rem);
+  font-size: clamp(0.62rem, 2.3cqw, 1.05rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1.05;
@@ -132,31 +106,36 @@
   margin: 0;
   color: var(--color-surface);
   font-family: var(--font-family-display);
-  font-size: clamp(1.1rem, 5.5cqw, 2.2rem);
+  font-size: clamp(1.15rem, 5.7cqw, 2.35rem);
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
-/* CTA sits inside the lower part of the mirror face. Uses percentage
-   width of the stage (34%) so it is always proportionally centered under
-   the title and never pokes past the ornate frame. */
+.welcome-ikt-icon {
+  display: block;
+  width: clamp(1.6rem, 10cqw, 4.25rem);
+  height: auto;
+  margin-top: 0.4cqw;
+  object-fit: contain;
+}
+
 .welcome-cta {
   position: absolute;
-  top: 55%;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 3;
+  top: 68%;
+  left: 50%;
   min-height: 44px;
-  width: 34%;
-  max-width: 14rem;
+  width: 38%;
+  max-width: 15rem;
+  transform: translateX(-50%);
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-surface);
   border-radius: var(--radius-pill);
   background: var(--color-vermilion);
   color: var(--color-surface);
   font: inherit;
-  font-size: clamp(0.75rem, 2.2cqw, 1rem);
+  font-size: clamp(0.72rem, 2.35cqw, 1.02rem);
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
@@ -183,18 +162,22 @@
   border: 0;
 }
 
-/* Very narrow phones: give the text a bit more horizontal room inside
-   the mirror face so long Indonesian or Chinese titles do not clip. */
-@media (max-width: 360px) {
-  .welcome-glass-copy {
-    width: 65%;
+@media (orientation: landscape) {
+  .welcome-mirror-stage {
+    width: min(106dvh, 44rem);
+  }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .welcome-mirror-stage {
+    width: 110vw;
   }
 
-  .welcome-title {
-    font-size: clamp(1rem, 5.8cqw, 1.6rem);
+  .welcome-glass-copy {
+    width: 62%;
   }
 
   .welcome-cta {
-    width: 38%;
+    width: 42%;
   }
 }
