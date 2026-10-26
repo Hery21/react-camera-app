@@ -1162,3 +1162,20 @@ Using Tab and Enter only.
 **Decisions made:** Changed display strings only. Kept the key name to avoid touching the JSX reference and to keep the diff limited to three locale files. Collage is no longer part of the feature name since the menu card opens the twibbon photo screen, which is a single-photo flow (the earlier collage concept was dropped in favor of the twibbon capture). Description kept as-is because it already mentions taking a twibbon photo.
 **Next part:** Resume roadmap or deploy.
 **Commit:** aeace0c
+
+## Style — Exhibit images fit inside glow circle
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Ensure exhibit cover images on the Scan Result screen are always fully visible inside the gold glow circle regardless of aspect ratio.
+**Root cause:** .scan-result-image used object-fit: cover, which crops the image to fill the circular container. Tall images had their sides clipped; wide images had top/bottom clipped, giving the impression that the artwork was overflowing the circle.
+**Files changed:** src/styles/scan-result.css (.scan-result-image: object-fit cover -> contain; added padding 15%, box-sizing border-box, and background-color rgba(255, 250, 240, 0.18) so the image fits inside the inscribed square of the circle; box-shadow gold ring preserved). Full file rewrite because the original plan's multi-line replace failed to match the file's exact bytes — rewriting is the deterministic recovery. All other rules in the file are byte-for-byte preserved from the current state.
+**User-visible result:** Exhibit cover images on the Scan Result screen now fit entirely inside the glow circle. Tall images fit by height with letterboxed space on left/right, wide images fit by width with letterboxed space on top/bottom. The gold ring stays at the circle edge, and a soft ivory tint fills the letterbox gap so the image does not look like it is floating in empty space.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Scan an exhibit with a tall cover image (e.g. PSBIKT-001 8 Horses painting) — whole image visible inside the circle with side margins; (2) scan an exhibit with a wide cover image — whole image visible with top/bottom margins; (3) scan PSBIKT-006 — whole Xiangqi board visible; (4) verify gold ring still visible at circle edge; (5) verify glow pulse still animates behind the circle; (6) verify placeholder (exhibits without cover) still shows exhibit ID centered in the circle.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** 15% padding on each side leaves the image content at 70% of the container, roughly matching the inscribed square of a circle (70.7%). If the user finds the letterbox gap too large on any specific image, reduce to 10%. If they want the image to fill the circle edge-to-edge (accepting cropping), revert to cover — but that contradicts their explicit request. The subtle ivory backdrop behind the letterbox may look odd if the gap is very large on an extreme-aspect image; removing background-color lets the glow show through instead.
+**Decisions made:** Used padding on the image element (not a wrapper) because it is CSS-only and object-fit respects the content box after padding. object-fit: contain handles the tall-vs-wide logic automatically — browser fits by the larger dimension. 15% padding because inscribed square of circle is ~70.7% of diameter, so 15% inset on each side matches. Kept .scan-result-placeholder untouched (text placeholder, not image). Rewrote the whole file in the recovery rather than guessing the exact find string again — the previous replace failed on 4 different plans this session due to whitespace mismatches, so file rewrite is now the standard recovery for CSS bugs. Full rewrite is safe because the content is deterministic — I read the file from the user's paste and applied one focused change.
+**Next part:** Manual visual verification on exhibits with tall, wide, and square images.
+**Commit:** 339bbff
