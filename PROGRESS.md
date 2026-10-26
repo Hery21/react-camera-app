@@ -1179,3 +1179,19 @@ Using Tab and Enter only.
 **Decisions made:** Used padding on the image element (not a wrapper) because it is CSS-only and object-fit respects the content box after padding. object-fit: contain handles the tall-vs-wide logic automatically — browser fits by the larger dimension. 15% padding because inscribed square of circle is ~70.7% of diameter, so 15% inset on each side matches. Kept .scan-result-placeholder untouched (text placeholder, not image). Rewrote the whole file in the recovery rather than guessing the exact find string again — the previous replace failed on 4 different plans this session due to whitespace mismatches, so file rewrite is now the standard recovery for CSS bugs. Full rewrite is safe because the content is deterministic — I read the file from the user's paste and applied one focused change.
 **Next part:** Manual visual verification on exhibits with tall, wide, and square images.
 **Commit:** 339bbff
+
+## Style — Exhibit image enlarged inside glow circle
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Make the exhibit cover image on the Scan Result screen noticeably bigger and closer to the gold circle edge.
+**Files changed:** src/styles/scan-result.css (.scan-result-image: padding 15% -> 5%). Single-line replace on a unique string in the file.
+**User-visible result:** The exhibit cover image now occupies ~90% of the circular container instead of ~70%. Tall images fill the circle by height with less side letterbox, wide images fill by width with less top/bottom letterbox. Square images fill the entire circle interior with their corners clipped to the circle shape. The gold ring stays at the circle edge. The subtle ivory tint fills any remaining letterbox gap.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) scan PSBIKT-001 (tall image) — image should be visibly larger inside the circle, filling most of the vertical space; (3) scan PSBIKT-006 (square image) — image fills the circle with corners clipped; (4) scan any exhibit with a wide image — image fills most of the horizontal width; (5) verify gold ring still visible at circle edge; (6) verify glow pulse still animates.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** At 5% padding the image content box is 90% of the container, which exceeds the circle's inscribed square (70.7%). Corners of the content box are clipped by border-radius: 50% — this is intentional and gives a fuller, avatar-like appearance, but it means square images have their literal corners cut off. If the specific exhibit photos have important detail in the corners, this clips it. If that becomes a problem, raise padding back to 8-10%. Using object-fit: contain means non-square images are not distorted; they letterbox within the 90% content box. If the user wants the image even fuller, padding can be reduced to 2-3% (image touches the gold ring almost directly); if that looks too tight, 5-8% is the sweet spot.
+**Decisions made:** 5% chosen over 0% (image touching gold ring) or 8% (modest enlargement) because the user said "closer to the circle edge" — 5% gives a clear visual jump from 15% without the image visually touching the ring. Single-line replace on 'padding: 15%;' chosen because it is unique in the file and avoids the CRLF-vs-LF newline mismatch that has caused four multi-line replace failures this session (file writes use LF but git checkout may produce CRLF on disk, breaking multi-line find patterns). The resulting visual uses border-radius: 50% on the img element itself to clip square content corners to the circle shape — no additional overflow: hidden needed since border-radius on img already clips in all modern browsers.
+**Next part:** Manual visual verification.
+**Commit:** d68a926
