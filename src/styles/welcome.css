@@ -94,23 +94,21 @@
   pointer-events: none;
 }
 
-/* Swapped position and color for contrast */
 .welcome-title {
   margin: 0;
-  color: var(--color-rosewood); /* Dark brown */
+  color: var(--color-rosewood);
   font-family: var(--font-family-display);
-  font-size: clamp(1.2rem, 6cqw, 2.5rem);
+  font-size: 6cqw;
   font-weight: 700;
   line-height: 1;
   text-wrap: balance;
 }
 
-/* Swapped position and color for contrast */
 .welcome-eyebrow {
   margin: 0;
-  color: var(--color-vermilion); /* Bright red */
+  color: var(--color-vermilion);
   font-family: var(--font-family-display);
-  font-size: clamp(0.6rem, 2.5cqw, 1rem);
+  font-size: 2.5cqw;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -118,13 +116,12 @@
 
 .welcome-ikt-icon {
   display: block;
-  width: clamp(1.6rem, 10cqw, 4.25rem);
+  width: 10cqw;
   height: auto;
   margin-top: 0.4cqw;
   object-fit: contain;
 }
 
-/* Lowered button */
 .welcome-cta {
   position: absolute;
   z-index: 3;
@@ -132,15 +129,14 @@
   left: 50%;
   min-height: 44px;
   width: 38%;
-  max-width: 15rem;
   transform: translateX(-50%);
-  padding: var(--space-2) var(--space-3);
+  padding: 1.5cqw 2.5cqw;
   border: 1px solid var(--color-surface);
   border-radius: var(--radius-pill);
   background: var(--color-vermilion);
   color: var(--color-surface);
   font: inherit;
-  font-size: clamp(0.72rem, 2.35cqw, 1.02rem);
+  font-size: 2.35cqw;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
