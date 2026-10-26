@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
+import { decorativeAssets } from '../data/decorativeAssets.js'
 
 const TWIBBON_SRC = '/twibbon.png'
 const MAX_OUTPUT = 1440
@@ -16,6 +17,7 @@ export function TwibbonPhotoScreen({ language }) {
   const [errorKind, setErrorKind] = useState(null)
   const [previewUrl, setPreviewUrl] = useState(null)
   const [statusMessage, setStatusMessage] = useState(null)
+  const [sessionKey, setSessionKey] = useState(0)
   const videoRef = useRef(null)
   const twibbonImgRef = useRef(null)
   const streamRef = useRef(null)
@@ -76,6 +78,10 @@ export function TwibbonPhotoScreen({ language }) {
     startStreamRef.current = startStream
   }, [startStream])
 
+  // Effect depends on sessionKey. On mount sessionKey is 0 and the camera
+  // starts. Retake increments sessionKey, which triggers cleanup (stop old
+  // stream) and body (start new stream). The body runs AFTER React commits
+  // the new render, so videoRef.current points at a real video element.
   useEffect(() => {
     let cancelled = false
     queueMicrotask(() => {
@@ -89,7 +95,7 @@ export function TwibbonPhotoScreen({ language }) {
         previewUrlRef.current = null
       }
     }
-  }, [])
+  }, [sessionKey])
 
   function showStatus(message) {
     setStatusMessage(message)
@@ -169,7 +175,9 @@ export function TwibbonPhotoScreen({ language }) {
     previewBlobRef.current = null
     setPreviewUrl(null)
     setStatusMessage(null)
-    void startStream()
+    setErrorKind(null)
+    setCameraState('requesting')
+    setSessionKey((k) => k + 1)
   }
 
   function handleSave() {
@@ -222,17 +230,18 @@ export function TwibbonPhotoScreen({ language }) {
   }
 
   const errorContent = getErrorContent()
+  const showStage = cameraState !== 'error'
 
   return (
     <section className="twibbon-screen" aria-label={getTranslation(language, 'twibbon.title')}>
-      {cameraState !== 'preview' && cameraState !== 'error' && (
+      {showStage && cameraState !== 'preview' && (
         <div className="twibbon-stage">
           <video ref={videoRef} className="twibbon-video" playsInline muted autoPlay />
           <img ref={twibbonImgRef} src={TWIBBON_SRC} alt="" className="twibbon-overlay" />
         </div>
       )}
 
-      {cameraState === 'preview' && previewUrl && (
+      {showStage && cameraState === 'preview' && previewUrl && (
         <div className="twibbon-stage">
           <img src={previewUrl} alt={getTranslation(language, 'twibbon.title')} className="twibbon-preview" />
         </div>
@@ -248,7 +257,7 @@ export function TwibbonPhotoScreen({ language }) {
         <div className="twibbon-error" role="status">
           <h2>{errorContent.title}</h2>
           <p>{errorContent.body}</p>
-          <button type="button" className="twibbon-button" onClick={startStream}>
+          <button type="button" className="twibbon-button twibbon-button-primary" onClick={startStream}>
             {getTranslation(language, 'scanner.tryAgain')}
           </button>
         </div>
@@ -256,21 +265,36 @@ export function TwibbonPhotoScreen({ language }) {
 
       <div className="twibbon-controls">
         {cameraState === 'live' && (
-          <button type="button" className="twibbon-button twibbon-button-primary" onClick={handleCapture}>
+          <button
+            type="button"
+            className="twibbon-button twibbon-button-primary twibbon-button-shutter"
+            onClick={handleCapture}
+          >
             {getTranslation(language, 'twibbon.takePhoto')}
           </button>
         )}
+
         {cameraState === 'preview' && (
           <>
-            <button type="button" className="twibbon-button twibbon-button-primary" onClick={handleShare}>
-              {getTranslation(language, 'twibbon.share')}
-            </button>
-            <button type="button" className="twibbon-button" onClick={handleSave}>
-              {getTranslation(language, 'twibbon.save')}
-            </button>
-            <button type="button" className="twibbon-button twibbon-button-secondary" onClick={handleRetake}>
-              {getTranslation(language, 'twibbon.retake')}
-            </button>
+            <div className="twibbon-button-primary-wrap">
+              <img
+                src={decorativeAssets.result.buttonFlourish}
+                alt=""
+                className="twibbon-button-flourish"
+                aria-hidden="true"
+              />
+              <button type="button" className="twibbon-button twibbon-button-primary" onClick={handleShare}>
+                {getTranslation(language, 'twibbon.share')}
+              </button>
+            </div>
+            <div className="twibbon-controls-row">
+              <button type="button" className="twibbon-button" onClick={handleSave}>
+                {getTranslation(language, 'twibbon.save')}
+              </button>
+              <button type="button" className="twibbon-button twibbon-button-secondary" onClick={handleRetake}>
+                {getTranslation(language, 'twibbon.retake')}
+              </button>
+            </div>
           </>
         )}
       </div>

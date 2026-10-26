@@ -7,9 +7,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-3);
-  padding: var(--space-3);
+  padding: var(--space-3) var(--space-3) calc(var(--progress-dock-height) + var(--space-4));
   min-height: 0;
   overflow-y: auto;
 }
@@ -21,13 +21,16 @@
   gap: var(--space-3);
   width: 100%;
   max-width: 100%;
-  padding-bottom: var(--progress-dock-height);
 }
 
+/* Stage is a shrink-to-fit flex child; overlay img determines size. */
 .twibbon-stage {
   position: relative;
-  width: min(92vw, 380px);
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: min(92vw, 380px);
+  max-height: 65vh;
   flex-shrink: 0;
 }
 
@@ -47,6 +50,9 @@
   display: block;
   width: 100%;
   height: auto;
+  max-height: 65vh;
+  max-width: 100%;
+  object-fit: contain;
   z-index: 2;
   pointer-events: none;
   user-select: none;
@@ -57,6 +63,8 @@
   display: block;
   width: 100%;
   height: auto;
+  max-height: 65vh;
+  object-fit: contain;
   border-radius: var(--radius-md);
 }
 
@@ -65,10 +73,12 @@
   color: var(--color-surface);
   font-size: 0.95rem;
   text-align: center;
+  opacity: 0.85;
 }
 
 .twibbon-error {
   max-width: 24rem;
+  margin: 0 auto;
   padding: var(--space-3);
   border: 1px solid var(--color-error);
   border-radius: var(--radius-md);
@@ -90,56 +100,126 @@
   line-height: 1.45;
 }
 
+/* ---------- Controls ---------- */
+
 .twibbon-controls {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--space-2);
   width: 100%;
-  max-width: 24rem;
+  max-width: 22rem;
+  padding: 0 var(--space-2);
+  position: relative;
+  z-index: 3;
 }
 
+.twibbon-controls-row {
+  display: flex;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.twibbon-controls-row > .twibbon-button {
+  flex: 1;
+}
+
+.twibbon-button-primary-wrap {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.twibbon-button-primary-wrap > .twibbon-button {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.twibbon-button-flourish {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  max-width: 22rem;
+  max-height: 3rem;
+  opacity: 0.3;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Base button style: antique-gold secondary, matching scanner/secondary CTA */
 .twibbon-button {
-  min-height: 44px;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-antique-gold);
+  min-height: 48px;
+  padding: var(--space-2) var(--space-5);
+  border: 2px solid var(--color-antique-gold);
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
+  background: var(--color-antique-gold);
   color: var(--color-rosewood);
   font: inherit;
-  font-weight: 700;
   font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
+  transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .twibbon-button:hover {
-  background: var(--color-warm-ivory);
+  background: #c5a030;
+  border-color: #c5a030;
+}
+
+.twibbon-button:active {
+  transform: scale(0.98);
 }
 
 .twibbon-button:focus-visible {
-  outline: 2px solid var(--color-antique-gold);
+  outline: 2px solid var(--color-surface);
   outline-offset: 3px;
 }
 
+/* Primary: vermilion gradient, gold inner edge, warm shadow */
 .twibbon-button-primary {
-  border-color: var(--color-vermilion);
-  background: var(--color-vermilion);
+  border-color: var(--color-antique-gold);
+  background: linear-gradient(135deg, var(--color-vermilion) 0%, var(--color-vermilion-dark) 100%);
   color: var(--color-surface);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.55);
 }
 
 .twibbon-button-primary:hover {
-  background: var(--color-vermilion-dark);
+  background: linear-gradient(135deg, #c62a2a 0%, #9a1b1b 100%);
+  border-color: var(--color-antique-gold);
 }
 
+/* Tertiary: outlined (retake) */
 .twibbon-button-secondary {
-  background: transparent;
+  background: rgba(26, 18, 16, 0.55);
   color: var(--color-surface);
   border-color: var(--color-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .twibbon-button-secondary:hover {
-  background: rgba(255, 250, 240, 0.1);
+  background: rgba(26, 18, 16, 0.75);
+  border-color: var(--color-surface);
 }
+
+/* Shutter (Take Photo): larger, prominent */
+.twibbon-button-shutter {
+  min-height: 56px;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Toast ---------- */
 
 .twibbon-toast {
   position: fixed;
@@ -155,10 +235,25 @@
   font-weight: 600;
   z-index: 60;
   pointer-events: none;
+  border: 1px solid rgba(212, 175, 55, 0.55);
 }
 
 @media (max-height: 700px) {
   .twibbon-stage {
-    width: min(92vw, 300px);
+    max-width: min(90vw, 320px);
+    max-height: 55vh;
+  }
+
+  .twibbon-overlay,
+  .twibbon-preview {
+    max-height: 55vh;
+  }
+
+  .twibbon-button {
+    min-height: 44px;
+  }
+
+  .twibbon-button-shutter {
+    min-height: 48px;
   }
 }
