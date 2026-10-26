@@ -5,7 +5,7 @@ import frameTr from '../assets/frame-tr.webp'
 import frameBl from '../assets/frame-bl.webp'
 import frameBr from '../assets/frame-br.webp'
 
-const QUIZ_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScNXXTQYfY4MpyhQs7LICCwkQFo_t-w9qRVIoAil84ftPsloQ/viewform?usp=publish-editor'
+const QUIZ_FORM_URL = 'https://docs.google.com/forms/d/19b_kw78Ip3G3W7g0YffEj-U8TAoQ3daPMH6lUDcwjaE/viewform?chromeless=1&edit_requested=true'
 
 export function MenuScreen({ language, onSelectTour, onSelectPhoto }) {
   function handleQuizClick() {
