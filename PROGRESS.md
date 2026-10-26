@@ -1098,3 +1098,18 @@ Using Tab and Enter only.
 **Decisions made:** Kept the menu.info key name rather than renaming to menu.tmi because six references across four files would need updating (three locales plus the JSX). Key names are not user-visible, so this is a readability trade-off with no functional impact. TMI remains disabled because there is no functionality yet — the user is just choosing the label and position now. Kept menu.infoDesc (the description text under TMI) because it still explains what TMI will eventually contain; the user can ask to remove it if TMI becomes a different kind of feature.
 **Next part:** User visual verification.
 **Commit:** 48036d1
+
+## Update — Quiz Google Form link
+
+**Status:** Complete
+**Goal:** Replace the old Google Form URL with the new one.
+**Files changed:** src/screens/MenuScreen.jsx (updated QUIZ_FORM_URL constant).
+**User-visible result:** The Quiz card on the Menu screen now opens the new "Kuis Day 1" Google Form.
+**Automated checks:** npm run lint.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. Tap the Quiz card on the Menu screen and verify the new form opens.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The new URL includes chromeless=1 and edit_requested=true parameters, which are used for embedded forms. The link still opens correctly in a new tab.
+**Decisions made:** Direct string replacement of the URL constant.
+**Next part:** Resume roadmap.
+**Commit:** 2aa13e2
