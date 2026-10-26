@@ -24,7 +24,7 @@ export const en = {
     title: 'Choose your journey',
     tour: 'Tour',
     tourDesc: 'Scan QR codes to explore exhibit stories',
-    info: 'Extra Information',
+    info: 'TMI',
     infoDesc: 'Learn more about Peranakan culture',
     quiz: 'Quiz',
     quizDesc: 'Test what you have learned',

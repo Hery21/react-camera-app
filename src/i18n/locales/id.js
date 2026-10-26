@@ -24,7 +24,7 @@ export const id = {
     title: 'Pilih perjalanan Anda',
     tour: 'Tur',
     tourDesc: 'Pindai kode QR untuk menjelajahi cerita pameran',
-    info: 'Informasi Tambahan',
+    info: 'TMI',
     infoDesc: 'Pelajari lebih lanjut tentang budaya Peranakan',
     quiz: 'Kuis',
     quizDesc: 'Uji apa yang telah Anda pelajari',

@@ -24,7 +24,7 @@ export const zh = {
     title: '选择您的旅程',
     tour: '导览',
     tourDesc: '扫描二维码探索展品故事',
-    info: '更多信息',
+    info: 'TMI',
     infoDesc: '了解娘惹文化的更多内容',
     quiz: '问答',
     quizDesc: '测试您所学的知识',
