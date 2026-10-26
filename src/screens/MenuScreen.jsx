@@ -5,7 +5,13 @@ import frameTr from '../assets/frame-tr.webp'
 import frameBl from '../assets/frame-bl.webp'
 import frameBr from '../assets/frame-br.webp'
 
+const QUIZ_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScNXXTQYfY4MpyhQs7LICCwkQFo_t-w9qRVIoAil84ftPsloQ/viewform?usp=publish-editor'
+
 export function MenuScreen({ language, onSelectTour }) {
+  function handleQuizClick() {
+    window.open(QUIZ_FORM_URL, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <section className="menu-screen" aria-labelledby="menu-title">
       <div className="menu-frame" aria-hidden="true">
@@ -39,10 +45,9 @@ export function MenuScreen({ language, onSelectTour }) {
           <span className="menu-card-desc">{getTranslation(language, 'menu.infoDesc')}</span>
         </button>
 
-        <button type="button" className="menu-card menu-card-disabled" disabled>
+        <button type="button" className="menu-card menu-card-active" onClick={handleQuizClick}>
           <span className="menu-card-head">
             <span className="menu-card-title">{getTranslation(language, 'menu.quiz')}</span>
-            <span className="menu-card-badge">{getTranslation(language, 'menu.comingSoon')}</span>
           </span>
           <span className="menu-card-desc">{getTranslation(language, 'menu.quizDesc')}</span>
         </button>
