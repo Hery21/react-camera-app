@@ -9,6 +9,7 @@ import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
 import { AdminScreen } from './screens/AdminScreen.jsx'
+import { QuizScreen } from './screens/QuizScreen.jsx'
 import { TwibbonPhotoScreen } from './screens/TwibbonPhotoScreen.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
 import { exhibits } from './data/exhibits.js'
@@ -45,6 +46,10 @@ function App() {
 
   function handleStartAdmin() {
     setScreen('admin')
+  }
+
+  function handleSelectQuiz() {
+    setScreen('quiz')
   }
 
   function handleBackToWelcome() {
@@ -111,7 +116,9 @@ function App() {
                   ? handleAdminBack
                   : screen === 'twibbon'
                     ? handleBackToMenu
-                    : undefined
+                    : screen === 'quiz'
+                      ? handleBackToMenu
+                      : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
@@ -125,6 +132,7 @@ function App() {
       {screen === 'menu' && (
         <MenuScreen
           language={language}
+          onSelectQuiz={handleSelectQuiz}
           onSelectTour={handleSelectTour}
           onSelectPhoto={handleSelectPhoto}
         />
@@ -152,6 +160,7 @@ function App() {
         />
       )}
       {screen === 'twibbon' && <TwibbonPhotoScreen language={language} />}
+      {screen === 'quiz' && <QuizScreen language={language} onDone={handleBackToMenu} />}
 
       <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>

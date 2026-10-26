@@ -43,6 +43,19 @@ export const id = {
     saved: 'Tersimpan di perangkat Anda',
     switchCamera: 'Ganti Kamera'
   },
+  quiz: {
+    questionProgress: 'Pertanyaan {current} dari {total}',
+    prev: 'Sebelumnya',
+    next: 'Berikutnya',
+    submit: 'Kirim',
+    submitting: 'Mengirim…',
+    thanksTitle: 'Terima kasih!',
+    thanksBody: 'Jawaban Anda telah tercatat.',
+    backToMenu: 'Kembali ke Menu',
+    errorTitle: 'Pengiriman gagal',
+    errorBody: 'Terjadi kesalahan saat mengirim jawaban Anda.',
+    retry: 'Coba Lagi'
+  },
   scanner: {
     label: 'Pemindai QR',
     back: 'Kembali ke menu',

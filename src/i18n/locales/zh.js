@@ -43,6 +43,19 @@ export const zh = {
     saved: '已保存到您的设备',
     switchCamera: '切换相机'
   },
+  quiz: {
+    questionProgress: '第 {current} 题，共 {total} 题',
+    prev: '上一题',
+    next: '下一题',
+    submit: '提交',
+    submitting: '正在提交…',
+    thanksTitle: '谢谢参与！',
+    thanksBody: '您的答案已记录。',
+    backToMenu: '返回菜单',
+    errorTitle: '提交失败',
+    errorBody: '发送答案时出错。',
+    retry: '重试'
+  },
   scanner: {
     label: '二维码扫描',
     back: '返回菜单',

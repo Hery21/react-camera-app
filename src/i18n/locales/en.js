@@ -43,6 +43,19 @@ export const en = {
     saved: 'Saved to your device',
     switchCamera: 'Switch Camera'
   },
+  quiz: {
+    questionProgress: 'Question {current} of {total}',
+    prev: 'Previous',
+    next: 'Next',
+    submit: 'Submit',
+    submitting: 'Submitting…',
+    thanksTitle: 'Thank you!',
+    thanksBody: 'Your answers have been recorded.',
+    backToMenu: 'Back to Menu',
+    errorTitle: 'Submission failed',
+    errorBody: 'Something went wrong while sending your answers.',
+    retry: 'Try Again'
+  },
   scanner: {
     label: 'QR scanner',
     back: 'Back to menu',
