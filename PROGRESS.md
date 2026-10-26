@@ -1082,3 +1082,19 @@ Using Tab and Enter only.
 **Decisions made:** Default is front camera (user) because twibbon is a selfie use case. Mirroring is applied only for front camera in both preview and capture, because mirroring back-camera photos would flip any environment text backwards. The toggle button is a 44x44 circle with a Material-style flip-camera SVG inlined so no new asset is required. The toggle is hidden during requesting/preview/error states to prevent stream restarts at conflicting moments. The OverconstrainedError fallback retries without the facingMode constraint so single-camera devices still work. sessionKey-based restart pattern from the retake fix is reused for the toggle so the video element exists when startStream runs. Original plan used type: append which is not a valid runner step type — the recovery corrected it to type: write with mode: append.
 **Next part:** User visual verification on a real phone.
 **Commit:** 3a651c3
+
+## Style — TMI rename and menu reorder
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Move the Extra Information card to the bottom of the menu and rename its display label to TMI.
+**Files changed:** src/i18n/locales/en.js + id.js + zh.js (menu.info value changed from Extra Information / Informasi Tambahan / 更多信息 to TMI; all other menu keys unchanged), src/screens/MenuScreen.jsx (menu-cards order changed from Tour, Info, Quiz, Collage to Tour, Quiz, Collage, Info).
+**User-visible result:** The menu now shows Tour, Quiz, and Photo and Collage as active cards in that order, followed by a disabled TMI card with the Coming Soon badge at the bottom. TMI displays identically in all three languages because it is an English acronym.
+**Automated checks:** npm run lint; npm run check:i18n; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Welcome -> Start Exploring -> Menu; (2) verify order is Tour, Quiz, Photo and Collage, TMI; (3) verify TMI card still shows Coming Soon badge; (4) verify TMI shows the same text in EN / ID / ZH; (5) verify Tour, Quiz, Photo and Collage still work as before.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The menu.info translation key still exists in the code and the infoDesc still describes Peranakan culture content. If the user wants the description gone (since TMI is disabled and may not have confirmed content), one more replace removes menu.infoDesc from the JSX and can leave the key in the locale files unused. The menu.info key name no longer matches its display value (key says info, value says TMI) which is fine for a small codebase but slightly less readable.
+**Decisions made:** Kept the menu.info key name rather than renaming to menu.tmi because six references across four files would need updating (three locales plus the JSX). Key names are not user-visible, so this is a readability trade-off with no functional impact. TMI remains disabled because there is no functionality yet — the user is just choosing the label and position now. Kept menu.infoDesc (the description text under TMI) because it still explains what TMI will eventually contain; the user can ask to remove it if TMI becomes a different kind of feature.
+**Next part:** User visual verification.
+**Commit:** 48036d1
