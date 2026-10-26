@@ -18,6 +18,7 @@ export function TwibbonPhotoScreen({ language }) {
   const [previewUrl, setPreviewUrl] = useState(null)
   const [statusMessage, setStatusMessage] = useState(null)
   const [sessionKey, setSessionKey] = useState(0)
+  const [facingMode, setFacingMode] = useState('user')
   const videoRef = useRef(null)
   const twibbonImgRef = useRef(null)
   const streamRef = useRef(null)
@@ -52,17 +53,32 @@ export function TwibbonPhotoScreen({ language }) {
     setCameraState('requesting')
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
-        audio: false,
-      })
+      let stream
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode },
+          audio: false,
+        })
+      } catch (err) {
+        // Fallback: if the requested facingMode is unavailable (single-camera
+        // device, or the browser does not recognize 'environment' on a
+        // desktop webcam), retry without the facingMode constraint.
+        if (err?.name === 'OverconstrainedError' || err?.name === 'ConstraintNotSatisfiedError') {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          })
+        } else {
+          throw err
+        }
+      }
       streamRef.current = stream
       if (videoRef.current) {
         videoRef.current.srcObject = stream
         try {
           await videoRef.current.play()
         } catch {
-          // Some browsers reject play() without a further gesture; the muted attribute usually allows it
+          // Some browsers reject play() without a further gesture; muted usually allows it
         }
       }
       setCameraState('live')
@@ -71,16 +87,15 @@ export function TwibbonPhotoScreen({ language }) {
       setErrorKind(classifyCameraError(err))
       setCameraState('error')
     }
-  }, [])
+  }, [facingMode])
 
   const startStreamRef = useRef(startStream)
   useEffect(() => {
     startStreamRef.current = startStream
   }, [startStream])
 
-  // Effect depends on sessionKey. On mount sessionKey is 0 and the camera
-  // starts. Retake increments sessionKey, which triggers cleanup (stop old
-  // stream) and body (start new stream). The body runs AFTER React commits
+  // Effect depends on sessionKey so retake and toggle-camera both trigger
+  // a restart via sessionKey increment. The body runs after React commits
   // the new render, so videoRef.current points at a real video element.
   useEffect(() => {
     let cancelled = false
@@ -138,11 +153,18 @@ export function TwibbonPhotoScreen({ language }) {
       sy = (videoH - sh) / 2
     }
 
-    ctx.save()
-    ctx.translate(outW, 0)
-    ctx.scale(-1, 1)
-    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, outW, outH)
-    ctx.restore()
+    // Mirror only when using the front camera. Back camera captures the real
+    // scene as-is; mirroring a back-camera photo would flip any text in the
+    // environment backwards.
+    if (facingMode === 'user') {
+      ctx.save()
+      ctx.translate(outW, 0)
+      ctx.scale(-1, 1)
+      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, outW, outH)
+      ctx.restore()
+    } else {
+      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, outW, outH)
+    }
 
     ctx.drawImage(twibbon, 0, 0, outW, outH)
 
@@ -177,6 +199,11 @@ export function TwibbonPhotoScreen({ language }) {
     setStatusMessage(null)
     setErrorKind(null)
     setCameraState('requesting')
+    setSessionKey((k) => k + 1)
+  }
+
+  function handleToggleCamera() {
+    setFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'))
     setSessionKey((k) => k + 1)
   }
 
@@ -231,13 +258,33 @@ export function TwibbonPhotoScreen({ language }) {
 
   const errorContent = getErrorContent()
   const showStage = cameraState !== 'error'
+  const isFront = facingMode === 'user'
 
   return (
     <section className="twibbon-screen" aria-label={getTranslation(language, 'twibbon.title')}>
       {showStage && cameraState !== 'preview' && (
         <div className="twibbon-stage">
-          <video ref={videoRef} className="twibbon-video" playsInline muted autoPlay />
+          <video
+            ref={videoRef}
+            className={'twibbon-video' + (isFront ? ' twibbon-video--mirrored' : '')}
+            playsInline
+            muted
+            autoPlay
+          />
           <img ref={twibbonImgRef} src={TWIBBON_SRC} alt="" className="twibbon-overlay" />
+          {cameraState === 'live' && (
+            <button
+              type="button"
+              className="twibbon-toggle-camera"
+              onClick={handleToggleCamera}
+              aria-label={getTranslation(language, 'twibbon.switchCamera')}
+              title={getTranslation(language, 'twibbon.switchCamera')}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5 0 1.64-.79 3.09-2 4h2.42c1.09-1.38 1.58-3.09 1.58-4 0-3.87-3.13-7-7-7zm-5 7c0-1.64.79-3.09 2-4H6.58C5.49 10.38 5 12.09 5 13c0 3.87 3.13 7 7 7v3l4-4-4-4v3c-2.76 0-5-2.24-5-5z" />
+              </svg>
+            </button>
+          )}
         </div>
       )}
 

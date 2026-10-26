@@ -40,7 +40,8 @@ export const zh = {
     save: '保存',
     share: '分享',
     requesting: '正在启动相机…',
-    saved: '已保存到您的设备'
+    saved: '已保存到您的设备',
+    switchCamera: '切换相机'
   },
   scanner: {
     label: '二维码扫描',

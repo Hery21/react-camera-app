@@ -41,8 +41,11 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
-  transform: scaleX(-1);
   border-radius: var(--radius-md);
+}
+
+.twibbon-video--mirrored {
+  transform: scaleX(-1);
 }
 
 .twibbon-overlay {
@@ -256,4 +259,49 @@
   .twibbon-button-shutter {
     min-height: 48px;
   }
+}
+
+
+/* ---------- Camera flip toggle (top-right of stage) ---------- */
+
+.twibbon-toggle-camera {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  background: rgba(26, 18, 16, 0.65);
+  color: var(--color-antique-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.twibbon-toggle-camera:hover {
+  background: rgba(26, 18, 16, 0.85);
+}
+
+.twibbon-toggle-camera:active {
+  transform: scale(0.94);
+}
+
+.twibbon-toggle-camera:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 3px;
+}
+
+.twibbon-toggle-camera svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
 }

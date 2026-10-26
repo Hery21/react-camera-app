@@ -40,7 +40,8 @@ export const id = {
     save: 'Simpan',
     share: 'Bagikan',
     requesting: 'Memulai kamera…',
-    saved: 'Tersimpan di perangkat Anda'
+    saved: 'Tersimpan di perangkat Anda',
+    switchCamera: 'Ganti Kamera'
   },
   scanner: {
     label: 'Pemindai QR',

@@ -40,7 +40,8 @@ export const en = {
     save: 'Save',
     share: 'Share',
     requesting: 'Starting camera…',
-    saved: 'Saved to your device'
+    saved: 'Saved to your device',
+    switchCamera: 'Switch Camera'
   },
   scanner: {
     label: 'QR scanner',
