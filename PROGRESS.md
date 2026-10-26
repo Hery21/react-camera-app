@@ -1146,3 +1146,19 @@ Using Tab and Enter only.
 **Decisions made:** Used a single migration script that handles both potential sources of truth (exhibits.js construction file and exhibits.json if it exists) because the admin-save plan may or may not have been run. Idempotent by design — the regex pattern skips exhibits that already have coverImage between id and content, so re-running is a no-op. Verification script imports the exhibits array via the same path the app uses (src/data/exhibits.js) so it verifies end-to-end, not just file contents. Did not attempt to add coverAlt in the migration because good alt text requires seeing each image and the user can add it via Admin later; empty alt is a WCAG compromise but not a functional blocker. Used a script file rather than a Node one-liner because inline Node commands with regex strings in PowerShell are fragile and hard to debug.
 **Next part:** Deployment (Phase 11) or further UI polish.
 **Commit:** caf6198
+
+## Style — Menu card renamed to Take a Photo
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Rename the "Photo and Collage" menu card title to "Take a Photo" in all three languages.
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (menu.collage value changed from Photo and Collage / Foto dan Kolase / 照片与拼贴 to Take a Photo / Ambil Foto / 拍照; menu.collageDesc unchanged because it already describes taking a twibbon photo).
+**User-visible result:** The fourth menu card now reads "Take a Photo" in English, "Ambil Foto" in Indonesian, and "拍照" in Chinese. The card still routes to the TwibbonPhotoScreen on tap.
+**Automated checks:** npm run lint; npm run check:i18n.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Menu; (3) verify the fourth card title reads the new label in each language; (4) tap it to confirm it still opens the twibbon camera.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The translation key name is still menu.collage which no longer matches its display text. This is fine functionally but slightly confusing for future maintainers. Renaming to menu.photo would require updating the JSX reference in MenuScreen.jsx and all three locales — a small follow-up if desired.
+**Decisions made:** Changed display strings only. Kept the key name to avoid touching the JSX reference and to keep the diff limited to three locale files. Collage is no longer part of the feature name since the menu card opens the twibbon photo screen, which is a single-photo flow (the earlier collage concept was dropped in favor of the twibbon capture). Description kept as-is because it already mentions taking a twibbon photo.
+**Next part:** Resume roadmap or deploy.
+**Commit:** aeace0c
