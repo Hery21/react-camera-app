@@ -9,6 +9,7 @@ import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
 import { AdminScreen } from './screens/AdminScreen.jsx'
+import { TwibbonPhotoScreen } from './screens/TwibbonPhotoScreen.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
 import { exhibits } from './data/exhibits.js'
 import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } from './lib/scanProgress.js'
@@ -38,6 +39,10 @@ function App() {
     setScreen('scanner')
   }
 
+  function handleSelectPhoto() {
+    setScreen('twibbon')
+  }
+
   function handleStartAdmin() {
     setScreen('admin')
   }
@@ -65,10 +70,6 @@ function App() {
     }
   }
 
-  // Stable reference across renders. If this were a plain function, every
-  // App re-render (language change, etc.) would create a new onExhibitDetected,
-  // cascading through ScannerScreen's useCallback chain and re-triggering the
-  // auto-start effect — restarting the camera mid-session.
   const handleExhibitDetected = useCallback((exhibit) => {
     setScannedExhibitIds((current) => {
       const next = addScannedExhibitId(current, exhibit.id)
@@ -108,7 +109,9 @@ function App() {
                 ? handleMenuBack
                 : screen === 'admin'
                   ? handleAdminBack
-                  : undefined
+                  : screen === 'twibbon'
+                    ? handleBackToMenu
+                    : undefined
       }
       backLabel={screen === 'exhibit' ? getTranslation(language, 'exhibit.backToInfo') : undefined}
     >
@@ -119,7 +122,13 @@ function App() {
           onStartAdmin={handleStartAdmin}
         />
       )}
-      {screen === 'menu' && <MenuScreen language={language} onSelectTour={handleSelectTour} />}
+      {screen === 'menu' && (
+        <MenuScreen
+          language={language}
+          onSelectTour={handleSelectTour}
+          onSelectPhoto={handleSelectPhoto}
+        />
+      )}
       {screen === 'scanner' && (
         <ScannerScreen language={language} onReturnHome={handleBackToWelcome} onExhibitDetected={handleExhibitDetected} />
       )}
@@ -142,6 +151,7 @@ function App() {
           onBack={handleBackToWelcome}
         />
       )}
+      {screen === 'twibbon' && <TwibbonPhotoScreen language={language} />}
 
       <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>

@@ -29,9 +29,18 @@ export const zh = {
     quiz: '问答',
     quizDesc: '测试您所学的知识',
     collage: '照片与拼贴',
-    collageDesc: '带走一份纪念',
+    collageDesc: '拍摄一张 twibbon 纪念照',
     comingSoon: '即将推出',
     back: '返回首页'
+  },
+  twibbon: {
+    title: 'Twibbon 照片',
+    takePhoto: '拍照',
+    retake: '重拍',
+    save: '保存',
+    share: '分享',
+    requesting: '正在启动相机…',
+    saved: '已保存到您的设备'
   },
   scanner: {
     label: '二维码扫描',

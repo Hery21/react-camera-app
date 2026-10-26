@@ -29,9 +29,18 @@ export const en = {
     quiz: 'Quiz',
     quizDesc: 'Test what you have learned',
     collage: 'Photo and Collage',
-    collageDesc: 'Take a keepsake home',
+    collageDesc: 'Take a twibbon keepsake photo',
     comingSoon: 'Coming soon',
     back: 'Back to welcome'
+  },
+  twibbon: {
+    title: 'Twibbon Photo',
+    takePhoto: 'Take Photo',
+    retake: 'Retake',
+    save: 'Save',
+    share: 'Share',
+    requesting: 'Starting camera…',
+    saved: 'Saved to your device'
   },
   scanner: {
     label: 'QR scanner',

@@ -29,9 +29,18 @@ export const id = {
     quiz: 'Kuis',
     quizDesc: 'Uji apa yang telah Anda pelajari',
     collage: 'Foto dan Kolase',
-    collageDesc: 'Bawa pulang kenang-kenangan',
+    collageDesc: 'Ambil foto kenang-kenangan twibbon',
     comingSoon: 'Segera hadir',
     back: 'Kembali ke beranda'
+  },
+  twibbon: {
+    title: 'Foto Twibbon',
+    takePhoto: 'Ambil Foto',
+    retake: 'Ambil Ulang',
+    save: 'Simpan',
+    share: 'Bagikan',
+    requesting: 'Memulai kamera…',
+    saved: 'Tersimpan di perangkat Anda'
   },
   scanner: {
     label: 'Pemindai QR',
