@@ -1017,3 +1017,19 @@ Using Tab and Enter only.
 **Decisions made:** Removed both box-shadow and border-radius because together they create the "card" appearance. The box-shadow alone was the dominant contributor, but keeping border-radius without the shadow would still leave a rounded image that could look intentionally decorative — cleaner to remove both for a plain content image. Used 160px max-height (down from 220px) as a middle-ground reduction. If the image looks too small after this change, only the max-height value needs to change in a follow-up.
 **Next part:** User visual verification.
 **Commit:** bd94446
+
+## Feature — Quiz button opens external Google Form
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Make the Quiz card on the Menu screen active and open the provided Google Forms URL in a new browser tab.
+**Files changed:** src/screens/MenuScreen.jsx (added QUIZ_FORM_URL constant; added handleQuizClick that calls window.open with _blank and noopener,noreferrer; changed the Quiz button from menu-card-disabled + disabled to menu-card-active + onClick; removed the menu.comingSoon badge from the Quiz card).
+**User-visible result:** The Quiz pill now renders with the same active vermilion gradient styling as the Tour pill. Clicking it opens the Google Form in a new tab. The Menu screen itself stays open in the original tab so visitors can return to it after the quiz. Tour, Extra Information, and Photo/Collage cards are unchanged.
+**Automated checks:** npm run lint; npm run check:flow; npm run check:mvp; npm run check:responsive; npm run check:vite-assets.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Welcome -> Start Exploring -> Menu; (3) verify the Quiz pill has the same solid red gradient as Tour; (4) click Quiz -> Google Form should open in a new tab; (5) verify the Menu is still visible in the original tab when you switch back; (6) verify Info and Collage are still disabled placeholders; (7) test on a mobile browser to confirm the new tab opens correctly.
+**Not checked:** npm run build (deferred per user request). The Google Form URL is external and lives outside the app's control — if the form owner changes permissions or deletes the form, the link breaks regardless of app code.
+**Remaining risks:** window.open with _blank can be blocked by aggressive popup blockers if triggered outside a user gesture. Here it is inside an onClick handler, so browsers should treat it as a trusted user gesture. If a specific browser blocks it, a fallback is to render the Quiz card as an anchor tag with target="_blank" rel="noopener noreferrer" href set to the URL — that always works without popup-blocker concerns. Not preemptively changed because the button click is the cleaner pattern and matches the rest of the menu's interaction model.
+**Decisions made:** Used window.open rather than making the card an anchor because the menu-card class provides button styling and the other cards are buttons. Using an anchor would need class adjustments to strip the default link underline/color. Kept the other three cards (Info, Collage) as disabled placeholders — only Quiz is activated per request. Removed the Coming Soon badge only from the Quiz card; the other two keep theirs. noopener,noreferrer is set to prevent the external page from accessing window.opener (a security and performance best practice). The URL is stored as a module-level constant QUIZ_FORM_URL so it is easy to change later without touching the onClick handler.
+**Next part:** User visual verification. Then optionally close Phase 10.5 or proceed to deployment.
+**Commit:** 17f00de
