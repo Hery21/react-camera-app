@@ -41,7 +41,8 @@
     "check:progress-layout": "node scripts/check-progress-layout.mjs",
     "check:responsive": "node scripts/check-responsive-baseline.mjs",
     "check:scanner-stability": "node scripts/check-scanner-stability.mjs",
-    "check:vite-assets": "node scripts/check-vite-assets.mjs"
+    "check:vite-assets": "node scripts/check-vite-assets.mjs",
+    "check:cover-images": "node scripts/check-cover-images.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
