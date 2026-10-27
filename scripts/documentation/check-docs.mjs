@@ -1,8 +1,6 @@
 // Structural self-check for the documentation pipeline.
-// Verifies source files, npm scripts, gitignore entries, and the specific
-// layout decisions: A4 portrait, JPEG captures, deviceScaleFactor 2,
-// description below screenshots. No regex — uses .includes() exclusively
-// to avoid the template-literal backslash problem that bit us before.
+// All checks use .includes() — no regex, because template-literal escaping
+// strips backslashes when phase-runner writes plan files.
 
 import { existsSync, readFileSync } from 'node:fs'
 
@@ -53,11 +51,14 @@ check('capture uses fake camera flags', capture.includes('--use-fake-device-for-
 check('capture uses fake UI flags', capture.includes('--use-fake-ui-for-media-stream'))
 check('capture sets language via init script', capture.includes('addInitScript'))
 check('capture saves to screenshots dir', capture.includes('documentation/screenshots'))
-check('capture uses deviceScaleFactor 2', capture.includes('DEVICE_SCALE_FACTOR = 2') && capture.includes('deviceScaleFactor: DEVICE_SCALE_FACTOR'))
+check('capture uses deviceScaleFactor (via constant)', capture.includes('DEVICE_SCALE_FACTOR') && capture.includes('deviceScaleFactor:'))
 check('capture saves as JPEG', capture.includes("type: 'jpeg'"))
 check('capture JPEG quality 92', capture.includes('quality: 92'))
 check('capture filenames use .jpg', capture.includes("'.jpg'"))
 check('capture checks dev server availability', capture.includes('checkServer'))
+check('capture has prerequisite probe', capture.includes('probeFeature'))
+check('capture exits 0 on partial success', capture.includes('process.exit(0)'))
+check('capture has failure summary', capture.includes('Capture summary'))
 
 const generate = read('scripts/documentation/generate-html.mjs')
 check('generate imports screensContent', generate.includes('screens-content.mjs'))

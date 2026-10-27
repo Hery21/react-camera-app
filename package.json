@@ -45,7 +45,11 @@
     "check:cover-images": "node scripts/check-cover-images.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
     "check:legacy-build": "node scripts/check-legacy-build.mjs",
-    "check:utility-buttons": "node scripts/check-utility-buttons.mjs"
+    "check:utility-buttons": "node scripts/check-utility-buttons.mjs",
+    "docs:capture": "node scripts/documentation/capture-screens.mjs",
+    "docs:generate": "node scripts/documentation/generate-html.mjs",
+    "docs:check": "node scripts/documentation/check-docs.mjs",
+    "docs": "npm run docs:capture && npm run docs:generate"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -63,6 +67,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
+    "playwright": "^1.64.1",
     "prettier": "3.9.10",
     "terser": "^5.51.2",
     "vite": "^8.3.4"
