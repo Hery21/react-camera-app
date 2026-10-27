@@ -44,14 +44,6 @@ export function MenuScreen({ language, onSelectQuiz, onSelectTour, onSelectPhoto
           </span>
           <span className="menu-card-desc">{getTranslation(language, 'menu.collageDesc')}</span>
         </button>
-
-        <button type="button" className="menu-card menu-card-disabled" disabled>
-          <span className="menu-card-head">
-            <span className="menu-card-title">{getTranslation(language, 'menu.info')}</span>
-            <span className="menu-card-badge">{getTranslation(language, 'menu.comingSoon')}</span>
-          </span>
-          <span className="menu-card-desc">{getTranslation(language, 'menu.infoDesc')}</span>
-        </button>
       </div>
     </section>
   )
