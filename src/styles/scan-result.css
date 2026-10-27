@@ -41,7 +41,6 @@
   background: transparent;
 }
 
-/* The language selector is one switch again. Individual buttons do not create separate floating boxes. */
 .app--scan-result .language-toggle {
   display: inline-flex;
   gap: 0;
@@ -90,11 +89,15 @@
   overflow: visible;
 }
 
+/* Floral corners pinned to the actual viewport edges (not the content area
+   below the header). Safe-area insets push the corners in from the notch on
+   notched devices; on non-notched devices the negative offset bleed is kept
+   so the corners still visually bleed past the edge as intended. */
 .scan-result-floral-corner-top-right {
-  position: absolute;
+  position: fixed;
   z-index: 3;
-  top: 0.35rem;
-  right: -0.45rem;
+  top: max(0.35rem, env(safe-area-inset-top, 0px));
+  right: max(-0.45rem, calc(env(safe-area-inset-right, 0px) - 0.45rem));
   width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
   opacity: 0.82;
@@ -102,10 +105,10 @@
 }
 
 .scan-result-floral-corner-top-left {
-  position: absolute;
+  position: fixed;
   z-index: 3;
-  top: 0.35rem;
-  left: -0.45rem;
+  top: max(0.35rem, env(safe-area-inset-top, 0px));
+  left: max(-0.45rem, calc(env(safe-area-inset-left, 0px) - 0.45rem));
   width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
   opacity: 0.82;
@@ -336,6 +339,12 @@
 
   .scan-result-divider {
     max-height: 0.85rem;
+  }
+
+  .scan-result-floral-corner-top-left,
+  .scan-result-floral-corner-top-right {
+    width: clamp(3.5rem, 16vw, 6rem);
+    opacity: 0.75;
   }
 }
 
