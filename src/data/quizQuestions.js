@@ -132,9 +132,9 @@ export const quizQuestions = [
     id: 'Q4',
     image: '/images/exhibits/PSBIKT-009/cover.webp',
     question: {
-      id: 'Siapa nama Dewa di bawah ini?',
-      en: 'Who is the deity shown below?',
-      zh: '下图中是哪位神明？',
+      id: 'Siapa nama Dewa di atas ini?',
+      en: 'Who is the deity shown above?',
+      zh: '上图中是哪位神明？',
     },
     options: [
       {
