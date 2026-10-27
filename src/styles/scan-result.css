@@ -96,8 +96,8 @@
 .scan-result-floral-corner-top-right {
   position: fixed;
   z-index: 3;
-  top: max(0.35rem, env(safe-area-inset-top, 0px));
-  right: max(-0.45rem, calc(env(safe-area-inset-right, 0px) - 0.45rem));
+  top: max(0.05rem, env(safe-area-inset-top, 0px));
+  right: max(-0.45rem, calc(env(safe-area-inset-right, 0px) - 0.05rem));
   width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
   opacity: 0.82;
@@ -107,8 +107,8 @@
 .scan-result-floral-corner-top-left {
   position: fixed;
   z-index: 3;
-  top: max(0.35rem, env(safe-area-inset-top, 0px));
-  left: max(-0.45rem, calc(env(safe-area-inset-left, 0px) - 0.45rem));
+  top: max(0.05rem, env(safe-area-inset-top, 0px));
+  left: max(-0.45rem, calc(env(safe-area-inset-left, 0px) - 0.05rem));
   width: clamp(4.75rem, 21vw, 8rem);
   height: auto;
   opacity: 0.82;
