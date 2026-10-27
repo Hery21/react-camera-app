@@ -10,10 +10,10 @@
   z-index: 55;
   bottom: 4px;
   bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  border: 1.5px solid rgba(212, 175, 55, 0.9);
+  border: 1.5px solid #ffffff;
   border-radius: 50%;
   background: rgba(26, 18, 16, 0.68);
   color: #ffffff;
@@ -42,8 +42,8 @@
 }
 
 .utility-btn svg {
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   fill: currentColor;
   display: block;
 }
@@ -51,7 +51,7 @@
 /* GitHub link: bottom-left, semi-transparent, fully opaque on hover */
 .github-link {
   left: calc(env(safe-area-inset-left, 0px) + 12px);
-  opacity: 0.67;
+  opacity: 0.5;
 }
 
 .github-link:hover {
