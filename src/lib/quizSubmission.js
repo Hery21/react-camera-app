@@ -1,7 +1,5 @@
 import { quizConfig } from '../config/quizConfig.js'
 
-// Submit collected quiz answers to the configured endpoint.
-// Throws a descriptive Error on failure so QuizScreen can show the cause.
 export async function submitQuizResponse(payload) {
   if (!quizConfig.endpoint) {
     throw new Error('Quiz submission is not yet configured. Set quizConfig.endpoint in src/config/quizConfig.js.')
@@ -30,7 +28,7 @@ export async function submitQuizResponse(payload) {
 
   const res = await fetch(quizConfig.endpoint, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload),
   })
   if (!res.ok) {

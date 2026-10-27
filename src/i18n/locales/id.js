@@ -52,6 +52,13 @@ export const id = {
     thanksTitle: 'Terima kasih!',
     thanksBody: 'Jawaban Anda telah tercatat.',
     backToMenu: 'Kembali ke Menu',
+    identityTitle: 'Sebelum kita mulai',
+    identityName: 'Nama Asli',
+    identityUnit: 'WD / SAP / Magang / Sekolah',
+    identityInstagram: 'Username IG',
+    identityStart: 'Mulai Kuis',
+    identityRequired: 'Mohon isi semua kolom',
+    scoreLabel: 'Skor Anda',
     errorTitle: 'Pengiriman gagal',
     errorBody: 'Terjadi kesalahan saat mengirim jawaban Anda.',
     retry: 'Coba Lagi'

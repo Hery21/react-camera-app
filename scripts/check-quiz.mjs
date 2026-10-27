@@ -12,34 +12,41 @@ function check(label, condition, detail) {
   console.error('FAIL ' + label + (detail ? ' — ' + detail : ''))
 }
 
-check('quizQuestions is a non-empty array', Array.isArray(quizQuestions) && quizQuestions.length > 0)
+check('quizQuestions has exactly 5 questions', quizQuestions.length === 5, 'got ' + quizQuestions.length)
 
 const questionIds = new Set()
 for (const q of quizQuestions) {
-  check('question ' + q.id + ' has id', typeof q.id === 'string' && q.id.length > 0)
   check('question ' + q.id + ' id is unique', !questionIds.has(q.id))
   questionIds.add(q.id)
 
-  for (const lang of ['en', 'id', 'zh']) {
+  for (const lang of ['id', 'en', 'zh']) {
     check('question ' + q.id + ' has ' + lang + ' text', typeof q.question?.[lang] === 'string' && q.question[lang].length > 0)
   }
 
-  check('question ' + q.id + ' has options', Array.isArray(q.options) && q.options.length >= 2)
+  check('question ' + q.id + ' has 4 options', Array.isArray(q.options) && q.options.length === 4)
+  check('question ' + q.id + ' has correctOptionId', typeof q.correctOptionId === 'string')
 
   const optionIds = new Set()
   for (const opt of q.options || []) {
-    check('question ' + q.id + ' option ' + opt.id + ' has id', typeof opt.id === 'string' && opt.id.length > 0)
-    check('question ' + q.id + ' option ' + opt.id + ' id is unique within question', !optionIds.has(opt.id))
+    check('question ' + q.id + ' option ' + opt.id + ' is unique', !optionIds.has(opt.id))
     optionIds.add(opt.id)
-
-    for (const lang of ['en', 'id', 'zh']) {
+    for (const lang of ['id', 'en', 'zh']) {
       check('question ' + q.id + ' option ' + opt.id + ' has ' + lang + ' text', typeof opt.text?.[lang] === 'string' && opt.text[lang].length > 0)
     }
   }
+
+  check(
+    'question ' + q.id + ' correctOptionId exists among options',
+    optionIds.has(q.correctOptionId),
+    'correctOptionId ' + q.correctOptionId + ' not in [' + Array.from(optionIds).join(',') + ']',
+  )
 }
 
-check('quizConfig.endpoint is a string', typeof quizConfig.endpoint === 'string')
-check('quizConfig.mode is json or form', quizConfig.mode === 'json' || quizConfig.mode === 'form')
+const q4 = quizQuestions.find(function (q) { return q.id === 'Q4' })
+check('Q4 has image reference', q4 && typeof q4.image === 'string' && q4.image.length > 0)
+check('Q4 image points at PSBIKT-009 cover', q4 && q4.image === '/images/exhibits/PSBIKT-009/cover.webp')
+
+check('quizConfig.pointsPerQuestion is a positive number', typeof quizConfig.pointsPerQuestion === 'number' && quizConfig.pointsPerQuestion > 0)
 
 if (failed > 0) {
   console.error('\n' + failed + ' check(s) failed')

@@ -52,6 +52,13 @@ export const en = {
     thanksTitle: 'Thank you!',
     thanksBody: 'Your answers have been recorded.',
     backToMenu: 'Back to Menu',
+    identityTitle: 'Before we begin',
+    identityName: 'Full Name',
+    identityUnit: 'WD / SAP / Intern / School',
+    identityInstagram: 'Instagram Username',
+    identityStart: 'Start Quiz',
+    identityRequired: 'Please fill in all fields',
+    scoreLabel: 'Your Score',
     errorTitle: 'Submission failed',
     errorBody: 'Something went wrong while sending your answers.',
     retry: 'Try Again'

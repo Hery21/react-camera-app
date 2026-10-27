@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { decorativeAssets } from '../data/decorativeAssets.js'
 import { quizQuestions } from '../data/quizQuestions.js'
+import { quizConfig } from '../config/quizConfig.js'
 import { submitQuizResponse } from '../lib/quizSubmission.js'
 
 function generateSessionId() {
@@ -9,18 +10,44 @@ function generateSessionId() {
   return 'session-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10)
 }
 
+function computeScore(answers) {
+  let correct = 0
+  for (const q of quizQuestions) {
+    if (answers[q.id] === q.correctOptionId) correct += 1
+  }
+  return { correct, score: correct * quizConfig.pointsPerQuestion }
+}
+
 export function QuizScreen({ language, onDone }) {
+  const [phase, setPhase] = useState('identity')
+  const [identity, setIdentity] = useState({ namaAsli: '', unit: '', instagram: '' })
+  const [identityError, setIdentityError] = useState('')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [sessionId] = useState(generateSessionId)
   const [status, setStatus] = useState('question')
   const [errorMessage, setErrorMessage] = useState('')
+  const [finalResult, setFinalResult] = useState(null)
 
   const question = quizQuestions[currentIndex]
   const isLast = currentIndex === quizQuestions.length - 1
-  const currentAnswer = answers[question.id]
+  const currentAnswer = answers[question?.id]
   const hasAnswer = Boolean(currentAnswer)
   const allAnswered = quizQuestions.every((q) => answers[q.id])
+
+  function handleIdentitySubmit(e) {
+    e.preventDefault()
+    const namaAsli = identity.namaAsli.trim()
+    const unit = identity.unit.trim()
+    const instagram = identity.instagram.trim()
+    if (!namaAsli || !unit || !instagram) {
+      setIdentityError(getTranslation(language, 'quiz.identityRequired'))
+      return
+    }
+    setIdentity({ namaAsli, unit, instagram })
+    setIdentityError('')
+    setPhase('quiz')
+  }
 
   function handleSelect(optionId) {
     setAnswers((prev) => ({ ...prev, [question.id]: optionId }))
@@ -39,18 +66,83 @@ export function QuizScreen({ language, onDone }) {
     if (!allAnswered) return
     setStatus('submitting')
     setErrorMessage('')
+    const { correct, score } = computeScore(answers)
+    setFinalResult({ correct, score, total: quizQuestions.length * quizConfig.pointsPerQuestion })
+
     try {
       await submitQuizResponse({
         sessionId,
         language,
         submittedAt: new Date().toISOString(),
+        identity,
         answers: quizQuestions.map((q) => ({ questionId: q.id, optionId: answers[q.id] })),
+        score,
+        correctCount: correct,
+        totalQuestions: quizQuestions.length,
       })
       setStatus('success')
     } catch (err) {
       setErrorMessage(err && err.message ? err.message : String(err))
       setStatus('error')
     }
+  }
+
+  if (phase === 'identity') {
+    return (
+      <section className="quiz-screen quiz-screen-identity" aria-labelledby="quiz-identity-title">
+        <img src={decorativeAssets.article.crown} alt="" className="quiz-crown" aria-hidden="true" />
+
+        <form className="quiz-card" onSubmit={handleIdentitySubmit}>
+          <h1 id="quiz-identity-title" className="quiz-question-text">
+            {getTranslation(language, 'quiz.identityTitle')}
+          </h1>
+
+          <img src={decorativeAssets.article.divider} alt="" className="quiz-divider" aria-hidden="true" />
+
+          <label className="quiz-identity-field">
+            <span className="quiz-identity-label">{getTranslation(language, 'quiz.identityName')}</span>
+            <input
+              type="text"
+              value={identity.namaAsli}
+              onChange={(e) => setIdentity({ ...identity, namaAsli: e.target.value })}
+              autoComplete="name"
+              required
+            />
+          </label>
+
+          <label className="quiz-identity-field">
+            <span className="quiz-identity-label">{getTranslation(language, 'quiz.identityUnit')}</span>
+            <input
+              type="text"
+              value={identity.unit}
+              onChange={(e) => setIdentity({ ...identity, unit: e.target.value })}
+              required
+            />
+          </label>
+
+          <label className="quiz-identity-field">
+            <span className="quiz-identity-label">{getTranslation(language, 'quiz.identityInstagram')}</span>
+            <input
+              type="text"
+              value={identity.instagram}
+              onChange={(e) => setIdentity({ ...identity, instagram: e.target.value })}
+              autoComplete="off"
+              required
+            />
+          </label>
+
+          {identityError && (
+            <p className="quiz-identity-error" role="status">{identityError}</p>
+          )}
+
+          <button type="submit" className="quiz-button quiz-button-primary">
+            {getTranslation(language, 'quiz.identityStart')}
+          </button>
+        </form>
+
+        <img src={decorativeAssets.article.floralBottom} alt="" className="quiz-floral-bottom" aria-hidden="true" />
+      </section>
+    )
   }
 
   if (status === 'success') {
@@ -62,6 +154,11 @@ export function QuizScreen({ language, onDone }) {
             {getTranslation(language, 'quiz.thanksTitle')}
           </h1>
           <p className="quiz-success-body">{getTranslation(language, 'quiz.thanksBody')}</p>
+          {finalResult && (
+            <p className="quiz-success-score">
+              {getTranslation(language, 'quiz.scoreLabel')}: {finalResult.score} / {finalResult.total}
+            </p>
+          )}
           <button type="button" className="quiz-button quiz-button-primary" onClick={onDone}>
             {getTranslation(language, 'quiz.backToMenu')}
           </button>
@@ -102,7 +199,7 @@ export function QuizScreen({ language, onDone }) {
     )
   }
 
-  const questionText = question.question[language] || question.question.en
+  const questionText = question.question[language] || question.question.id || question.question.en
   const progressLabel = getTranslation(language, 'quiz.questionProgress')
     .replace('{current}', String(currentIndex + 1))
     .replace('{total}', String(quizQuestions.length))
@@ -116,13 +213,17 @@ export function QuizScreen({ language, onDone }) {
 
         <img src={decorativeAssets.article.divider} alt="" className="quiz-divider" aria-hidden="true" />
 
+        {question.image && (
+          <img src={question.image} alt="" className="quiz-question-image" />
+        )}
+
         <h2 id="quiz-question-heading" className="quiz-question-text">
           {questionText}
         </h2>
 
         <div className="quiz-options" role="group" aria-label={questionText}>
           {question.options.map((option) => {
-            const optionText = option.text[language] || option.text.en
+            const optionText = option.text[language] || option.text.id || option.text.en
             const selected = currentAnswer === option.id
             return (
               <button

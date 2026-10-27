@@ -1,134 +1,223 @@
-// Placeholder quiz questions. Replace with final expo content.
-// Each question needs an id, question text in en/id/zh, and options.
-// Each option needs an id (A/B/C/D) and text in en/id/zh.
-// The submission payload will contain { questionId, optionId } pairs,
-// so the sheet can be scored by mapping against the correct answers.
+// 5 Tatung-themed quiz questions. Indonesian text is the source;
+// English and Chinese are translations to be reviewed before launch.
+// Each question carries correctOptionId (used for client-side scoring).
+// Question 4 displays the PSBIKT-009 cover image above the question text.
 
 export const quizQuestions = [
   {
     id: 'Q1',
     question: {
-      en: 'Which festival is this Storytelling Mirror experience designed for?',
-      id: 'Festival apa yang menjadi tema pengalaman Cermin Bercerita ini?',
-      zh: '本次故事之镜体验为哪个节日而设？',
+      id: 'Apa yang dimaksud dengan tatung?',
+      en: 'What is a tatung?',
+      zh: '什么是 tatung（童身）？',
     },
     options: [
       {
         id: 'A',
         text: {
-          en: 'Pekan Seni Budaya 2026',
-          id: 'Pekan Seni Budaya 2026',
-          zh: 'Pekan Seni Budaya 2026',
+          id: 'Tarian tradisional masyarakat Tionghoa',
+          en: 'A traditional dance performed by Chinese communities',
+          zh: '华人群体的传统舞蹈',
         },
       },
       {
         id: 'B',
         text: {
-          en: 'Chinese New Year',
-          id: 'Tahun Baru Imlek',
-          zh: '春节',
+          id: 'Orang yang tubuhnya dijadikan media atau perantara roh leluhur atau dewa',
+          en: 'A person whose body is used as a medium or channel for ancestral spirits or deities',
+          zh: '身体被用作祖先神灵或神明媒介或通道的人',
         },
       },
       {
         id: 'C',
         text: {
-          en: 'Mid-Autumn Festival',
-          id: 'Festival Pertengahan Musim Gugur',
-          zh: '中秋节',
+          id: 'Pemimpin pemerintahan masyarakat Tionghoa',
+          en: 'A leader of Chinese community governance',
+          zh: '华人社区的政府领袖',
         },
       },
       {
         id: 'D',
         text: {
-          en: 'Dragon Boat Festival',
-          id: 'Festival Perahu Naga',
-          zh: '端午节',
+          id: 'Pertunjukan seni bela diri tradisional',
+          en: 'A traditional martial arts performance',
+          zh: '传统武术表演',
         },
       },
     ],
+    correctOptionId: 'B',
   },
   {
     id: 'Q2',
     question: {
-      en: 'What should you do to reveal an exhibit story?',
-      id: 'Apa yang harus Anda lakukan untuk mengungkap cerita pameran?',
-      zh: '您应该怎么做才能揭开展品的故事？',
+      id: 'Apa tujuan utama ritual Tatung pada zaman dahulu?',
+      en: 'What was the primary purpose of the Tatung ritual in the past?',
+      zh: '古代 Tatung 仪式的主要目的是什么？',
     },
     options: [
       {
         id: 'A',
         text: {
-          en: 'Open the exhibit by hand',
-          id: 'Buka pameran dengan tangan',
-          zh: '亲手打开展品',
+          id: 'Menarik wisatawan asing',
+          en: 'Attracting foreign tourists',
+          zh: '吸引外国游客',
         },
       },
       {
         id: 'B',
         text: {
-          en: 'Scan the QR code',
-          id: 'Pindai kode QR',
-          zh: '扫描二维码',
+          id: 'Merayakan pergantian musim',
+          en: 'Celebrating the change of seasons',
+          zh: '庆祝季节交替',
         },
       },
       {
         id: 'C',
         text: {
-          en: 'Read the label',
-          id: 'Baca label',
-          zh: '阅读标签',
+          id: 'Mengusir roh jahat dan melindungi masyarakat dari gangguan buruk',
+          en: 'Warding off evil spirits and protecting the community from harm',
+          zh: '驱邪并保护社区免受侵扰',
         },
       },
       {
         id: 'D',
         text: {
-          en: 'Ask a guide',
-          id: 'Tanya pemandu',
-          zh: '询问导览员',
+          id: 'Memperkenalkan pakaian tradisional',
+          en: 'Introducing traditional clothing',
+          zh: '介绍传统服饰',
         },
       },
     ],
+    correctOptionId: 'C',
   },
   {
     id: 'Q3',
     question: {
-      en: 'Which Chinese character is commonly displayed upside down for good luck?',
-      id: 'Karakter Tionghoa apa yang sering dipasang terbalik untuk keberuntungan?',
-      zh: '哪个汉字常被倒贴以求好运？',
+      id: 'Dalam bahasa Mandarin, istilah Tatung berkaitan dengan sebutan apa?',
+      en: 'In Mandarin, what term is Tatung associated with?',
+      zh: '在中文里，Tatung 与哪个称谓相关？',
     },
     options: [
       {
         id: 'A',
         text: {
-          en: 'Xi (喜)',
-          id: 'Xi (喜)',
-          zh: '喜',
+          id: 'Da Lao Ye',
+          en: 'Da Lao Ye',
+          zh: '大老爷',
         },
       },
       {
         id: 'B',
         text: {
-          en: 'Fu (福)',
-          id: 'Fu (福)',
-          zh: '福',
+          id: 'Tong Ji',
+          en: 'Tong Ji',
+          zh: '童乩',
         },
       },
       {
         id: 'C',
         text: {
-          en: 'Chun (春)',
-          id: 'Chun (春)',
-          zh: '春',
+          id: 'Feng Shui',
+          en: 'Feng Shui',
+          zh: '风水',
         },
       },
       {
         id: 'D',
         text: {
-          en: 'Shou (寿)',
-          id: 'Shou (寿)',
-          zh: '寿',
+          id: 'Gong Xi',
+          en: 'Gong Xi',
+          zh: '恭喜',
         },
       },
     ],
+    correctOptionId: 'B',
+  },
+  {
+    id: 'Q4',
+    image: '/images/exhibits/PSBIKT-009/cover.webp',
+    question: {
+      id: 'Siapa nama Dewa di bawah ini?',
+      en: 'Who is the deity shown below?',
+      zh: '下图中是哪位神明？',
+    },
+    options: [
+      {
+        id: 'A',
+        text: {
+          id: 'Ng Fong Pak Kung',
+          en: 'Ng Fong Pak Kung',
+          zh: '五福伯公',
+        },
+      },
+      {
+        id: 'B',
+        text: {
+          id: 'San Tai Zi',
+          en: 'San Tai Zi',
+          zh: '三太子',
+        },
+      },
+      {
+        id: 'C',
+        text: {
+          id: 'Chau Liu Nyian Shai',
+          en: 'Chau Liu Nyian Shai',
+          zh: '周刘年师',
+        },
+      },
+      {
+        id: 'D',
+        text: {
+          id: 'Sun Go Kong',
+          en: 'Sun Go Kong',
+          zh: '孙悟空',
+        },
+      },
+    ],
+    correctOptionId: 'B',
+  },
+  {
+    id: 'Q5',
+    question: {
+      id: 'Apa makna penggunaan senjata tajam dalam atraksi Tatung?',
+      en: 'What is the meaning of using sharp weapons in the Tatung attraction?',
+      zh: 'Tatung 表演中使用锋利武器的含义是什么？',
+    },
+    options: [
+      {
+        id: 'A',
+        text: {
+          id: 'Sebagai simbol kekayaan',
+          en: 'A symbol of wealth',
+          zh: '财富的象征',
+        },
+      },
+      {
+        id: 'B',
+        text: {
+          id: 'Sebagai perlengkapan peperangan',
+          en: 'War equipment',
+          zh: '战争装备',
+        },
+      },
+      {
+        id: 'C',
+        text: {
+          id: 'Sebagai simbol kekuatan spiritual dan perlindungan',
+          en: 'A symbol of spiritual power and protection',
+          zh: '精神力量与护佑的象征',
+        },
+      },
+      {
+        id: 'D',
+        text: {
+          id: 'Sebagai alat pertunjukan tari biasa',
+          en: 'An ordinary dance performance prop',
+          zh: '普通舞蹈表演道具',
+        },
+      },
+    ],
+    correctOptionId: 'C',
   },
 ]

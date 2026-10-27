@@ -52,6 +52,13 @@ export const zh = {
     thanksTitle: '谢谢参与！',
     thanksBody: '您的答案已记录。',
     backToMenu: '返回菜单',
+    identityTitle: '开始前',
+    identityName: '真实姓名',
+    identityUnit: 'WD / SAP / 实习生 / 学校',
+    identityInstagram: 'Instagram 用户名',
+    identityStart: '开始问答',
+    identityRequired: '请填写所有字段',
+    scoreLabel: '您的得分',
     errorTitle: '提交失败',
     errorBody: '发送答案时出错。',
     retry: '重试'
