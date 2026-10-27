@@ -1357,3 +1357,19 @@ Using Tab and Enter only.
 **Decisions made:** Placed the reminder above the Share button rather than below or between buttons — first thing the user sees when they land on preview. Left border + tinted background so it stands out against the dark stage background without becoming alarming. Text says "when you post this to your Story" to clarify that sharing via Instagram Story is the intent, not just downloading the file. Kept the wording soft ("Don't forget") rather than imperative ("Tag @iktriaukompleks") — expo context, and the reminder is a courtesy not a rule. Quiz Thank You reminder is separate and unchanged; the earlier confusion was that the previous plan targeted the quiz screen by mistake. If both reminders are desired (twibbon preview AND quiz Thank You), that's fine — the copy is different in each context anyway.
 **Next part:** Manual verification. Then continue expo prep.
 **Commit:** 6f511cd
+
+## Style — Restyle twibbon share reminder
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Fix the twibbon share reminder looking like an error message. Change from vermilion left border + red-tint background to gold border + rosewood background + gold italic Playfair text so it matches the elegant note pattern elsewhere in the app.
+**Files changed:** src/styles/twibbon.css (.twibbon-share-reminder rule: full gold border replaces left-only vermilion border; rosewood background replaces red-tint background; gold italic Playfair Display text replaces bold surface text; centered alignment replaces left-aligned).
+**User-visible result:** The "don't forget to tag IKT @iktriaukompleks" reminder on the twibbon preview now reads as an elegant note — warm rosewood card, gold border, gold italic Playfair Display text, centered. Matches the visual language of .scanner-inline-error and .quiz-winners instead of looking like a validation error.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Menu -> Photo and Collage; (2) Take Photo; (3) verify the reminder now looks like an elegant gold-accented note, not an error box; (4) switch language to ID and ZH, verify text still fits and reads well; (5) verify Share/Save/Retake still work.
+**Not checked:** npm run build (deferred per user request). Real mobile device.
+**Remaining risks:** Rosewood background at 0.9 opacity is dark, and gold italic Playfair text is elegant but has lower contrast than plain white text. WCAG AA contrast for gold-on-rosewood is approximately 4.4:1 (borderline — just under 4.5:1 for normal text). If readability feels tight in practice, options are: (a) increase font-weight to 700, (b) use surface (cream) color instead of gold for the text while keeping the gold border, (c) increase the background opacity to 0.95 for stronger contrast against the dark stage behind. None of these are blockers for an expo reminder that's decorative in nature.
+**Decisions made:** Chose rosewood + gold over cream card because on the dark scanner-style stage a cream card feels like a foreign element — the app's existing dark-stage patterns (.scanner-inline-error, .scanner-error) use dark backgrounds with colored borders and text for in-stage messages. Used italic Playfair Display because the reminder text is a warm, friendly suggestion not a hard rule — italic reads as "note" not "instruction". Centered alignment because the reminder is a decorative caption under the photo, and centered feels more appropriate for a short suggestion than left-aligned technical copy. Removed the left-only border in favor of a full 1px border because the left-border-accent pattern reads as "warning" or "alert" — the pattern the user was seeing as error-like.
+**Next part:** Manual verification. Then continue expo prep.
+**Commit:** 5ff15a3
