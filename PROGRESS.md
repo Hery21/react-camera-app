@@ -1309,3 +1309,19 @@ Using Tab and Enter only.
 **Decisions made:** Winner rule confirmed as Timestamp ASC. Filter to perfect score before sort. Top 10 slice, fewer if fewer perfect. Content-Type text/plain for Apps Script. Identity form is its own screen. Q4 image = PSBIKT-009. MenuScreen conflict resolved keeping internal quiz path. Two failed runs during this feature (import path, then duplicate keys). Both fixed by rewriting the specific broken files rather than appending. Lesson: when adding new keys to a namespace via replace, do not include keys already added by a prior step — grep before drafting or use a full-file rewrite.
 **Next part:** Deploy Apps Script, paste endpoint URL, test end-to-end, merge feature/quiz-page into template-2.
 **Commit:** 2d33c43
+
+## Feature — Remove TMI menu card
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Remove the TMI (formerly Extra Information) card from the Menu since it was a disabled placeholder with no functionality.
+**Files changed:** src/screens/MenuScreen.jsx (removed TMI button block; kept Tour, Quiz, Photo and Collage cards).
+**User-visible result:** Menu now shows three active cards: Tour, Quiz, Photo and Collage. The disabled placeholder that was TMI is gone.
+**Automated checks:** npm run lint; npm run check:flow; npm run check:mvp; npm run check:quiz; npm run check:i18n.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open Menu; (2) verify three cards present; (3) verify Tour, Quiz, Photo each open their screens; (4) verify no layout issues from having one fewer card.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** menu.info, menu.infoDesc, menu.comingSoon translation keys remain in three locale files as unused. Harmless — no build break, no runtime issue. If TMI is reintroduced later, the keys are still there. check:responsive still expects the TMI card to be present via an assertion on menu.info? Actually it does not — the responsive check only verifies menu.css has width constraint, not that all four cards exist. No check fails from TMI removal.
+**Decisions made:** Kept the TMI translation keys rather than removing them, because removing them means editing three locale files and re-running check:i18n which now expects those keys present. If the user later wants the keys gone, that's a follow-up cleanup. Kept the comingSoon key too since it is currently unused but might be useful if a new "coming soon" card is added later. Menu cards reorder from Tour/Quiz/Photo/TMI to Tour/Quiz/Photo — the three active cards stay in their existing order.
+**Next part:** Merge feature/quiz-page to template-2 if not already merged. Deploy to Vercel. Test on real device.
+**Commit:** ef0951f
