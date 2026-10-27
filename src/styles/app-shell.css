@@ -1,4 +1,5 @@
 .app {
+  min-height: 100vh;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -12,6 +13,7 @@
 
 .app--scanner {
   position: relative;
+  min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
   background: #000;

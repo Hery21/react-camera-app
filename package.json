@@ -43,7 +43,8 @@
     "check:scanner-stability": "node scripts/check-scanner-stability.mjs",
     "check:vite-assets": "node scripts/check-vite-assets.mjs",
     "check:cover-images": "node scripts/check-cover-images.mjs",
-    "check:quiz": "node scripts/check-quiz.mjs"
+    "check:quiz": "node scripts/check-quiz.mjs",
+    "check:legacy-build": "node scripts/check-legacy-build.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
