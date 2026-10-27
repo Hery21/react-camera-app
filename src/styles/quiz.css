@@ -369,3 +369,166 @@
   font-weight: 700;
   text-align: center;
 }
+
+
+/* ---------- Main title and subtitle ---------- */
+
+.quiz-main-title {
+  margin: 0 0 0.25rem;
+  color: var(--color-vermilion-dark);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.5rem, 5vw + 0.5rem, 2.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.quiz-identity-subtitle {
+  margin: 0 0 var(--space-2);
+  color: var(--color-rosewood);
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.quiz-thanks-eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--color-vermilion);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ---------- Identity form ---------- */
+
+.quiz-screen-identity {
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.quiz-identity-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: var(--space-3);
+}
+
+.quiz-identity-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-rosewood);
+  letter-spacing: 0.02em;
+}
+
+.quiz-identity-field input {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 2px solid var(--color-antique-gold);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-rosewood);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.quiz-identity-field input:focus-visible {
+  outline: 2px solid var(--color-vermilion);
+  outline-offset: 2px;
+}
+
+.quiz-identity-error {
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  background: rgba(159, 31, 31, 0.1);
+  color: var(--color-error);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- Question image ---------- */
+
+.quiz-question-image {
+  display: block;
+  max-width: 55%;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Score display ---------- */
+
+.quiz-success-score {
+  margin: var(--space-2) 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--color-vermilion-dark);
+  font-family: var(--font-family-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ---------- Winners info block ---------- */
+
+.quiz-winners {
+  margin: var(--space-3) 0;
+  padding: var(--space-3);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: var(--radius-md);
+  background: rgba(212, 175, 55, 0.08);
+  text-align: left;
+}
+
+.quiz-winners-title {
+  margin: 0 0 var(--space-2);
+  color: var(--color-vermilion-dark);
+  font-family: var(--font-family-display);
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.quiz-winners-intro,
+.quiz-winners-announcement {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.quiz-winners-req-title {
+  margin: var(--space-3) 0 var(--space-1);
+  color: var(--color-rosewood);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.quiz-winners-req-list {
+  margin: 0 0 var(--space-2);
+  padding-left: var(--space-5);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.quiz-winners-req-list li {
+  margin-bottom: 0.35em;
+}
+
+.quiz-winners-prize {
+  margin: var(--space-2) 0 0;
+  padding-top: var(--space-2);
+  border-top: 1px dashed rgba(212, 175, 55, 0.55);
+  color: var(--color-rosewood);
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.85;
+}

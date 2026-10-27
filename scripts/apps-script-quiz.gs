@@ -1,18 +1,14 @@
-// Paste this ENTIRE file into Google Apps Script (Extensions > Apps Script)
-// attached to your Google Sheet.
+// Paste this entire file into Google Apps Script (Extensions > Apps Script).
+//
+// Sheet tabs required:
+//   "Response From Web" - receives every submission (headers in row 1)
+//   "Winners"           - rebuilt by rebuildWinners()
 //
 // Deploy:
 //   Deploy > New deployment > Web app
 //     Execute as: Me
 //     Who has access: Anyone
 //   Copy the /exec URL into src/config/quizConfig.js endpoint.
-//
-// Sheet tabs required:
-//   "Response From Web" - receives every submission (headers in row 1)
-//   "Winners"           - rebuilt by rebuildWinners(), sorted by score then timestamp
-//
-// After some submissions arrive, run rebuildWinners() manually
-// (or set a time-based trigger) to refresh the winners list.
 
 const RESPONSES_SHEET = 'Response From Web'
 const WINNERS_SHEET = 'Winners'
@@ -32,6 +28,9 @@ const RESPONSE_HEADERS = [
   'Score',
   'Correct',
   'Total',
+  'Started At',
+  'Submitted At',
+  'Duration (ms)',
 ]
 
 function doPost(e) {
@@ -63,6 +62,9 @@ function doPost(e) {
       payload.score || 0,
       payload.correctCount || 0,
       payload.totalQuestions || 0,
+      payload.startedAt || '',
+      payload.submittedAt || '',
+      payload.durationMs || 0,
     ])
 
     return ContentService
@@ -75,9 +77,10 @@ function doPost(e) {
   }
 }
 
-// Rebuilds the Winners sheet from Response From Web.
-// Sorts all responses by score descending, then by timestamp ascending.
-// The user decides how many top rows are winners (e.g. take top 5 or filter to score = max).
+// Rebuilds the Winners sheet.
+// Rule: only submissions where Correct === Total (perfect score), sorted by
+// submission Timestamp ascending (earliest first), top 10. If fewer than 10
+// people achieved a perfect score, only those people appear.
 function rebuildWinners() {
   const ss = SpreadsheetApp.getActiveSpreadsheet()
   const resp = ss.getSheetByName(RESPONSES_SHEET)
@@ -97,16 +100,28 @@ function rebuildWinners() {
   }
 
   const headers = values[0]
-  const rows = values.slice(1)
-  const scoreIdx = headers.indexOf('Score')
+  const correctIdx = headers.indexOf('Correct')
+  const totalIdx = headers.indexOf('Total')
   const timestampIdx = headers.indexOf('Timestamp')
 
-  rows.sort(function (a, b) {
-    const diff = (Number(b[scoreIdx]) || 0) - (Number(a[scoreIdx]) || 0)
-    if (diff !== 0) return diff
-    return new Date(a[timestampIdx]) - new Date(b[timestampIdx])
+  const eligible = values.slice(1).filter(function (row) {
+    const correct = Number(row[correctIdx])
+    const total = Number(row[totalIdx])
+    return correct > 0 && correct === total
   })
 
+  eligible.sort(function (a, b) {
+    const aTs = a[timestampIdx] ? new Date(a[timestampIdx]).getTime() : Infinity
+    const bTs = b[timestampIdx] ? new Date(b[timestampIdx]).getTime() : Infinity
+    return aTs - bTs
+  })
+
+  const top10 = eligible.slice(0, 10)
+
   winners.appendRow(headers)
-  rows.forEach(function (r) { winners.appendRow(r) })
+  if (top10.length === 0) {
+    winners.appendRow(['No perfect scores yet'])
+  } else {
+    top10.forEach(function (r) { winners.appendRow(r) })
+  }
 }

@@ -1,8 +1,3 @@
-// 5 Tatung-themed quiz questions. Indonesian text is the source;
-// English and Chinese are translations to be reviewed before launch.
-// Each question carries correctOptionId (used for client-side scoring).
-// Question 4 displays the PSBIKT-009 cover image above the question text.
-
 export const quizQuestions = [
   {
     id: 'Q1',

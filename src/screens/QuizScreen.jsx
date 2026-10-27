@@ -25,6 +25,7 @@ export function QuizScreen({ language, onDone }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [sessionId] = useState(generateSessionId)
+  const [quizStartedAt, setQuizStartedAt] = useState(null)
   const [status, setStatus] = useState('question')
   const [errorMessage, setErrorMessage] = useState('')
   const [finalResult, setFinalResult] = useState(null)
@@ -46,6 +47,7 @@ export function QuizScreen({ language, onDone }) {
     }
     setIdentity({ namaAsli, unit, instagram })
     setIdentityError('')
+    setQuizStartedAt(Date.now())
     setPhase('quiz')
   }
 
@@ -69,11 +71,18 @@ export function QuizScreen({ language, onDone }) {
     const { correct, score } = computeScore(answers)
     setFinalResult({ correct, score, total: quizQuestions.length * quizConfig.pointsPerQuestion })
 
+    const now = Date.now()
+    const submittedAt = new Date(now).toISOString()
+    const startedAt = quizStartedAt ? new Date(quizStartedAt).toISOString() : submittedAt
+    const durationMs = quizStartedAt ? now - quizStartedAt : 0
+
     try {
       await submitQuizResponse({
         sessionId,
         language,
-        submittedAt: new Date().toISOString(),
+        startedAt,
+        submittedAt,
+        durationMs,
         identity,
         answers: quizQuestions.map((q) => ({ questionId: q.id, optionId: answers[q.id] })),
         score,
@@ -93,9 +102,10 @@ export function QuizScreen({ language, onDone }) {
         <img src={decorativeAssets.article.crown} alt="" className="quiz-crown" aria-hidden="true" />
 
         <form className="quiz-card" onSubmit={handleIdentitySubmit}>
-          <h1 id="quiz-identity-title" className="quiz-question-text">
-            {getTranslation(language, 'quiz.identityTitle')}
+          <h1 id="quiz-identity-title" className="quiz-main-title">
+            {getTranslation(language, 'quiz.title')}
           </h1>
+          <p className="quiz-identity-subtitle">{getTranslation(language, 'quiz.identityTitle')}</p>
 
           <img src={decorativeAssets.article.divider} alt="" className="quiz-divider" aria-hidden="true" />
 
@@ -150,6 +160,7 @@ export function QuizScreen({ language, onDone }) {
       <section className="quiz-screen quiz-screen-success" aria-labelledby="quiz-thanks-title">
         <div className="quiz-card">
           <img src={decorativeAssets.article.crown} alt="" className="quiz-crown" aria-hidden="true" />
+          <p className="quiz-thanks-eyebrow">{getTranslation(language, 'quiz.title')}</p>
           <h1 id="quiz-thanks-title" className="quiz-success-title">
             {getTranslation(language, 'quiz.thanksTitle')}
           </h1>
@@ -159,6 +170,20 @@ export function QuizScreen({ language, onDone }) {
               {getTranslation(language, 'quiz.scoreLabel')}: {finalResult.score} / {finalResult.total}
             </p>
           )}
+
+          <div className="quiz-winners">
+            <h2 className="quiz-winners-title">{getTranslation(language, 'quiz.winnersTitle')}</h2>
+            <p className="quiz-winners-intro">{getTranslation(language, 'quiz.winnersIntro')}</p>
+            <p className="quiz-winners-announcement">{getTranslation(language, 'quiz.winnersAnnouncement')}</p>
+            <h3 className="quiz-winners-req-title">{getTranslation(language, 'quiz.winnersRequirementsTitle')}</h3>
+            <ol className="quiz-winners-req-list">
+              <li>{getTranslation(language, 'quiz.winnersRequirement1')}</li>
+              <li>{getTranslation(language, 'quiz.winnersRequirement2')}</li>
+              <li>{getTranslation(language, 'quiz.winnersRequirement3')}</li>
+            </ol>
+            <p className="quiz-winners-prize">{getTranslation(language, 'quiz.winnersPrizeNote')}</p>
+          </div>
+
           <button type="button" className="quiz-button quiz-button-primary" onClick={onDone}>
             {getTranslation(language, 'quiz.backToMenu')}
           </button>
