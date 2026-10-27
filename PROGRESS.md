@@ -1341,3 +1341,19 @@ Using Tab and Enter only.
 **Decisions made:** Both twibbon images rendered simultaneously as img elements with display:none for the inactive one (via .twibbon-overlay-hidden) so both have accurate naturalWidth/naturalHeight for capture — swapping a single img's src risks zero-size captures if the natural dimensions aren't ready. Picker shown only in live state; after capture, frame is baked into the composite and only Retake lets the visitor change it. Selection persists across Retake so users don't re-select every shot. Thumbnails are the actual twibbon images at small size rather than labeled buttons (language-independent visually, aria-label translates). twibbonRefs object keyed by id (not two separate useRef) so a third twibbon can be added later by just appending to the TWIBBONS array. Original plan used invalid type 'append' — recovery uses write with mode: 'append' which is the correct runner API.
 **Next part:** Manual verification on real device. Deploy to Vercel and test on phone.
 **Commit:** 8d06e21
+
+## Feature — Instagram tag reminder on twibbon preview
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** After the user takes a twibbon photo, show a reminder above the Share/Save buttons to tag IKT @iktriaukompleks when posting to Instagram Story.
+**Files changed:** src/screens/TwibbonPhotoScreen.jsx (added .twibbon-share-reminder paragraph in preview state, above the Share button), src/i18n/locales/en.js + id.js + zh.js (added twibbon.shareReminder key), src/styles/twibbon.css (appended reminder style: left vermilion border, subtle red-tint background, cream text on dark stage).
+**User-visible result:** On the twibbon preview screen (after Take Photo), a highlighted reminder appears above the Share button: "Don't forget to tag IKT's Instagram @iktriaukompleks when you post this to your Story." (or ID/ZH equivalents). It has a left vermilion border and subtle red tint so it visually stands out as a call-to-action without dominating.
+**Automated checks:** npm run lint; npm run check:i18n; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open Menu -> Photo and Collage; (2) Take Photo; (3) verify reminder appears above the Share button in the preview state; (4) switch language to ID -> text translates; (5) switch to ZH -> text translates; (6) verify Share opens native share sheet with Instagram option (existing behavior, unchanged).
+**Not checked:** npm run build (deferred per user request). Real mobile device.
+**Remaining risks:** The reminder references @iktriaukompleks explicitly, so if the handle ever changes, the string in three locales needs updating. The reminder is only on the preview state — after Retake it hides again, which is correct since there is no image to post yet.
+**Decisions made:** Placed the reminder above the Share button rather than below or between buttons — first thing the user sees when they land on preview. Left border + tinted background so it stands out against the dark stage background without becoming alarming. Text says "when you post this to your Story" to clarify that sharing via Instagram Story is the intent, not just downloading the file. Kept the wording soft ("Don't forget") rather than imperative ("Tag @iktriaukompleks") — expo context, and the reminder is a courtesy not a rule. Quiz Thank You reminder is separate and unchanged; the earlier confusion was that the previous plan targeted the quiz screen by mistake. If both reminders are desired (twibbon preview AND quiz Thank You), that's fine — the copy is different in each context anyway.
+**Next part:** Manual verification. Then continue expo prep.
+**Commit:** 6f511cd
