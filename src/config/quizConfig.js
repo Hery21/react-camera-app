@@ -22,7 +22,7 @@
 //      achieved a perfect score, only those people appear.
 
 export const quizConfig = {
-  endpoint: 'https://script.google.com/macros/s/AKfycbxY5dTOvqizR75YUzWEFjNShfGG6q-7zeQw2SHC7j8s8_c4m1lcbuHSUenDEcQK7j3Ghg/exec',
+  endpoint: 'https://script.google.com/macros/s/AKfycbwa4vlWePCtAkIG_vb5dT7UQlVMlNAm5dh1qWC5svZ4NHK22ns5jRxV3V2bW4fxRD0s/exec',
   mode: 'json',
   pointsPerQuestion: 20,
   formFields: {},
