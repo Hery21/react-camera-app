@@ -324,6 +324,7 @@ export function TwibbonPhotoScreen({ language }) {
 
         {cameraState === 'preview' && (
           <>
+            <p className="twibbon-share-reminder">{getTranslation(language, 'twibbon.shareReminder')}</p>
             <div className="twibbon-button-primary-wrap">
               <img
                 src={decorativeAssets.result.buttonFlourish}

@@ -42,7 +42,8 @@ export const en = {
     requesting: 'Starting camera…',
     saved: 'Saved to your device',
     switchCamera: 'Switch Camera',
-    selectFrame: 'Frame'
+    selectFrame: 'Frame',
+    shareReminder: "Don't forget to tag IKT's Instagram @iktriaukompleks when you post this to your Story."
   },
   quiz: {
     title: 'Kuis Day 1',

@@ -42,7 +42,8 @@ export const id = {
     requesting: 'Memulai kamera…',
     saved: 'Tersimpan di perangkat Anda',
     switchCamera: 'Ganti Kamera',
-    selectFrame: 'Bingkai'
+    selectFrame: 'Bingkai',
+    shareReminder: 'Jangan lupa untuk tag instagram IKT @iktriaukompleks saat mengunggah ke Story Anda.'
   },
   quiz: {
     title: 'Kuis Day 1',

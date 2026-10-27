@@ -369,3 +369,21 @@
     height: 52px;
   }
 }
+
+
+/* ---------- Share reminder on preview ---------- */
+
+.twibbon-share-reminder {
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--color-vermilion);
+  border-radius: var(--radius-sm);
+  background: rgba(179, 34, 34, 0.12);
+  color: var(--color-surface);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+}

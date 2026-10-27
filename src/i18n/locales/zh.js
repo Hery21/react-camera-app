@@ -42,7 +42,8 @@ export const zh = {
     requesting: '正在启动相机…',
     saved: '已保存到您的设备',
     switchCamera: '切换相机',
-    selectFrame: '边框'
+    selectFrame: '边框',
+    shareReminder: '将此照片发布到您的 Story 时，别忘了标记 IKT 的 Instagram @iktriaukompleks。'
   },
   quiz: {
     title: 'Kuis Day 1',
