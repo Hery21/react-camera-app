@@ -1,4 +1,6 @@
 import { LanguageToggle } from './LanguageToggle.jsx'
+import { FullscreenToggle } from './FullscreenToggle.jsx'
+import { GitHubLink } from './GitHubLink.jsx'
 import { getTranslation } from '../i18n/getTranslation.js'
 
 export function AppShell({ language, onLanguageChange, screen, onBack, backLabel, children }) {
@@ -24,6 +26,8 @@ export function AppShell({ language, onLanguageChange, screen, onBack, backLabel
         <div className="app-header-right" aria-hidden="true" />
       </header>
       <main className="app-main">{children}</main>
+      <GitHubLink />
+      <FullscreenToggle />
     </div>
   )
 }

@@ -1,0 +1,60 @@
+/* Shared style for the two fixed-position utility buttons: GitHub link
+   bottom-left, fullscreen toggle bottom-right. Both sit above the progress
+   dock and respect safe-area insets on notched phones. */
+
+.utility-btn {
+  position: fixed;
+  z-index: 55;
+  bottom: calc(var(--progress-dock-height) + 12px);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  background: rgba(26, 18, 16, 0.68);
+  color: var(--color-antique-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: background 0.15s ease, transform 0.1s ease;
+  text-decoration: none;
+}
+
+.utility-btn:hover {
+  background: rgba(26, 18, 16, 0.85);
+}
+
+.utility-btn:active {
+  transform: scale(0.94);
+}
+
+.utility-btn:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 3px;
+}
+
+.utility-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
+}
+
+.github-link {
+  left: calc(env(safe-area-inset-left, 0px) + 12px);
+}
+
+.fullscreen-toggle {
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+}
+
+/* On the Welcome screen the ornate mirror composition fills the viewport;
+   hide the fullscreen toggle there so it does not clash with the design.
+   The GitHub link stays visible on Welcome. */
+.app--welcome .fullscreen-toggle {
+  display: none;
+}
