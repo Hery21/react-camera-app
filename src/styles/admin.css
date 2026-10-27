@@ -358,3 +358,159 @@
     background: #fff !important;
   }
 }
+
+
+/* ---------- QR Codes view (composite with frame) ---------- */
+
+.admin-qr-help {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: var(--radius-md);
+  background: rgba(212, 175, 55, 0.08);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-rosewood);
+}
+
+.admin-qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.admin-qr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+/* Frame container — relative so the absolutely positioned QR overlay
+   centers within the frame image's actual rendered area (which varies
+   by frame aspect ratio, not fixed). */
+.admin-qr-frame-wrap {
+  position: relative;
+  width: 100%;
+  display: block;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.admin-qr-frame-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* QR overlay — max-width and max-height both 25% of the frame wrap, with
+   aspect-ratio 1 forcing square. This yields 25% of the smaller dimension
+   (matches the JS composite math). */
+.admin-qr-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 25%;
+  max-height: 25%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #fff;
+}
+
+.admin-qr-id {
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: var(--color-vermilion);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.admin-qr-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-rosewood);
+  line-height: 1.2;
+}
+
+.admin-qr-download {
+  margin-top: var(--space-1);
+}
+
+.admin-qr-status {
+  margin: var(--space-1) 0 0;
+  font-size: 0.75rem;
+}
+
+.admin-qr-status-ok {
+  color: var(--color-success, #187154);
+}
+
+.admin-qr-status-err {
+  color: var(--color-error, #9f1f1f);
+  word-break: break-word;
+}
+
+@media print {
+  .app-header,
+  .scan-progress-dock,
+  .admin-header,
+  .admin-qr-help,
+  .admin-qr-download,
+  .admin-qr-status,
+  .admin-btn-small {
+    display: none !important;
+  }
+
+  .app--admin .app-main,
+  .admin-screen {
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .admin-screen {
+    max-width: none !important;
+  }
+
+  .admin-qr-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1cm;
+    padding: 1cm;
+  }
+
+  .admin-qr-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1.5pt solid #000;
+    padding: 0.4cm;
+    border-radius: 0;
+  }
+
+  .admin-qr-frame-wrap {
+    background: #fff;
+  }
+
+  .admin-qr-id {
+    font-size: 9pt;
+    color: #000;
+  }
+
+  .admin-qr-title {
+    font-size: 10pt;
+    color: #000;
+  }
+
+  body {
+    background: #fff !important;
+  }
+}
