@@ -42,6 +42,7 @@
     "check:responsive": "node scripts/check-responsive-baseline.mjs",
     "check:scanner-stability": "node scripts/check-scanner-stability.mjs",
     "check:vite-assets": "node scripts/check-vite-assets.mjs",
+    "check:cover-images": "node scripts/check-cover-images.mjs",
     "check:quiz": "node scripts/check-quiz.mjs"
   },
   "dependencies": {

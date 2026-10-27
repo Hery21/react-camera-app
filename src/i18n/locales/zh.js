@@ -28,7 +28,7 @@ export const zh = {
     infoDesc: '了解娘惹文化的更多内容',
     quiz: '问答',
     quizDesc: '测试您所学的知识',
-    collage: '照片与拼贴',
+    collage: '拍照',
     collageDesc: '拍摄一张 twibbon 纪念照',
     comingSoon: '即将推出',
     back: '返回首页'

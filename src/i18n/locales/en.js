@@ -28,7 +28,7 @@ export const en = {
     infoDesc: 'Learn more about Peranakan culture',
     quiz: 'Quiz',
     quizDesc: 'Test what you have learned',
-    collage: 'Photo and Collage',
+    collage: 'Take a Photo',
     collageDesc: 'Take a twibbon keepsake photo',
     comingSoon: 'Coming soon',
     back: 'Back to welcome'

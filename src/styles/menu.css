@@ -52,7 +52,9 @@
   box-shadow:
     0 4px 14px rgba(0, 0, 0, 0.18),
     inset 0 0 0 1px rgba(212, 175, 55, 0.45);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 /* Gold flourish watermark behind content */
@@ -157,7 +159,6 @@
   color: var(--color-rosewood);
 }
 
-
 /* ---------- Decorative overlay additions ---------- */
 
 /* Header must sit above the frame corners so back button and toggle stay visible */
@@ -200,12 +201,12 @@
 }
 
 .menu-frame-corner-bl {
-  bottom: var(--progress-dock-height);
+  bottom: env(safe-area-inset-bottom, 0);
   left: env(safe-area-inset-left, 0);
 }
 
 .menu-frame-corner-br {
-  bottom: var(--progress-dock-height);
+  bottom: env(safe-area-inset-bottom, 0);
   right: env(safe-area-inset-right, 0);
 }
 

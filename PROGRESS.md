@@ -430,6 +430,7 @@ The Phase 4 exit gate is satisfied on iOS Safari + desktop webcam. Android Chrom
 # Future Roadmap
 
 ## Phase 10.4: Gallery styling
+
 - Preserve Gallery as Exhibit tab.
 - Use motif-lattice.webp sparingly.
 - Keep localized alt/captions.
@@ -437,7 +438,9 @@ The Phase 4 exit gate is satisfied on iOS Safari + desktop webcam. Android Chrom
 - Do not add carousel until a real lightbox exists.
 
 ## Phase 10.5: responsive/accessibility acceptance
+
 Test:
+
 - 320x568
 - 360x640
 - 390x844
@@ -452,47 +455,73 @@ Test:
 - progress dock without overlap
 
 ## Dev-only admin/content authoring
+
 The user wants an Admin page protected by PIN 6767 for development authoring.
+
 - Gate with import.meta.env.DEV.
 - Never expose in normal Vercel production build.
 - Export JSON and use a Node import script to update source files.
 
 ### Phase 11.1: canonical content schema
+
 ### Phase 11.2: dev-only Admin route + PIN
+
 ### Phase 11.3: Admin exhibit dashboard
+
 ### Phase 11.4: Admin edit/add form
+
 ### Phase 11.5: export
+
 ### Phase 11.6: Node import script
+
 ### Phase 11.7: Admin acceptance
 
 ## Selection Menu / hub
+
 Welcome CTA should become Start, then navigate to a menu:
 Tour, Extra Information, Quiz, Photo & Collage.
+
 ### Phase 12.1: state/navigation foundation
+
 ### Phase 12.2: menu design
+
 ### Phase 12.3: Tour integration
 
 ## Extra Information module
+
 ### Phase 13.1: schema
+
 ### Phase 13.2: index
+
 ### Phase 13.3: reader
+
 ### Phase 13.4: Admin support
 
 ## Quiz module
+
 ### Phase 14.1: schema
+
 ### Phase 14.2: lobby
+
 ### Phase 14.3: gameplay
+
 ### Phase 14.4: results
+
 ### Phase 14.5: Admin authoring
 
 ## Photo and Instagram collage module
-### Phase 15.1: capture
-### Phase 15.2: template model
-### Phase 15.3: collage editor
-### Phase 15.4: export/share
-### Phase 15.5: privacy/cleanup
-### Phase 15.6: optional dev template admin
 
+### Phase 15.1: capture
+
+### Phase 15.2: template model
+
+### Phase 15.3: collage editor
+
+### Phase 15.4: export/share
+
+### Phase 15.5: privacy/cleanup
+
+### Phase 15.6: optional dev template admin
 
 ## Phase 11.1 — Admin Dashboard Scaffold
 
@@ -505,7 +534,7 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Manual checks:** Pending. Required: (1) npm run dev; (2) verify the "Open Admin" button appears on the Welcome screen; (3) click it and verify the dashboard loads and lists all 8 PSBIKT exhibits; (4) verify the missing translations are accurately flagged; (5) click "Exit Admin" to return to Welcome; (6) run npm run build to confirm the admin code is entirely excluded from the production bundle (the button will be invisible).  
 **Not checked:** npm run build (deferred per user request).  
 **Remaining risks:** The admin dashboard currently only reads data. The next phase will need to handle state mutations and generate JSON exports, which requires careful validation to avoid corrupting the data source.  
-**Decisions made:** Dropped the PIN as requested because import.meta.env.DEV guarantees the UI will never render in the Vercel production deployment. The admin screen is currently a simple read-only list. The "Edit" button is present but disabled to establish the UI layout. 
+**Decisions made:** Dropped the PIN as requested because import.meta.env.DEV guarantees the UI will never render in the Vercel production deployment. The admin screen is currently a simple read-only list. The "Edit" button is present but disabled to establish the UI layout.
 **Next part:** Phase 11.2 — Admin Edit Form. Wire up state to actually modify the exhibit data and validate it before export.  
 **Commit:** cffb794
 
@@ -703,9 +732,9 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Unit tests:** Intentionally omitted per urgent-policy override.
 **Manual checks:** Pending. (1) Open any exhibit article; (2) verify text is inset ~30-40px on both sides inside the frame; (3) verify prev/next arrows are visibly large and their natural wide arrow shape is preserved; (4) switch to Chinese and verify wrapping is clean; (5) open a second exhibit and verify the fix applies everywhere.
 **Not checked:** npm run build (deferred per user request).
-**Remaining risks:** The !important block is a deliberate short-term fix. The proper solution is to consolidate duplicate rules across exhibit-*.css files — a cleanup phase is a good follow-up. The 10vw padding cap at 4rem means very wide desktop screens will cap the padding, which is fine. The scroll-area padding-right 8px accounts for the potential scrollbar so text does not touch the scrollbar edge. The 64px grid column on navigation is a bit wider than before; on 320px phones it takes 128px of the 320px viewport leaving 192px for the page counter, which is plenty.
+**Remaining risks:** The !important block is a deliberate short-term fix. The proper solution is to consolidate duplicate rules across exhibit-_.css files — a cleanup phase is a good follow-up. The 10vw padding cap at 4rem means very wide desktop screens will cap the padding, which is fine. The scroll-area padding-right 8px accounts for the potential scrollbar so text does not touch the scrollbar edge. The 64px grid column on navigation is a bit wider than before; on 320px phones it takes 128px of the 320px viewport leaving 192px for the page counter, which is plenty.
 **Decisions made:** Used !important on this specific set of rules because the cascade is currently fragmented across six files. Fighting specificity cleanly would require touching all six; !important on one file is smaller. Also reordered App.css so exhibit.css (the file we actually edit) comes last — this makes future fixes to these rules win naturally without !important. Both approaches together give the safest win. Arrows display at natural aspect ratio rather than forced square because the source PNGs are 2.5:1 wide horizontal arrows; forcing square shrink them to ~30% of their usable width.
-**Next part:** Optionally consolidate the six exhibit-*.css files into one file to eliminate the !important block. Or resume the roadmap (Phase 10.4 Gallery polish, Phase 10.5 responsive acceptance).
+**Next part:** Optionally consolidate the six exhibit-_.css files into one file to eliminate the !important block. Or resume the roadmap (Phase 10.4 Gallery polish, Phase 10.5 responsive acceptance).
 **Commit:** bc68662
 
 ## Fix — Clean up legacy exhibit CSS causing text invisibility
@@ -719,8 +748,8 @@ Tour, Extra Information, Quiz, Photo & Collage.
 **Unit tests:** Intentionally omitted per urgent-policy override.
 **Manual checks:** Pending. (1) Open any exhibit article; (2) verify text is visible and inset from the frame; (3) verify arrows are noticeably large; (4) switch to Chinese and verify wrapping; (5) verify page counter and buttons still work.
 **Not checked:** npm run build (deferred per user request).
-**Remaining risks:** The !important override block is a deliberate short-term measure. Now that exhibit-layout.css and exhibit-sentence-pagination.css are cleaned up, a future consolidation could remove most of the !important by merging the five exhibit-*.css files into one. On very short landscape phones the 88px-wide navigation arrows may crowd the page counter — if observed, reduce to 72px.
-**Decisions made:** Rewrote the two legacy files instead of appending more !important patches, because the underlying problem was that these files described a JSX structure that no longer exists. Deleted the entire .exhibit-page-measure rule block from exhibit-sentence-pagination.css — that element is not in the JSX. Kept the .exhibit-text-size-* font sizing in exhibit.css only (removed duplicates from exhibit-sentence-pagination.css). Used high-specificity .app--exhibit .exhibit-page-scroll-area .exhibit-page-text (specificity 0,3,0) to beat the leftover .app--exhibit .exhibit-page-text (specificity 0,2,0) rule from exhibit-layout.css. Arrows bumped from 60px to 80px wide per user feedback that 60px was still too small.
+**Remaining risks:** The !important override block is a deliberate short-term measure. Now that exhibit-layout.css and exhibit-sentence-pagination.css are cleaned up, a future consolidation could remove most of the !important by merging the five exhibit-_.css files into one. On very short landscape phones the 88px-wide navigation arrows may crowd the page counter — if observed, reduce to 72px.
+**Decisions made:** Rewrote the two legacy files instead of appending more !important patches, because the underlying problem was that these files described a JSX structure that no longer exists. Deleted the entire .exhibit-page-measure rule block from exhibit-sentence-pagination.css — that element is not in the JSX. Kept the .exhibit-text-size-_ font sizing in exhibit.css only (removed duplicates from exhibit-sentence-pagination.css). Used high-specificity .app--exhibit .exhibit-page-scroll-area .exhibit-page-text (specificity 0,3,0) to beat the leftover .app--exhibit .exhibit-page-text (specificity 0,2,0) rule from exhibit-layout.css. Arrows bumped from 60px to 80px wide per user feedback that 60px was still too small.
 **Next part:** Optionally consolidate the five exhibit-*.css files into one to eliminate the !important overrides. Or resume roadmap.
 **Commit:** 8a1160c
 
@@ -813,6 +842,7 @@ Tour, Extra Information, Quiz, Photo & Collage.
 Mark each item as PASS or FAIL. If any item fails, describe the issue.
 
 #### A. Viewport matrix (portrait)
+
 Test the full visitor flow at each width: 320x568, 360x640, 390x844, 430x932.
 
 - [ ] Welcome screen: title and mirror fit, no horizontal scroll.
@@ -823,12 +853,14 @@ Test the full visitor flow at each width: 320x568, 360x640, 390x844, 430x932.
 - [ ] Progress dock visible and not overlapping any interactive element.
 
 #### B. Landscape
+
 Test at 844x390.
 
 - [ ] Scanner: controls remain visible.
 - [ ] Exhibit: reader viewport still functions (may scroll internally).
 
 #### C. Zoom
+
 Set browser zoom to 200% at 390px width.
 
 - [ ] Text remains readable, no clipping.
@@ -836,6 +868,7 @@ Set browser zoom to 200% at 390px width.
 - [ ] Language toggle stays within viewport.
 
 #### D. Language switching
+
 Switch between EN / ID / ZH on every screen.
 
 - [ ] Welcome: title and eyebrow stay the same, tagline changes.
@@ -845,18 +878,21 @@ Switch between EN / ID / ZH on every screen.
 - [ ] Exhibit: article content, tabs, and controls re-render. No layout jump or lost scroll position.
 
 #### E. Font size controls
+
 On the Exhibit screen, cycle through A- / A / A+.
 
 - [ ] Text reflows cleanly at all three sizes.
 - [ ] No horizontal overflow at any size.
 
 #### F. Camera lifecycle
+
 - [ ] Camera stops when leaving the Scanner screen (Back arrow).
 - [ ] Camera stops after a successful scan.
 - [ ] Camera starts automatically when returning to Scanner.
 - [ ] Permission denied state shows helpful error.
 
 #### G. Keyboard and focus
+
 Using Tab and Enter only.
 
 - [ ] Language toggle: all three buttons focusable, aria-pressed state visible.
@@ -891,18 +927,19 @@ Using Tab and Enter only.
 **Manual check pending**
 **Goal:** Prevent the camera from restarting when the language changes and ensure the camera is reliably off when leaving the scanner or clicking Stop Camera.
 **Root cause:** handleExhibitDetected in App.jsx was a plain function recreated on every render. That cascaded through ScannerScreen's useCallback chain: handleDecode depends on onExhibitDetected, handleStart depends on handleDecode, and the auto-start useEffect depends on handleStart. So any App re-render (language change, selectedExhibit change, etc.) caused the effect cleanup to fire (stop camera) and then the body to fire (start camera). This meant:
-  - Language change while scanning → camera stops then immediately restarts.
-  - Language change after clicking Stop → camera restarts unexpectedly.
-**Files changed:** src/App.jsx (imported useCallback; wrapped handleExhibitDetected in useCallback with [] deps so its reference is stable across all App renders), src/screens/ScannerScreen.jsx (added handleStartRef latest-ref pattern; auto-start useEffect now has [] deps so it runs exactly once on mount), src/lib/qrScanner.js (fixed race where stop() called during the pending dynamic import or decodeFromConstraints would leak the pending media stream because controls was only assigned after the await), scripts/check-scanner-stability.mjs (new self-check), package.json (added check:scanner-stability).
-**User-visible result:** Language changes while on the scanner no longer flicker or restart the camera. Clicking Stop Camera leaves the camera off — changing language afterward does not re-enable it. Navigating away from the scanner stops the camera (unmount cleanup). Navigating back to the scanner mounts a fresh ScannerScreen and auto-starts the camera (as before). No other behaviors changed.
-**Automated checks:** npm run check:scanner-stability; npm run check:scanner; npm run lint; npm run check:flow.
-**Unit tests:** Intentionally omitted per urgent-policy override.
-**Manual checks:** Pending. (1) Open scanner, verify camera starts; (2) click Stop — verify camera LED off; (3) change language — verify camera stays off; (4) click Start Camera — camera restarts; (5) change language while scanning — camera keeps running without a flicker; (6) scan a valid QR — camera stops, navigates to Scan Result; (7) from Scan Result, back arrow — Scanner mounts, camera starts fresh; (8) navigate to Welcome from Scanner back — verify camera LED off.
-**Not checked:** npm run build (deferred per user request).
-**Remaining risks:** The latest-ref pattern relies on React never calling the effect body twice in StrictMode dev. In dev StrictMode React does intentionally double-invoke effects — but the cleanup correctly stops the first scanner before the second body runs, so the net result is still "one camera session". In production StrictMode double-invoke does not happen. The stop-during-start race in qrScanner.js is now guarded, but a related race remains: if start() is called twice in rapid succession (e.g. user spam-clicks Start), the second call sees controls=null (first hasn't assigned yet) and creates a second scanner — the first scanner's controls get overwritten when its await resolves, leaking the stream. This is not the current bug and is unlikely in practice because the Start button is disabled during the 'requesting' state, but noted for future hardening.
-**Decisions made:** Chose two layers of defense because either alone would fix the immediate bug but neither is truly future-proof: useCallback on handleExhibitDetected fixes the root cause (unstable prop), and the latest-ref pattern for the auto-start effect makes the effect immune to future handleStart instability. Together they close the class of bug where "App re-render somehow restarts camera." The adapter race fix is defensive — it addresses a leak that was possible before this plan and would have manifested as a stuck camera LED after a stop-during-start race.
-**Next part:** Manual verification on real device. Then optionally close Phase 10.5 or proceed to Phase 10.4/11.
-**Commit:** 6208a3b
+
+- Language change while scanning → camera stops then immediately restarts.
+- Language change after clicking Stop → camera restarts unexpectedly.
+  **Files changed:** src/App.jsx (imported useCallback; wrapped handleExhibitDetected in useCallback with [] deps so its reference is stable across all App renders), src/screens/ScannerScreen.jsx (added handleStartRef latest-ref pattern; auto-start useEffect now has [] deps so it runs exactly once on mount), src/lib/qrScanner.js (fixed race where stop() called during the pending dynamic import or decodeFromConstraints would leak the pending media stream because controls was only assigned after the await), scripts/check-scanner-stability.mjs (new self-check), package.json (added check:scanner-stability).
+  **User-visible result:** Language changes while on the scanner no longer flicker or restart the camera. Clicking Stop Camera leaves the camera off — changing language afterward does not re-enable it. Navigating away from the scanner stops the camera (unmount cleanup). Navigating back to the scanner mounts a fresh ScannerScreen and auto-starts the camera (as before). No other behaviors changed.
+  **Automated checks:** npm run check:scanner-stability; npm run check:scanner; npm run lint; npm run check:flow.
+  **Unit tests:** Intentionally omitted per urgent-policy override.
+  **Manual checks:** Pending. (1) Open scanner, verify camera starts; (2) click Stop — verify camera LED off; (3) change language — verify camera stays off; (4) click Start Camera — camera restarts; (5) change language while scanning — camera keeps running without a flicker; (6) scan a valid QR — camera stops, navigates to Scan Result; (7) from Scan Result, back arrow — Scanner mounts, camera starts fresh; (8) navigate to Welcome from Scanner back — verify camera LED off.
+  **Not checked:** npm run build (deferred per user request).
+  **Remaining risks:** The latest-ref pattern relies on React never calling the effect body twice in StrictMode dev. In dev StrictMode React does intentionally double-invoke effects — but the cleanup correctly stops the first scanner before the second body runs, so the net result is still "one camera session". In production StrictMode double-invoke does not happen. The stop-during-start race in qrScanner.js is now guarded, but a related race remains: if start() is called twice in rapid succession (e.g. user spam-clicks Start), the second call sees controls=null (first hasn't assigned yet) and creates a second scanner — the first scanner's controls get overwritten when its await resolves, leaking the stream. This is not the current bug and is unlikely in practice because the Start button is disabled during the 'requesting' state, but noted for future hardening.
+  **Decisions made:** Chose two layers of defense because either alone would fix the immediate bug but neither is truly future-proof: useCallback on handleExhibitDetected fixes the root cause (unstable prop), and the latest-ref pattern for the auto-start effect makes the effect immune to future handleStart instability. Together they close the class of bug where "App re-render somehow restarts camera." The adapter race fix is defensive — it addresses a leak that was possible before this plan and would have manifested as a stuck camera LED after a stop-during-start race.
+  **Next part:** Manual verification on real device. Then optionally close Phase 10.5 or proceed to Phase 10.4/11.
+  **Commit:** 6208a3b
 
 ## Fix — Camera fully stops on every exit path
 
@@ -929,12 +966,12 @@ Using Tab and Enter only.
 **Root cause (mvp check failure):** check-mvp-integrity.mjs still asserted on scannerRef.current.stop() and ExhibitScreen's onScanNext prop. Both were intentionally removed in earlier phases (camera-leak fix replaced the direct stop call with a releaseCamera helper; the Scan Next button was removed when the reader was simplified to Back to Result only). The self-check was not updated at the time, so it surfaced now.
 **Files changed:** src/screens/ExhibitScreen.jsx (four frame assets switched from raw paths to ESM imports), scripts/check-vite-assets.mjs (new self-check for /src/assets/ literals), package.json (added check:vite-assets), scripts/check-mvp-integrity.mjs (updated Scanner cleanup assertion to check for releaseCamera, updated Exhibit action assertion to check only for onBackToResult).
 **User-visible result:** The four decorative corner frames on the Exhibit reader now render correctly in production builds as well as in dev. This is the last reader asset that was referencing the dev-only path. No visual change in dev, but production users will now see the complete article decoration.
-**Automated checks:** npm run check:vite-assets (17 assertions scanning src/**/*.{js,jsx,mjs} for /src/assets/ literals); npm run check:mvp; npm run check:flow; npm run lint.
+**Automated checks:** npm run check:vite-assets (17 assertions scanning src/**/_.{js,jsx,mjs} for /src/assets/ literals); npm run check:mvp; npm run check:flow; npm run lint.
 **Unit tests:** Intentionally omitted per urgent-policy override.
 **Manual checks:** Pending. Run npm run build && npm run preview. Open an exhibit article on localhost:4173. Verify all four corner floral frames render.
 **Not checked:** Live deployed production site. Real mobile device. But the fix specifically addresses the production build path resolution, which does not vary between environments.
 **Remaining risks:** Any future file that copies the /src/assets/ pattern will be caught by check:vite-assets. The rule is: files in public/ are referenced as /name.webp; files in src/assets/ are imported as import x from '../assets/name.webp'. Both patterns are valid but only one works for each location.
-**Decisions made:** Chose the import-based fix matching MenuScreen/ScannerScreen rather than moving frame-*.webp to public/. Import-based lets Vite hash and optimize the assets and drop unused ones. Added check:vite-assets because this class of bug fails silently (no console error, empty alt hides the broken image), so a grep-based self-check is the only realistic guard. Also updated check-mvp-integrity.mjs because its assertions had drifted from the current source — the pattern of "self-check expects string X, source uses Y after refactor" has caused three failed runs in this session, so updating the check alongside the code that moved is the durable fix.
+**Decisions made:** Chose the import-based fix matching MenuScreen/ScannerScreen rather than moving frame-_.webp to public/. Import-based lets Vite hash and optimize the assets and drop unused ones. Added check:vite-assets because this class of bug fails silently (no console error, empty alt hides the broken image), so a grep-based self-check is the only realistic guard. Also updated check-mvp-integrity.mjs because its assertions had drifted from the current source — the pattern of "self-check expects string X, source uses Y after refactor" has caused three failed runs in this session, so updating the check alongside the code that moved is the durable fix.
 **Next part:** Rebuild and verify on production preview. Optionally add check:vite-assets and check:scanner-stability to the verify:dev chain for CI integration.
 **Commit:** 01e70fb
 
@@ -966,7 +1003,7 @@ Using Tab and Enter only.
 **Manual checks:** Pending. (1) npm run dev; (2) open any exhibit article; (3) verify default text size is visibly larger than before; (4) tap A+ twice to check all three sizes look correct; (5) tap A+ once, then switch language — verify text size stays at the middle size (does not reset to smallest); (6) navigate to page 3 in a multi-page article, switch language — verify page is preserved (or clamped to the last page if the new language has fewer); (7) verify page counter shows a valid number at all times.
 **Not checked:** npm run build (deferred per user request).
 **Remaining risks:** The safePage clamp only corrects the display and the next click — the underlying page state can be higher than pages.length-1 after a language switch that reduces page count. If the user switches language back to the original, page state is still the stale higher value, and the display will show the higher page. This is arguably desirable (returns to the previous spot in the previous language) but is worth being aware of. A future useEffect keyed on pages.length could hard-clamp state, but React 19's set-state-in-effect lint rule discourages that pattern. The bigger font sizes may cause more pagination churn for exhibits with lots of text — the scroll area handles overflow, so no content is lost, but longer scroll distances are now possible at the largest size. The base .exhibit-page-text font-size (0.95rem) is now only a fallback for the unlikely case where no text-size class is applied; the three size classes always win.
-**Decisions made:** Removed the language key rather than adding a useEffect to reset textSize because the goal is to *preserve* textSize across language changes, not reset it. The key was originally added (in a previous phase) to force a remount when switching exhibits or language so stale state could not leak between exhibits — but exhibit changes still remount because the key still includes selectedExhibit.id, so the reset-on-exhibit-change is preserved. Language no longer needs a remount because content already re-renders via resolveExhibitContent(exhibit, language) on every render; the only state that needed a remount was textSize and page, both of which we want to preserve. Added safePage clamping rather than a useEffect-based state reset because React 19's set-state-in-effect lint rule flags synchronous setState in effects. The clamped display plus clamped click handlers is the standard "derive a safe value from state" pattern that React recommends over the "sync state with effect" pattern. Font size clamps bumped by ~25% across the board rather than independently chosen values so the relative ratio between the three sizes stays consistent with what the user was seeing before — they chose to bump the three sizes, not to make the range wider or narrower.
+**Decisions made:** Removed the language key rather than adding a useEffect to reset textSize because the goal is to _preserve_ textSize across language changes, not reset it. The key was originally added (in a previous phase) to force a remount when switching exhibits or language so stale state could not leak between exhibits — but exhibit changes still remount because the key still includes selectedExhibit.id, so the reset-on-exhibit-change is preserved. Language no longer needs a remount because content already re-renders via resolveExhibitContent(exhibit, language) on every render; the only state that needed a remount was textSize and page, both of which we want to preserve. Added safePage clamping rather than a useEffect-based state reset because React 19's set-state-in-effect lint rule flags synchronous setState in effects. The clamped display plus clamped click handlers is the standard "derive a safe value from state" pattern that React recommends over the "sync state with effect" pattern. Font size clamps bumped by ~25% across the board rather than independently chosen values so the relative ratio between the three sizes stays consistent with what the user was seeing before — they chose to bump the three sizes, not to make the range wider or narrower.
 **Next part:** Resume roadmap.
 **Commit:** f19d67d
 
@@ -1113,3 +1150,132 @@ Using Tab and Enter only.
 **Decisions made:** One plan covers the whole feature because files are tightly coupled. Endpoint empty by default with a clear error path so accidental misconfiguration is not silent. Two modes (json and form) supported because the two Google Sheets integrations have different requirements. Placeholder questions from existing exhibit facts so the demo is thematically coherent. Mid-quiz state (answers, current question) is local to QuizScreen and lost on unmount — simplest correct behavior for a one-shot quiz. Progress bar intentionally omitted because inline styles break the phase-runner template literal scanner. Two failed runs and two recoveries: the original plan had two issues (wrong onBack chain find string and no onSelectQuiz prop pass). The first recovery fixed onBack but not the prop pass. This second recovery fixes the prop pass. Root cause of the two-step recovery: my original plan enumerated App.jsx edits but missed the MenuScreen prop pass-through even though it wired the other two props (onSelectTour, onSelectPhoto) — an oversight in the original plan checklist.
 **Next part:** User fills quizConfig.endpoint and replaces placeholder questions with approved content, then re-tests submission end-to-end.
 **Commit:** 0a4e8ec
+
+## Update — Quiz Google Form link
+
+**Status:** Complete
+**Goal:** Replace the old Google Form URL with the new one.
+**Files changed:** src/screens/MenuScreen.jsx (updated QUIZ_FORM_URL constant).
+**User-visible result:** The Quiz card on the Menu screen now opens the new "Kuis Day 1" Google Form.
+**Automated checks:** npm run lint.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. Tap the Quiz card on the Menu screen and verify the new form opens.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The new URL includes chromeless=1 and edit_requested=true parameters, which are used for embedded forms. The link still opens correctly in a new tab.
+**Decisions made:** Direct string replacement of the URL constant.
+**Next part:** Resume roadmap.
+**Commit:** 2aa13e2
+
+## Style — Welcome text and gif scale with mirror
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Make the welcome screen title, eyebrow, IKT gif, and CTA text scale exactly with the mirror width so their relative size is identical across all viewports.
+**Root cause:** The sizes used clamp(min, cqw, max) where min and max are rem-based. On narrow phones the text hit the 1.2rem floor and stopped shrinking; on wide phones/iPads it hit the 2.5rem ceiling and stopped growing while the mirror kept getting larger. Positions were already proportional (percentages of stage and cqw gaps). Only the clamp ceilings/floors were breaking proportionality.
+**Files changed:** src/styles/welcome.css (.welcome-title font-size: clamp(1.2rem, 6cqw, 2.5rem) -> 6cqw; .welcome-eyebrow font-size: clamp(0.6rem, 2.5cqw, 1rem) -> 2.5cqw; .welcome-ikt-icon width: clamp(1.6rem, 10cqw, 4.25rem) -> 10cqw; .welcome-cta font-size: clamp(0.72rem, 2.35cqw, 1.02rem) -> 2.35cqw; .welcome-cta removed max-width: 15rem; .welcome-cta padding: var(--space-2) var(--space-3) -> 1.5cqw 2.5cqw for proportional inner spacing; kept min-height: 44px on CTA for touch-target accessibility).
+**User-visible result:** The title, eyebrow, IKT gif, and CTA button now render at exactly the same proportion of the mirror width on every viewport. A 320px phone and a 430px phone show the same visual ratio of text-to-mirror; a 768px iPad shows the same ratio scaled up. The CTA button retains a 44px minimum height so it stays a valid touch target on tiny screens even when its text scales down.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs; npm run check:responsive.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) open Welcome at 320px, 390px, 430px — text and gif should look identical in proportion to the mirror at all three widths, only scaled; (3) rotate to landscape — mirror and text should stay proportional; (4) test at 200% zoom — text should scale with the mirror, not overflow; (5) verify CTA is still tappable and its label is readable on the smallest viewport.
+**Not checked:** npm run build (deferred per user request). Real mobile device rendering. Ultra-wide desktop (1440px+) where the mirror is intentionally oversized and clipped — text scales with the mirror so on ultrawide it will be very large and may be off-screen due to the bleed-off-edges design. That is a pre-existing issue not addressed by this change.
+**Remaining risks:** Without a min floor, on very small viewports (e.g. split-screen phone at 250px wide) the CTA text would render at 2.35% * 337.5px = ~7.9px which is smaller than ideal (12px minimum recommended). If this is observed in practice, wrap in max(2.35cqw, 0.75rem) to add a floor back, accepting that the CTA text will be proportionally larger than the mirror below that threshold. The min-height: 44px on the CTA gives a useful visual floor even if the text itself is small. Removing max-width: 15rem on the CTA means on ultrawide desktops the button grows very wide; if that looks wrong, add max-width: 20cqw. On ultrawide (1440px+) the mirror is 135vw = ~1944px wide, aspect-ratio 3:4 means ~2592px tall, centered in 800px viewport so most of the mirror is off-screen and the text at top: 28% of the stage is above the visible area. Pre-existing, not touched by this change. If you want a desktop-friendly version, we would need a media query to cap the mirror size on wide viewports.
+**Decisions made:** Removed clamp rather than keeping a narrower clamp because the user explicitly asked for size to be pegged to the mirror. Kept min-height: 44px on the CTA because touch targets need a physical floor regardless of visual scale — a scaled-down button below 44px is an accessibility problem even if it looks proportional. Made CTA padding cqw-based (1.5cqw 2.5cqw) so the button's interior feels proportional to its text and mirror rather than bolted-on rems. Removed max-width: 15rem from the CTA because on wide viewports it was preventing the button from growing with the mirror, breaking proportionality. Left gap: 1.5cqw and margin-top: 0.4cqw on the glass-copy and ikt-icon alone since they were already cqw-based and proportional. Positions (top: 28%, left: 50%, width: 55%, top: 72% on CTA) unchanged because they are already percentages of the stage and therefore already proportional.
+**Next part:** Manual visual verification across 320/390/430px widths. If text feels too small on the smallest phone, add a max() floor to CTA and title only (keeping eyebrow and gif pure cqw).
+**Commit:** b7c16e4
+
+## Data — Cover images mapped for all 8 exhibits
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Add coverImage for every exhibit pointing to its folder cover.webp. PSBIKT-006 already had it; this adds the other 7 and verifies all 8 map correctly.
+**Files changed:** scripts/add-cover-images.mjs (new: idempotent migration that updates exhibits.js base construction and exhibits.json if it exists), scripts/check-cover-images.mjs (new: verification that all 8 exhibits have the expected coverImage path), package.json (added check:cover-images script), src/data/exhibits.js (added coverImage to 7 base exhibits that lacked it — PSBIKT-001 through 005, 007, 008), src/data/exhibits.json (updated if present).
+**User-visible result:** All 8 exhibits now show a cover image. On the Scan Result screen, exhibits that previously showed the placeholder circle (with just the exhibit ID) now show the actual cover photo in the same circular frame with the gold glow. On the Exhibit Article screen, page 1 of Story now shows the cover image below the "Cerita"/"Story" heading for all 8 exhibits instead of only PSBIKT-006.
+**Automated checks:** npm run check:cover-images (verifies all 8 paths); npm run lint; npm run check:mvp; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Scan a QR for PSBIKT-001 — Scan Result shows the 8 Horses painting image inside the gold circle glow; (3) View Details — Exhibit article page 1 shows the same image below the "Cerita" heading; (4) repeat for at least 2-3 other exhibits to confirm images render; (5) verify PSBIKT-006 still works (unchanged).
+**Not checked:** npm run build (deferred per user request). Alt text for the 7 newly-mapped exhibits — currently empty string because only PSBIKT-006 has coverAlt translations in exhibitTranslations.js. Screen readers will skip the alt attribute (treated as decorative) rather than reading a broken description, which is acceptable but not ideal.
+**Remaining risks:** If you run the admin dashboard later and Save on any exhibit, it writes to exhibits.json. If exhibits.json was previously stale (a side-effect of an earlier admin-save plan attempt), this plan reconciles it by updating both files consistently. If exhibits.json did not exist, only exhibits.js is modified and the admin save workflow still works from scratch. Alt text is empty for 7 exhibits — accessible name for those images is missing, which is a WCAG concern but not a blocker for the expo. Adding coverAlt in en/id/zh for all 8 exhibits is a content authoring task that should be done via Admin before launch.
+**Decisions made:** Used a single migration script that handles both potential sources of truth (exhibits.js construction file and exhibits.json if it exists) because the admin-save plan may or may not have been run. Idempotent by design — the regex pattern skips exhibits that already have coverImage between id and content, so re-running is a no-op. Verification script imports the exhibits array via the same path the app uses (src/data/exhibits.js) so it verifies end-to-end, not just file contents. Did not attempt to add coverAlt in the migration because good alt text requires seeing each image and the user can add it via Admin later; empty alt is a WCAG compromise but not a functional blocker. Used a script file rather than a Node one-liner because inline Node commands with regex strings in PowerShell are fragile and hard to debug.
+**Next part:** Deployment (Phase 11) or further UI polish.
+**Commit:** caf6198
+
+## Style — Menu card renamed to Take a Photo
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Rename the "Photo and Collage" menu card title to "Take a Photo" in all three languages.
+**Files changed:** src/i18n/locales/en.js, id.js, zh.js (menu.collage value changed from Photo and Collage / Foto dan Kolase / 照片与拼贴 to Take a Photo / Ambil Foto / 拍照; menu.collageDesc unchanged because it already describes taking a twibbon photo).
+**User-visible result:** The fourth menu card now reads "Take a Photo" in English, "Ambil Foto" in Indonesian, and "拍照" in Chinese. The card still routes to the TwibbonPhotoScreen on tap.
+**Automated checks:** npm run lint; npm run check:i18n.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) Menu; (3) verify the fourth card title reads the new label in each language; (4) tap it to confirm it still opens the twibbon camera.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The translation key name is still menu.collage which no longer matches its display text. This is fine functionally but slightly confusing for future maintainers. Renaming to menu.photo would require updating the JSX reference in MenuScreen.jsx and all three locales — a small follow-up if desired.
+**Decisions made:** Changed display strings only. Kept the key name to avoid touching the JSX reference and to keep the diff limited to three locale files. Collage is no longer part of the feature name since the menu card opens the twibbon photo screen, which is a single-photo flow (the earlier collage concept was dropped in favor of the twibbon capture). Description kept as-is because it already mentions taking a twibbon photo.
+**Next part:** Resume roadmap or deploy.
+**Commit:** aeace0c
+
+## Style — Exhibit images fit inside glow circle
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Ensure exhibit cover images on the Scan Result screen are always fully visible inside the gold glow circle regardless of aspect ratio.
+**Root cause:** .scan-result-image used object-fit: cover, which crops the image to fill the circular container. Tall images had their sides clipped; wide images had top/bottom clipped, giving the impression that the artwork was overflowing the circle.
+**Files changed:** src/styles/scan-result.css (.scan-result-image: object-fit cover -> contain; added padding 15%, box-sizing border-box, and background-color rgba(255, 250, 240, 0.18) so the image fits inside the inscribed square of the circle; box-shadow gold ring preserved). Full file rewrite because the original plan's multi-line replace failed to match the file's exact bytes — rewriting is the deterministic recovery. All other rules in the file are byte-for-byte preserved from the current state.
+**User-visible result:** Exhibit cover images on the Scan Result screen now fit entirely inside the glow circle. Tall images fit by height with letterboxed space on left/right, wide images fit by width with letterboxed space on top/bottom. The gold ring stays at the circle edge, and a soft ivory tint fills the letterbox gap so the image does not look like it is floating in empty space.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Scan an exhibit with a tall cover image (e.g. PSBIKT-001 8 Horses painting) — whole image visible inside the circle with side margins; (2) scan an exhibit with a wide cover image — whole image visible with top/bottom margins; (3) scan PSBIKT-006 — whole Xiangqi board visible; (4) verify gold ring still visible at circle edge; (5) verify glow pulse still animates behind the circle; (6) verify placeholder (exhibits without cover) still shows exhibit ID centered in the circle.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** 15% padding on each side leaves the image content at 70% of the container, roughly matching the inscribed square of a circle (70.7%). If the user finds the letterbox gap too large on any specific image, reduce to 10%. If they want the image to fill the circle edge-to-edge (accepting cropping), revert to cover — but that contradicts their explicit request. The subtle ivory backdrop behind the letterbox may look odd if the gap is very large on an extreme-aspect image; removing background-color lets the glow show through instead.
+**Decisions made:** Used padding on the image element (not a wrapper) because it is CSS-only and object-fit respects the content box after padding. object-fit: contain handles the tall-vs-wide logic automatically — browser fits by the larger dimension. 15% padding because inscribed square of circle is ~70.7% of diameter, so 15% inset on each side matches. Kept .scan-result-placeholder untouched (text placeholder, not image). Rewrote the whole file in the recovery rather than guessing the exact find string again — the previous replace failed on 4 different plans this session due to whitespace mismatches, so file rewrite is now the standard recovery for CSS bugs. Full rewrite is safe because the content is deterministic — I read the file from the user's paste and applied one focused change.
+**Next part:** Manual visual verification on exhibits with tall, wide, and square images.
+**Commit:** 339bbff
+
+## Style — Exhibit image enlarged inside glow circle
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Make the exhibit cover image on the Scan Result screen noticeably bigger and closer to the gold circle edge.
+**Files changed:** src/styles/scan-result.css (.scan-result-image: padding 15% -> 5%). Single-line replace on a unique string in the file.
+**User-visible result:** The exhibit cover image now occupies ~90% of the circular container instead of ~70%. Tall images fill the circle by height with less side letterbox, wide images fill by width with less top/bottom letterbox. Square images fill the entire circle interior with their corners clipped to the circle shape. The gold ring stays at the circle edge. The subtle ivory tint fills any remaining letterbox gap.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) npm run dev; (2) scan PSBIKT-001 (tall image) — image should be visibly larger inside the circle, filling most of the vertical space; (3) scan PSBIKT-006 (square image) — image fills the circle with corners clipped; (4) scan any exhibit with a wide image — image fills most of the horizontal width; (5) verify gold ring still visible at circle edge; (6) verify glow pulse still animates.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** At 5% padding the image content box is 90% of the container, which exceeds the circle's inscribed square (70.7%). Corners of the content box are clipped by border-radius: 50% — this is intentional and gives a fuller, avatar-like appearance, but it means square images have their literal corners cut off. If the specific exhibit photos have important detail in the corners, this clips it. If that becomes a problem, raise padding back to 8-10%. Using object-fit: contain means non-square images are not distorted; they letterbox within the 90% content box. If the user wants the image even fuller, padding can be reduced to 2-3% (image touches the gold ring almost directly); if that looks too tight, 5-8% is the sweet spot.
+**Decisions made:** 5% chosen over 0% (image touching gold ring) or 8% (modest enlargement) because the user said "closer to the circle edge" — 5% gives a clear visual jump from 15% without the image visually touching the ring. Single-line replace on 'padding: 15%;' chosen because it is unique in the file and avoids the CRLF-vs-LF newline mismatch that has caused four multi-line replace failures this session (file writes use LF but git checkout may produce CRLF on disk, breaking multi-line find patterns). The resulting visual uses border-radius: 50% on the img element itself to clip square content corners to the circle shape — no additional overflow: hidden needed since border-radius on img already clips in all modern browsers.
+**Next part:** Manual visual verification.
+**Commit:** d68a926
+
+## Data — Add PSBIKT-009 and PSBIKT-010
+
+**Status:** Complete
+**Manual check pending. Content requires translation review.**
+**Goal:** Add San Tai Zi and Tradisi Minum Teh as trilingual exhibits with cover images and paginated content.
+**Files changed:** src/data/exhibits.json (appended two new exhibit records with id/en/zh content, coverImage paths, and pages arrays — 3 pages for PSBIKT-009, 5 for PSBIKT-010), scripts/add-new-exhibits.mjs (new idempotent migration that appends only if the id is missing), scripts/check-cover-images.mjs (extended to verify all 10 exhibits have cover path and trilingual title).
+**User-visible result:** Menu progress dock total updates from 8 to 10. Scanning PSBIKT-009 or PSBIKT-010 opens the exhibit with correct localized title, cover image on page 1 of Story, and paginated article (3 pages for San Tai Zi, 5 for Tradisi Minum Teh). Admin dashboard lists both new exhibits.
+**Automated checks:** npm run check:cover-images (verifies all 10 exhibit IDs have correct cover path + trilingual title); npm run lint; npm run check:mvp; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Menu shows 0/10; (2) scan PSBIKT-009 — cover on page 1, 3 pages total, content matches; (3) scan PSBIKT-010 — cover on page 1, 5 pages total; (4) language switch mid-read; (5) Admin lists both new exhibits.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** English and Chinese translations are my output from the Indonesian source; native-speaker review recommended before launch, especially Chinese terms for deity names (哪吒 for Na Zha, 李靖 for Li Jing) and tea ceremony vocabulary (工夫茶 for Gongfu Cha, 盖碗 for gaiwan, 茶海 for cha hai) — these are standard terms but should be verified. Cover alt text describes what I expect the photos to show; verify against actual images and adjust via Admin. Page splits are logical but subjective; adjust via Admin if the flow feels off.
+**Decisions made:** Fixed the previous plan's failure (it targeted exhibits.js baseExhibits which no longer exists after the JSON migration) by writing directly to exhibits.json instead. Migration script is idempotent — checks for existing id before appending so re-running is a no-op. Chinese, em-dash, en-dash, bullets, and accents used the standard characters directly in the script (Node handles UTF-8 fine). Content intentionally mirrors the article's own section structure: San Tai Zi splits at "attributes" and "spiritual meanings"; Tradisi Minum Teh splits at dynasties, philosophy, Gongfu Cha, and process. No changes to exhibits.js (it imports from exhibits.json) or exhibitTranslations.js (it merges into the base records at module load, but the new records already have full content so no translation file edits needed).
+**Next part:** Review translations via Admin. Then deployment.
+**Commit:** 56298b8
+
+## Style — Tighten bullet point line spacing
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Reduce the gap between bullet points in the article reader. Previously each bullet was a full paragraph with 0.85em bottom margin, creating large vertical gaps between consecutive bullets.
+**Files changed:** src/screens/ExhibitScreen.jsx (detects bullet lines by checking if the paragraph's first non-whitespace character is '•' or if it starts with '- '; renders those with className "exhibit-page-bullet"; all other paragraphs render unchanged), src/styles/exhibit.css (added .exhibit-page-bullet rule: margin-bottom 0.15em and line-height 1.35 for bullets; added adjacency rule so a non-bullet paragraph immediately after bullets gets 0.6em top margin to visually separate the resumed prose; explicit last-child reset preserved).
+**User-visible result:** Consecutive bullet points now sit close together (0.15em gap between bullets instead of 0.85em), reading as a tight list. The line-height inside each bullet is slightly reduced (1.35 vs 1.58) so wrapped bullets feel denser. When prose resumes after a list, the gap is 0.6em — noticeable but not as large as the old 0.85em+0.85em stacked margins.
+**Automated checks:** npm run lint; node scripts/diagnose-css.mjs; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open PSBIKT-005 (Barongsai) — it has multiple bulleted lists; verify bullets sit closely together; (2) open PSBIKT-008 (Altar) — has bullet list of ritual items; (3) open an exhibit without bullets (PSBIKT-001) — verify normal paragraph spacing unchanged; (4) test at 320px and 430px widths; (5) test in all three languages.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** The bullet detection is text-based, so an exhibit whose author uses bullets in a non-list context (rare) would also get the tighter spacing — acceptable. If future exhibits use numbered lists like "1." instead of bullets, they will not match the detector and will render as regular paragraphs. Adding numbered-list detection is a small extension if needed. Wrapped bullets (where a single bullet wraps to two or more visual lines) use line-height 1.35 which is tighter than the 1.58 prose default — should read fine but if it feels cramped on narrow phones, bumping to 1.42 is a one-line change.
+**Decisions made:** Did text-based detection in JSX (trimStart + startsWith) rather than restructuring to a proper <ul>/<li> parser because the source data is plain text with newline-separated lines, not structured list data. Proper semantics would require changing the data schema and re-authoring all exhibit content. CSS-only alternative (detecting via :first-letter) is not reliable for the '•' character across browsers. The choice of 0.15em bottom margin (vs 0.85em) makes lists feel like a coherent block; 0.6em adjacency top margin after a list gives clear visual separation from resumed prose without appearing to be a full paragraph gap. Line-height 1.35 on bullets matches typical list-item density while keeping readability. Left exhibit-page-text p default rule intact so non-bullet paragraphs keep the original 0.85em spacing.
+**Next part:** User visual verification on PSBIKT-005 and PSBIKT-008. Then deployment.
+**Commit:** 51d0c3c

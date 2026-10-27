@@ -28,7 +28,7 @@ export const id = {
     infoDesc: 'Pelajari lebih lanjut tentang budaya Peranakan',
     quiz: 'Kuis',
     quizDesc: 'Uji apa yang telah Anda pelajari',
-    collage: 'Foto dan Kolase',
+    collage: 'Ambil Foto',
     collageDesc: 'Ambil foto kenang-kenangan twibbon',
     comingSoon: 'Segera hadir',
     back: 'Kembali ke beranda'

@@ -160,7 +160,10 @@
 
 .scan-result-image {
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 5%;
+  box-sizing: border-box;
+  background-color: rgba(255, 250, 240, 0.18);
   box-shadow:
     0 0 0 2px rgba(212, 175, 55, 0.65),
     0 0 2.2rem rgba(212, 175, 55, 0.36);
