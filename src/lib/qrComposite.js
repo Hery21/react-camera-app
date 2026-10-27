@@ -11,7 +11,7 @@
 // 0.4. Anything above 0.5 starts to overpower the frame art.
 
 export const QR_FRAME_SRC = '/QR/QR-cover.webp'
-export const QR_SIZE_RATIO = 0.25
+export const QR_SIZE_RATIO = 0.5
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {

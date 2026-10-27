@@ -417,8 +417,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 25%;
-  max-height: 25%;
+  max-width: 50%;
+  max-height: 50%;
   aspect-ratio: 1;
   object-fit: contain;
   background: #fff;

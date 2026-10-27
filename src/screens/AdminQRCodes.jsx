@@ -80,7 +80,7 @@ export function AdminQRCodes({ onBack }) {
                 <img src={QR_FRAME_SRC} alt="" className="admin-qr-frame-img" aria-hidden="true" />
                 <img src={item.dataUrl} alt={'QR code for ' + item.title} className="admin-qr-overlay" />
               </div>
-              <p className="admin-qr-id">{item.id}</p>
+              {/* <p className="admin-qr-id">{item.id}</p> */}
               <p className="admin-qr-title">{item.title}</p>
               <button
                 type="button"
