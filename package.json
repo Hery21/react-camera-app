@@ -44,7 +44,8 @@
     "check:vite-assets": "node scripts/check-vite-assets.mjs",
     "check:cover-images": "node scripts/check-cover-images.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
-    "check:legacy-build": "node scripts/check-legacy-build.mjs"
+    "check:legacy-build": "node scripts/check-legacy-build.mjs",
+    "check:utility-buttons": "node scripts/check-utility-buttons.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
