@@ -44,10 +44,17 @@
     "check:vite-assets": "node scripts/check-vite-assets.mjs",
     "check:cover-images": "node scripts/check-cover-images.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
+    "check:legacy-build": "node scripts/check-legacy-build.mjs",
+    "check:utility-buttons": "node scripts/check-utility-buttons.mjs",
+    "docs:capture": "node scripts/documentation/capture-screens.mjs",
+    "docs:generate": "node scripts/documentation/generate-html.mjs",
+    "docs:check": "node scripts/documentation/check-docs.mjs",
+    "docs": "npm run docs:capture && npm run docs:generate",
     "print:qr-urls": "node scripts/print-qr-urls.mjs",
     "check:qr-codes": "node scripts/check-qr-codes.mjs"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@zxing/browser": "^0.2.1",
     "qrcode-generator": "^2.0.4",
     "react": "^19.3.1",
@@ -57,12 +64,15 @@
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-legacy": "^8.2.3",
     "@vitejs/plugin-react": "^6.1.2",
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
+    "playwright": "^1.64.1",
     "prettier": "3.9.10",
+    "terser": "^5.51.2",
     "vite": "^8.3.4"
   }
 }

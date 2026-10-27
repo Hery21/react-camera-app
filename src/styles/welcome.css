@@ -1,4 +1,5 @@
 .app--welcome {
+  height: 100vh;
   height: 100dvh;
   overflow: hidden;
   background-color: var(--color-vermilion-dark);
@@ -60,8 +61,6 @@
   overflow: hidden;
 }
 
-/* Remove the max-width cap and increase width to ensure it bleeds off edges.
-   flex-shrink: 0 prevents flexbox from shrinking it when zooming. */
 .welcome-mirror-stage {
   position: relative;
   width: 135vw;
@@ -82,7 +81,7 @@
 .welcome-glass-copy {
   position: absolute;
   z-index: 2;
-  top: 28%; /* Adjusted slightly lower */
+  top: 28%;
   left: 50%;
   display: flex;
   width: 55%;
@@ -102,6 +101,8 @@
   font-weight: 700;
   line-height: 1;
   text-wrap: balance;
+  max-width: 85%;
+  margin-inline: auto;
 }
 
 .welcome-eyebrow {
@@ -172,5 +173,89 @@
 @media (max-width: 360px) and (orientation: portrait) {
   .welcome-mirror-stage {
     width: 145vw;
+  }
+}
+
+/* ---------- iOS 15 / Safari 15 fallback for container queries ----------
+   cqw requires CSS Container Queries, available on Safari 16+. On older
+   Safari, cqw declarations are silently ignored and text falls back to the
+   browser default (16px) while the gif renders at its natural pixel size.
+   The values below are mathematically equivalent to the cqw values above
+   because the mirror stage is itself sized relative to the viewport:
+     portrait:  1 cqw = 1% of 135vw  → 1 cqw ≈ 1.35 vw
+     landscape: 1 cqw = 1% of 135dvh → 1 cqw ≈ 1.35 dvh
+     <360px portrait: 1 cqw = 1% of 145vw → 1 cqw ≈ 1.45 vw
+   Modern browsers never enter this @supports block and keep the cqw values.
+   ------------------------------------------------------------------------- */
+
+@supports not (container-type: inline-size) {
+  .welcome-glass-copy {
+    gap: 2vw;
+  }
+
+  .welcome-title {
+    font-size: 8.1vw;
+  }
+
+  .welcome-eyebrow {
+    font-size: 3.4vw;
+  }
+
+  .welcome-ikt-icon {
+    width: 13.5vw;
+    margin-top: 0.55vw;
+  }
+
+  .welcome-cta {
+    padding: 2vw 3.4vw;
+    font-size: 3.2vw;
+  }
+
+  @media (orientation: landscape) {
+    .welcome-glass-copy {
+      gap: 2dvh;
+    }
+
+    .welcome-title {
+      font-size: 8.1dvh;
+    }
+
+    .welcome-eyebrow {
+      font-size: 3.4dvh;
+    }
+
+    .welcome-ikt-icon {
+      width: 13.5dvh;
+      margin-top: 0.55dvh;
+    }
+
+    .welcome-cta {
+      padding: 2dvh 3.4dvh;
+      font-size: 3.2dvh;
+    }
+  }
+
+  @media (max-width: 360px) and (orientation: portrait) {
+    .welcome-glass-copy {
+      gap: 2.2vw;
+    }
+
+    .welcome-title {
+      font-size: 8.7vw;
+    }
+
+    .welcome-eyebrow {
+      font-size: 3.6vw;
+    }
+
+    .welcome-ikt-icon {
+      width: 14.5vw;
+      margin-top: 0.58vw;
+    }
+
+    .welcome-cta {
+      padding: 2.2vw 3.6vw;
+      font-size: 3.4vw;
+    }
   }
 }

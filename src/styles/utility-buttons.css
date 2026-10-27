@@ -1,0 +1,65 @@
+/* Fixed-position utility buttons at the bottom of the screen.
+   GitHub link (bottom-left, semi-transparent) and fullscreen toggle
+   (bottom-right, solid). Both 36x36 with a white 18x18 icon on the
+   rosewood/gold theme. Positioned at the actual screen bottom (not
+   stacked above the progress dock) and centered vertically with the
+   small dock pill that sits bottom-center. */
+
+.utility-btn {
+  position: fixed;
+  z-index: 55;
+  bottom: 4px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1.5px solid #ffffff;
+  border-radius: 50%;
+  background: rgba(26, 18, 16, 0.68);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: background 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+  text-decoration: none;
+}
+
+.utility-btn:hover {
+  background: rgba(26, 18, 16, 0.85);
+}
+
+.utility-btn:active {
+  transform: scale(0.94);
+}
+
+.utility-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.utility-btn svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  display: block;
+}
+
+/* GitHub link: bottom-left, semi-transparent, fully opaque on hover */
+.github-link {
+  left: calc(env(safe-area-inset-left, 0px) + 12px);
+  opacity: 0.5;
+}
+
+.github-link:hover {
+  opacity: 1;
+}
+
+/* Fullscreen toggle: bottom-right, solid, feature-detected (returns null
+   in FullscreenToggle.jsx on iPhone Safari where the API does not exist) */
+.fullscreen-toggle {
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+}
