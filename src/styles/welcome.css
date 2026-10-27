@@ -103,6 +103,8 @@
   font-weight: 700;
   line-height: 1;
   text-wrap: balance;
+  max-width: 85%;
+  margin-inline: auto;
 }
 
 .welcome-eyebrow {
