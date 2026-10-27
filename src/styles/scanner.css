@@ -41,12 +41,12 @@
   right: env(safe-area-inset-right, 0);
 }
 .frame-bl {
-  bottom: calc(6.5rem + env(safe-area-inset-bottom, 0));
+  bottom:  env(safe-area-inset-bottom, 0);
   left: env(safe-area-inset-left, 0);
 }
 .frame-br {
   right: env(safe-area-inset-right, 0);
-  bottom: calc(6.5rem + env(safe-area-inset-bottom, 0));
+  bottom:  env(safe-area-inset-bottom, 0);
 }
 .scanner-scan-target {
   position: absolute;
