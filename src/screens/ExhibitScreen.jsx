@@ -116,7 +116,15 @@ export function ExhibitScreen({ language, exhibit, onBackToResult }) {
               )}
               {paragraphs.length > 0 && (
                 <div className="exhibit-page-text">
-                  {paragraphs.map((para, i) => <p key={i}>{para}</p>)}
+                  {paragraphs.map((para, i) => {
+                    const trimmed = para.trimStart()
+                    const isBullet = trimmed.startsWith('•') || trimmed.startsWith('- ')
+                    return isBullet ? (
+                      <p key={i} className="exhibit-page-bullet">{para}</p>
+                    ) : (
+                      <p key={i}>{para}</p>
+                    )
+                  })}
                 </div>
               )}
             </div>

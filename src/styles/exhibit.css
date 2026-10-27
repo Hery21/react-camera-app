@@ -372,6 +372,19 @@
   margin-bottom: 0;
 }
 
+.exhibit-page-text p.exhibit-page-bullet {
+  margin-bottom: 0.15em;
+  line-height: 1.35;
+}
+
+.exhibit-page-text p.exhibit-page-bullet + p:not(.exhibit-page-bullet) {
+  margin-top: 0.6em;
+}
+
+.exhibit-page-text p.exhibit-page-bullet:last-child {
+  margin-bottom: 0;
+}
+
 .exhibit-text-size-0 .exhibit-page-text { font-size: clamp(0.95rem, 1.85dvh, 1.15rem); }
 .exhibit-text-size-1 .exhibit-page-text { font-size: clamp(1.1rem, 2.15dvh, 1.35rem); }
 .exhibit-text-size-2 .exhibit-page-text { font-size: clamp(1.28rem, 2.5dvh, 1.6rem); }
