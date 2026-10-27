@@ -44,10 +44,12 @@
     "check:vite-assets": "node scripts/check-vite-assets.mjs",
     "check:cover-images": "node scripts/check-cover-images.mjs",
     "check:quiz": "node scripts/check-quiz.mjs",
-    "print:qr-urls": "node scripts/print-qr-urls.mjs"
+    "print:qr-urls": "node scripts/print-qr-urls.mjs",
+    "check:qr-codes": "node scripts/check-qr-codes.mjs"
   },
   "dependencies": {
     "@zxing/browser": "^0.2.1",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { exhibits } from '../data/exhibits.js'
+import { AdminQRCodes } from './AdminQRCodes.jsx'
 
 function buildInitialFormData(exhibitId) {
   const existing = exhibits.find((ex) => ex.id === exhibitId)
@@ -16,7 +17,7 @@ function buildInitialFormData(exhibitId) {
   return {
     id: exhibitId,
     coverImage: '',
-    content: { en: blank(), id: blank(), zh: blank() }
+    content: { en: blank(), id: blank(), zh: blank() },
   }
 }
 
@@ -36,8 +37,8 @@ function AdminEditForm({ exhibitId, onDone }) {
       ...prev,
       content: {
         ...prev.content,
-        [lang]: { ...prev.content[lang], [field]: value }
-      }
+        [lang]: { ...prev.content[lang], [field]: value },
+      },
     }))
   }
 
@@ -54,8 +55,8 @@ function AdminEditForm({ exhibitId, onDone }) {
         ...prev,
         content: {
           ...prev.content,
-          [lang]: { ...prev.content[lang], pages: newPages }
-        }
+          [lang]: { ...prev.content[lang], pages: newPages },
+        },
       }
     })
   }
@@ -65,8 +66,8 @@ function AdminEditForm({ exhibitId, onDone }) {
       ...prev,
       content: {
         ...prev.content,
-        [lang]: { ...prev.content[lang], pages: [...(prev.content[lang].pages || []), { text: '' }] }
-      }
+        [lang]: { ...prev.content[lang], pages: [...(prev.content[lang].pages || []), { text: '' }] },
+      },
     }))
   }
 
@@ -78,8 +79,8 @@ function AdminEditForm({ exhibitId, onDone }) {
         ...prev,
         content: {
           ...prev.content,
-          [lang]: { ...prev.content[lang], pages: newPages }
-        }
+          [lang]: { ...prev.content[lang], pages: newPages },
+        },
       }
     })
   }
@@ -90,7 +91,7 @@ function AdminEditForm({ exhibitId, onDone }) {
       const res = await fetch('/api/admin/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ exhibit: formData })
+        body: JSON.stringify({ exhibit: formData }),
       })
       if (!res.ok) {
         throw new Error('Save failed with status ' + res.status)
@@ -165,7 +166,6 @@ function AdminEditForm({ exhibitId, onDone }) {
                 <strong>Page {i + 1}</strong>
                 <button type="button" className="admin-btn-secondary admin-btn-small" onClick={() => removePage(activeLang, i)}>Remove</button>
               </div>
-
               <label>
                 Image Path (optional)
                 <input type="text" value={page.image?.src || ''} onChange={(e) => handlePageChange(activeLang, i, 'image.src', e.target.value)} />
@@ -186,10 +186,10 @@ function AdminEditForm({ exhibitId, onDone }) {
   )
 }
 
-function AdminDashboard({ onEdit, onBack }) {
+function AdminDashboard({ onEdit, onBack, onShowQRCodes }) {
   function getNextExhibitId() {
     const maxNum = exhibits.reduce((max, ex) => {
-      const match = /^PSBIKT-(\d+)$/.exec(ex.id)
+      const match = /^PSBIKT-(d+)$/.exec(ex.id)
       return match ? Math.max(max, parseInt(match[1], 10)) : max
     }, 0)
     return 'PSBIKT-' + String(maxNum + 1).padStart(3, '0')
@@ -202,6 +202,9 @@ function AdminDashboard({ onEdit, onBack }) {
         <div className="admin-header-actions">
           <button type="button" onClick={() => onEdit(getNextExhibitId())} className="admin-btn-primary">
             + Add New Exhibit
+          </button>
+          <button type="button" onClick={onShowQRCodes} className="admin-btn-secondary">
+            QR Codes
           </button>
           <button type="button" onClick={onBack} className="admin-btn-secondary">Exit Admin</button>
         </div>
@@ -229,8 +232,15 @@ function AdminDashboard({ onEdit, onBack }) {
 }
 
 export function AdminScreen({ editingExhibitId, onEdit, onDone, onBack }) {
+  const [showQRCodes, setShowQRCodes] = useState(false)
+
   if (editingExhibitId) {
     return <AdminEditForm key={editingExhibitId} exhibitId={editingExhibitId} onDone={onDone} />
   }
-  return <AdminDashboard onEdit={onEdit} onBack={onBack} />
+
+  if (showQRCodes) {
+    return <AdminQRCodes onBack={() => setShowQRCodes(false)} />
+  }
+
+  return <AdminDashboard onEdit={onEdit} onBack={onBack} onShowQRCodes={() => setShowQRCodes(true)} />
 }
