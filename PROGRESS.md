@@ -1195,3 +1195,19 @@ Using Tab and Enter only.
 **Decisions made:** 5% chosen over 0% (image touching gold ring) or 8% (modest enlargement) because the user said "closer to the circle edge" — 5% gives a clear visual jump from 15% without the image visually touching the ring. Single-line replace on 'padding: 15%;' chosen because it is unique in the file and avoids the CRLF-vs-LF newline mismatch that has caused four multi-line replace failures this session (file writes use LF but git checkout may produce CRLF on disk, breaking multi-line find patterns). The resulting visual uses border-radius: 50% on the img element itself to clip square content corners to the circle shape — no additional overflow: hidden needed since border-radius on img already clips in all modern browsers.
 **Next part:** Manual visual verification.
 **Commit:** d68a926
+
+## Data — Add PSBIKT-009 and PSBIKT-010
+
+**Status:** Complete
+**Manual check pending. Content requires translation review.**
+**Goal:** Add San Tai Zi and Tradisi Minum Teh as trilingual exhibits with cover images and paginated content.
+**Files changed:** src/data/exhibits.json (appended two new exhibit records with id/en/zh content, coverImage paths, and pages arrays — 3 pages for PSBIKT-009, 5 for PSBIKT-010), scripts/add-new-exhibits.mjs (new idempotent migration that appends only if the id is missing), scripts/check-cover-images.mjs (extended to verify all 10 exhibits have cover path and trilingual title).
+**User-visible result:** Menu progress dock total updates from 8 to 10. Scanning PSBIKT-009 or PSBIKT-010 opens the exhibit with correct localized title, cover image on page 1 of Story, and paginated article (3 pages for San Tai Zi, 5 for Tradisi Minum Teh). Admin dashboard lists both new exhibits.
+**Automated checks:** npm run check:cover-images (verifies all 10 exhibit IDs have correct cover path + trilingual title); npm run lint; npm run check:mvp; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Menu shows 0/10; (2) scan PSBIKT-009 — cover on page 1, 3 pages total, content matches; (3) scan PSBIKT-010 — cover on page 1, 5 pages total; (4) language switch mid-read; (5) Admin lists both new exhibits.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** English and Chinese translations are my output from the Indonesian source; native-speaker review recommended before launch, especially Chinese terms for deity names (哪吒 for Na Zha, 李靖 for Li Jing) and tea ceremony vocabulary (工夫茶 for Gongfu Cha, 盖碗 for gaiwan, 茶海 for cha hai) — these are standard terms but should be verified. Cover alt text describes what I expect the photos to show; verify against actual images and adjust via Admin. Page splits are logical but subjective; adjust via Admin if the flow feels off.
+**Decisions made:** Fixed the previous plan's failure (it targeted exhibits.js baseExhibits which no longer exists after the JSON migration) by writing directly to exhibits.json instead. Migration script is idempotent — checks for existing id before appending so re-running is a no-op. Chinese, em-dash, en-dash, bullets, and accents used the standard characters directly in the script (Node handles UTF-8 fine). Content intentionally mirrors the article's own section structure: San Tai Zi splits at "attributes" and "spiritual meanings"; Tradisi Minum Teh splits at dynasties, philosophy, Gongfu Cha, and process. No changes to exhibits.js (it imports from exhibits.json) or exhibitTranslations.js (it merges into the base records at module load, but the new records already have full content so no translation file edits needed).
+**Next part:** Review translations via Admin. Then deployment.
+**Commit:** 56298b8
