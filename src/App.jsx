@@ -14,17 +14,57 @@ import { TwibbonPhotoScreen } from './screens/TwibbonPhotoScreen.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
 import { exhibits } from './data/exhibits.js'
 import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } from './lib/scanProgress.js'
+import { parseQrPayload } from './lib/qrPayload.js'
+import { getExhibitById } from './lib/exhibitLookup.js'
+
+// Reads ?exhibit=PSBIKT-NNN from the current URL and returns the exhibit
+// record if the value parses to a known exhibit ID. Used to deep-link from
+// reprint QR codes that encode full URLs — the visitor scans with their
+// phone camera, the browser opens the app at this URL, and App lands on the
+// Scan Result screen directly for that exhibit.
+function getDeepLinkExhibit() {
+  if (typeof window === 'undefined') return null
+  const params = new URLSearchParams(window.location.search)
+  const param = params.get('exhibit')
+  if (!param) return null
+  const parsed = parseQrPayload(param)
+  if (!parsed.ok) return null
+  const lookup = getExhibitById(parsed.exhibitId)
+  return lookup.ok ? lookup.exhibit : null
+}
 
 function App() {
+  // Computed once on mount. All deep-link-derived state is initialized from
+  // this value below, so no effect needs to call setState on mount.
+  const [deepLinkExhibit] = useState(() => getDeepLinkExhibit())
   const [language, setLanguage] = useState(getInitialLanguage)
-  const [screen, setScreen] = useState('welcome')
-  const [selectedExhibit, setSelectedExhibit] = useState(null)
+  const [selectedExhibit, setSelectedExhibit] = useState(deepLinkExhibit)
+  const [screen, setScreen] = useState(deepLinkExhibit ? 'scan-result' : 'welcome')
   const [adminEditingExhibitId, setAdminEditingExhibitId] = useState(null)
-  const [scannedExhibitIds, setScannedExhibitIds] = useState(() => loadScannedExhibitIds(exhibits.map((exhibit) => exhibit.id)))
+  const [scannedExhibitIds, setScannedExhibitIds] = useState(() => {
+    const loaded = loadScannedExhibitIds(exhibits.map((exhibit) => exhibit.id))
+    if (!deepLinkExhibit) return loaded
+    const next = addScannedExhibitId(loaded, deepLinkExhibit.id)
+    saveScannedExhibitIds(next)
+    return next
+  })
 
   useEffect(() => {
     applyDocumentLanguage(language)
   }, [language])
+
+  // Strip the ?exhibit query param on mount so a reload lands on Welcome
+  // instead of re-triggering the deep link. No setState here — the deep-link
+  // state was already initialized above, and sessionStorage was updated
+  // inside the scannedExhibitIds initializer. This effect only touches the
+  // browser's history entry, which is the correct use of an effect.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (params.has('exhibit')) {
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [])
 
   function handleLanguageChange(next) {
     if (next === language) return
