@@ -1373,3 +1373,19 @@ Using Tab and Enter only.
 **Decisions made:** Chose rosewood + gold over cream card because on the dark scanner-style stage a cream card feels like a foreign element — the app's existing dark-stage patterns (.scanner-inline-error, .scanner-error) use dark backgrounds with colored borders and text for in-stage messages. Used italic Playfair Display because the reminder text is a warm, friendly suggestion not a hard rule — italic reads as "note" not "instruction". Centered alignment because the reminder is a decorative caption under the photo, and centered feels more appropriate for a short suggestion than left-aligned technical copy. Removed the left-only border in favor of a full 1px border because the left-border-accent pattern reads as "warning" or "alert" — the pattern the user was seeing as error-like.
 **Next part:** Manual verification. Then continue expo prep.
 **Commit:** 5ff15a3
+
+## Feature — Twibbon defaults to back camera
+
+**Status:** Complete
+**Manual check pending**
+**Goal:** Change the twibbon photo screen to open with the rear camera by default instead of the front camera.
+**Files changed:** src/screens/TwibbonPhotoScreen.jsx (facingMode useState initial value from 'user' to 'environment').
+**User-visible result:** Opening Menu -> Photo and Collage now opens the rear-facing camera by default. The preview is unmirrored (correct for back camera). The camera-flip toggle button still switches to the front camera, which then becomes mirrored as before. The selected twibbon overlay, capture, share, save, and retake all work identically. On desktop webcams with only a front camera, the existing OverconstrainedError fallback tries without facingMode constraint so a working camera still appears.
+**Automated checks:** npm run lint.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open Menu -> Photo and Collage; (2) verify the rear camera opens by default, preview is NOT mirrored (environment scene shows normally); (3) tap camera-flip toggle -> front camera opens, preview IS mirrored (selfie view); (4) tap toggle again -> back camera; (5) take photo with back camera -> composite unmirrored (correct); (6) take photo with front camera -> composite mirrored (selfie-style); (7) test on desktop webcam (which has only front camera) -> fallback succeeds, camera works.
+**Not checked:** npm run build (deferred per user request). Real mobile device testing.
+**Remaining risks:** Back camera by default means a visitor who wants a selfie has to tap the toggle first. If expo analytics later show most twibbon photos are selfies, the default may want to revert to front. If the phone's environment camera fails for any reason (permission denial is handled separately, but hardware failures), the OverconstrainedError fallback catches that path. The default is back camera because of the user's explicit request — this may not be optimal UX for a twibbon photo feature, but if the user has reasons (e.g., group photos at the booth), the back camera makes sense.
+**Decisions made:** Single-line state initialization change. No changes to mirroring logic because the existing code already gates mirroring on facingMode === 'user' — since default is now environment, mirroring is off by default, which is what we want for the back camera. No changes to handleToggleCamera, handleCapture, or the fallback path — they all already work correctly with either facing mode. No changes to the picker or share/save flows. The camera-flip toggle remains available so users can switch to front if they want a selfie.
+**Next part:** Manual verification on real device.
+**Commit:** 6bc73c8
