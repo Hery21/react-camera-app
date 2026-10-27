@@ -21,7 +21,7 @@ export function TwibbonPhotoScreen({ language }) {
   const [previewUrl, setPreviewUrl] = useState(null)
   const [statusMessage, setStatusMessage] = useState(null)
   const [sessionKey, setSessionKey] = useState(0)
-  const [facingMode, setFacingMode] = useState('user')
+  const [facingMode, setFacingMode] = useState('environment')
   const [selectedTwibbonId, setSelectedTwibbonId] = useState('default')
   const videoRef = useRef(null)
   const twibbonRefs = useRef({})
