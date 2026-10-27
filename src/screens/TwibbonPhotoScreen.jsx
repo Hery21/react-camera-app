@@ -2,7 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTranslation } from '../i18n/getTranslation.js'
 import { decorativeAssets } from '../data/decorativeAssets.js'
 
-const TWIBBON_SRC = '/twibbon.png'
+const TWIBBONS = [
+  { id: 'default', src: '/twibbon.png' },
+  { id: 'alt', src: '/twibbon-2.webp' },
+]
 const MAX_OUTPUT = 1440
 
 function classifyCameraError(error) {
@@ -19,8 +22,9 @@ export function TwibbonPhotoScreen({ language }) {
   const [statusMessage, setStatusMessage] = useState(null)
   const [sessionKey, setSessionKey] = useState(0)
   const [facingMode, setFacingMode] = useState('user')
+  const [selectedTwibbonId, setSelectedTwibbonId] = useState('default')
   const videoRef = useRef(null)
-  const twibbonImgRef = useRef(null)
+  const twibbonRefs = useRef({})
   const streamRef = useRef(null)
   const previewUrlRef = useRef(null)
   const previewBlobRef = useRef(null)
@@ -28,20 +32,12 @@ export function TwibbonPhotoScreen({ language }) {
   function stopStream() {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => {
-        try {
-          track.stop()
-        } catch {
-          // ignore
-        }
+        try { track.stop() } catch { /* ignore */ }
       })
       streamRef.current = null
     }
     if (videoRef.current && videoRef.current.srcObject) {
-      try {
-        videoRef.current.srcObject = null
-      } catch {
-        // ignore
-      }
+      try { videoRef.current.srcObject = null } catch { /* ignore */ }
     }
   }
 
@@ -55,19 +51,10 @@ export function TwibbonPhotoScreen({ language }) {
     try {
       let stream
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode },
-          audio: false,
-        })
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode }, audio: false })
       } catch (err) {
-        // Fallback: if the requested facingMode is unavailable (single-camera
-        // device, or the browser does not recognize 'environment' on a
-        // desktop webcam), retry without the facingMode constraint.
         if (err?.name === 'OverconstrainedError' || err?.name === 'ConstraintNotSatisfiedError') {
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: false,
-          })
+          stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         } else {
           throw err
         }
@@ -75,11 +62,7 @@ export function TwibbonPhotoScreen({ language }) {
       streamRef.current = stream
       if (videoRef.current) {
         videoRef.current.srcObject = stream
-        try {
-          await videoRef.current.play()
-        } catch {
-          // Some browsers reject play() without a further gesture; muted usually allows it
-        }
+        try { await videoRef.current.play() } catch { /* ignore */ }
       }
       setCameraState('live')
     } catch (err) {
@@ -94,9 +77,6 @@ export function TwibbonPhotoScreen({ language }) {
     startStreamRef.current = startStream
   }, [startStream])
 
-  // Effect depends on sessionKey so retake and toggle-camera both trigger
-  // a restart via sessionKey increment. The body runs after React commits
-  // the new render, so videoRef.current points at a real video element.
   useEffect(() => {
     let cancelled = false
     queueMicrotask(() => {
@@ -121,7 +101,7 @@ export function TwibbonPhotoScreen({ language }) {
 
   function handleCapture() {
     const video = videoRef.current
-    const twibbon = twibbonImgRef.current
+    const twibbon = twibbonRefs.current[selectedTwibbonId]
     if (!video || !twibbon || !twibbon.naturalWidth) return
 
     const naturalW = twibbon.naturalWidth
@@ -141,10 +121,7 @@ export function TwibbonPhotoScreen({ language }) {
     const videoAspect = videoW / videoH
     const outAspect = outW / outH
 
-    let sx = 0
-    let sy = 0
-    let sw = videoW
-    let sh = videoH
+    let sx = 0, sy = 0, sw = videoW, sh = videoH
     if (videoAspect > outAspect) {
       sw = videoH * outAspect
       sx = (videoW - sw) / 2
@@ -153,9 +130,6 @@ export function TwibbonPhotoScreen({ language }) {
       sy = (videoH - sh) / 2
     }
 
-    // Mirror only when using the front camera. Back camera captures the real
-    // scene as-is; mirroring a back-camera photo would flip any text in the
-    // environment backwards.
     if (facingMode === 'user') {
       ctx.save()
       ctx.translate(outW, 0)
@@ -174,9 +148,7 @@ export function TwibbonPhotoScreen({ language }) {
           showStatus(getTranslation(language, 'scanner.scannerErrorMessage'))
           return
         }
-        if (previewUrlRef.current) {
-          URL.revokeObjectURL(previewUrlRef.current)
-        }
+        if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
         const url = URL.createObjectURL(blob)
         previewUrlRef.current = url
         previewBlobRef.current = blob
@@ -207,6 +179,11 @@ export function TwibbonPhotoScreen({ language }) {
     setSessionKey((k) => k + 1)
   }
 
+  function handleSelectTwibbon(id) {
+    if (id === selectedTwibbonId) return
+    setSelectedTwibbonId(id)
+  }
+
   function handleSave() {
     if (!previewUrl) return
     try {
@@ -230,9 +207,7 @@ export function TwibbonPhotoScreen({ language }) {
       try {
         await navigator.share({ files: [file], title: getTranslation(language, 'twibbon.title') })
         return
-      } catch {
-        // User cancelled or share failed silently; fall through to save
-      }
+      } catch { /* fall through to save */ }
     }
     handleSave()
   }
@@ -271,7 +246,15 @@ export function TwibbonPhotoScreen({ language }) {
             muted
             autoPlay
           />
-          <img ref={twibbonImgRef} src={TWIBBON_SRC} alt="" className="twibbon-overlay" />
+          {TWIBBONS.map((tw) => (
+            <img
+              key={tw.id}
+              ref={(node) => { twibbonRefs.current[tw.id] = node }}
+              src={tw.src}
+              alt=""
+              className={'twibbon-overlay' + (tw.id === selectedTwibbonId ? '' : ' twibbon-overlay-hidden')}
+            />
+          ))}
           {cameraState === 'live' && (
             <button
               type="button"
@@ -291,6 +274,24 @@ export function TwibbonPhotoScreen({ language }) {
       {showStage && cameraState === 'preview' && previewUrl && (
         <div className="twibbon-stage">
           <img src={previewUrl} alt={getTranslation(language, 'twibbon.title')} className="twibbon-preview" />
+        </div>
+      )}
+
+      {cameraState === 'live' && (
+        <div className="twibbon-picker" role="group" aria-label={getTranslation(language, 'twibbon.selectFrame')}>
+          {TWIBBONS.map((tw, index) => (
+            <button
+              key={tw.id}
+              type="button"
+              className={'twibbon-picker-button' + (tw.id === selectedTwibbonId ? ' twibbon-picker-button-active' : '')}
+              onClick={() => handleSelectTwibbon(tw.id)}
+              aria-pressed={tw.id === selectedTwibbonId}
+              aria-label={getTranslation(language, 'twibbon.selectFrame') + ' ' + (index + 1)}
+              title={getTranslation(language, 'twibbon.selectFrame') + ' ' + (index + 1)}
+            >
+              <img src={tw.src} alt="" className="twibbon-picker-thumb" />
+            </button>
+          ))}
         </div>
       )}
 

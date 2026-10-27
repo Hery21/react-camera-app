@@ -41,7 +41,8 @@ export const zh = {
     share: '分享',
     requesting: '正在启动相机…',
     saved: '已保存到您的设备',
-    switchCamera: '切换相机'
+    switchCamera: '切换相机',
+    selectFrame: '边框'
   },
   quiz: {
     title: 'Kuis Day 1',

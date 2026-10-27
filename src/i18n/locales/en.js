@@ -41,7 +41,8 @@ export const en = {
     share: 'Share',
     requesting: 'Starting camera…',
     saved: 'Saved to your device',
-    switchCamera: 'Switch Camera'
+    switchCamera: 'Switch Camera',
+    selectFrame: 'Frame'
   },
   quiz: {
     title: 'Kuis Day 1',

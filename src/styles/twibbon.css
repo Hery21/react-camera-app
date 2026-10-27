@@ -305,3 +305,67 @@
   fill: currentColor;
   display: block;
 }
+
+
+/* ---------- Twibbon frame picker ---------- */
+
+.twibbon-overlay-hidden {
+  display: none;
+}
+
+.twibbon-picker {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 3;
+}
+
+.twibbon-picker-button {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  padding: 2px;
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: var(--radius-sm);
+  background: rgba(26, 18, 16, 0.55);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.twibbon-picker-button:hover {
+  border-color: var(--color-antique-gold);
+}
+
+.twibbon-picker-button:active {
+  transform: scale(0.96);
+}
+
+.twibbon-picker-button:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 2px;
+}
+
+.twibbon-picker-button-active {
+  border-color: var(--color-vermilion);
+  border-width: 3px;
+  padding: 1px;
+}
+
+.twibbon-picker-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-height: 700px) {
+  .twibbon-picker-button {
+    width: 52px;
+    height: 52px;
+  }
+}

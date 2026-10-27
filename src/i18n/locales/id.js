@@ -41,7 +41,8 @@ export const id = {
     share: 'Bagikan',
     requesting: 'Memulai kamera…',
     saved: 'Tersimpan di perangkat Anda',
-    switchCamera: 'Ganti Kamera'
+    switchCamera: 'Ganti Kamera',
+    selectFrame: 'Bingkai'
   },
   quiz: {
     title: 'Kuis Day 1',
