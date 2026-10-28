@@ -21,7 +21,7 @@
 // Asia/Jakarta timezone. Use forceDay during testing or if date logic misbehaves.
 
 export const quizConfig = {
-  endpoint: '',
+  endpoint: 'https://script.google.com/macros/s/AKfycbwa4vlWePCtAkIG_vb5dT7UQlVMlNAm5dh1qWC5svZ4NHK22ns5jRxV3V2bW4fxRD0s/exec',
   mode: 'json',
   pointsPerQuestion: 20,
   forceDay: null,
