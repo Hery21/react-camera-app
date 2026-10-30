@@ -30,6 +30,8 @@ export const en = {
     quizDesc: 'Test what you have learned',
     collage: 'Take a Photo',
     collageDesc: 'Take a twibbon keepsake photo',
+    mahjong: 'Play Mahjong',
+    mahjongDesc: 'Try the classic four-player game with AI opponents',
     comingSoon: 'Coming soon',
     back: 'Back to welcome'
   },
@@ -124,6 +126,11 @@ export const en = {
     scanNext: 'Scan Next Exhibit',
     backToResult: 'Back to Result',
     backToInfo: 'Back to info'
+  },
+  mahjong: {
+    title: 'Mahjong',
+    loading: 'Preparing the tiles…',
+    close: 'Close game and return to menu'
   },
   progress: {
     scanned: 'Scanned'

@@ -51,7 +51,8 @@
     "docs:check": "node scripts/documentation/check-docs.mjs",
     "docs": "npm run docs:capture && npm run docs:generate",
     "print:qr-urls": "node scripts/print-qr-urls.mjs",
-    "check:qr-codes": "node scripts/check-qr-codes.mjs"
+    "check:qr-codes": "node scripts/check-qr-codes.mjs",
+    "check:mahjong": "node scripts/check-mahjong.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

@@ -30,6 +30,8 @@ export const zh = {
     quizDesc: '测试您所学的知识',
     collage: '拍照',
     collageDesc: '拍摄一张 twibbon 纪念照',
+    mahjong: '打麻将',
+    mahjongDesc: '与 AI 对战，体验经典四人麻将',
     comingSoon: '即将推出',
     back: '返回首页'
   },
@@ -124,6 +126,11 @@ export const zh = {
     scanNext: '扫描下一件展品',
     backToResult: '返回结果',
     backToInfo: '返回信息'
+  },
+  mahjong: {
+    title: '麻将',
+    loading: '正在准备牌……',
+    close: '关闭游戏并返回菜单'
   },
   progress: {
     scanned: '已扫描'

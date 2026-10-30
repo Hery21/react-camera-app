@@ -5,7 +5,7 @@ import frameTr from '../assets/frame-tr.webp'
 import frameBl from '../assets/frame-bl.webp'
 import frameBr from '../assets/frame-br.webp'
 
-export function MenuScreen({ language, onSelectQuiz, onSelectTour, onSelectPhoto }) {
+export function MenuScreen({ language, onSelectTour, onSelectQuiz, onSelectPhoto, onSelectMahjong }) {
   return (
     <section className="menu-screen" aria-labelledby="menu-title">
       <div className="menu-frame" aria-hidden="true">
@@ -43,6 +43,13 @@ export function MenuScreen({ language, onSelectQuiz, onSelectTour, onSelectPhoto
             <span className="menu-card-title">{getTranslation(language, 'menu.collage')}</span>
           </span>
           <span className="menu-card-desc">{getTranslation(language, 'menu.collageDesc')}</span>
+        </button>
+
+        <button type="button" className="menu-card menu-card-active" onClick={onSelectMahjong}>
+          <span className="menu-card-head">
+            <span className="menu-card-title">{getTranslation(language, 'menu.mahjong')}</span>
+          </span>
+          <span className="menu-card-desc">{getTranslation(language, 'menu.mahjongDesc')}</span>
         </button>
       </div>
     </section>

@@ -1,0 +1,133 @@
+.app--mahjong {
+  background: var(--color-scanner-bg);
+  color: var(--color-surface);
+}
+
+.app--mahjong .app-main {
+  padding: 0;
+  min-height: 0;
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.mahjong-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-scanner-bg);
+  overflow: hidden;
+}
+
+.mahjong-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.mahjong-iframe-loaded {
+  opacity: 1;
+}
+
+.mahjong-close {
+  position: absolute;
+  z-index: 100;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid var(--color-antique-gold);
+  border-radius: 50%;
+  background: rgba(26, 18, 16, 0.85);
+  color: var(--color-antique-gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.mahjong-close:hover {
+  background: rgba(26, 18, 16, 0.95);
+}
+
+.mahjong-close:active {
+  transform: scale(0.94);
+}
+
+.mahjong-close:focus-visible {
+  outline: 2px solid var(--color-antique-gold);
+  outline-offset: 3px;
+}
+
+.mahjong-close svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: block;
+}
+
+/* ---------- Themed transition ---------- */
+
+.mahjong-transition {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-vermilion-dark);
+  background-image: url('/red-brocade-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.mahjong-transition-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.mahjong-transition-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(212, 175, 55, 0.25);
+  border-top-color: var(--color-antique-gold);
+  border-radius: 50%;
+  animation: mahjong-spin 0.9s linear infinite;
+}
+
+@keyframes mahjong-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mahjong-transition-text {
+  margin: 0;
+  color: var(--color-surface);
+  font-family: var(--font-family-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mahjong-transition-spinner {
+    animation-duration: 2.5s;
+  }
+  .mahjong-iframe,
+  .mahjong-transition {
+    transition: none;
+  }
+}

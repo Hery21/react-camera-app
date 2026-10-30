@@ -11,6 +11,7 @@ import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
 import { AdminScreen } from './screens/AdminScreen.jsx'
 import { QuizScreen } from './screens/QuizScreen.jsx'
 import { TwibbonPhotoScreen } from './screens/TwibbonPhotoScreen.jsx'
+import { MahjongModal } from './components/MahjongModal.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
 import { exhibits } from './data/exhibits.js'
 import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } from './lib/scanProgress.js'
@@ -90,6 +91,10 @@ function App() {
 
   function handleSelectQuiz() {
     setScreen('quiz')
+  }
+
+  function handleSelectMahjong() {
+    setScreen('mahjong')
   }
 
   function handleBackToWelcome() {
@@ -175,6 +180,7 @@ function App() {
           onSelectQuiz={handleSelectQuiz}
           onSelectTour={handleSelectTour}
           onSelectPhoto={handleSelectPhoto}
+          onSelectMahjong={handleSelectMahjong}
         />
       )}
       {screen === 'scanner' && (
@@ -201,6 +207,9 @@ function App() {
       )}
       {screen === 'twibbon' && <TwibbonPhotoScreen language={language} />}
       {screen === 'quiz' && <QuizScreen language={language} onDone={handleBackToMenu} />}
+      {screen === 'mahjong' && (
+        <MahjongModal language={language} onClose={handleBackToMenu} />
+      )}
 
       <ScanProgress language={language} scanned={scannedExhibitIds.length} total={exhibits.length} />
     </AppShell>

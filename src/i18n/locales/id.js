@@ -30,6 +30,8 @@ export const id = {
     quizDesc: 'Uji apa yang telah Anda pelajari',
     collage: 'Ambil Foto',
     collageDesc: 'Ambil foto kenang-kenangan twibbon',
+    mahjong: 'Main Mahjong',
+    mahjongDesc: 'Coba permainan klasik empat pemain melawan AI',
     comingSoon: 'Segera hadir',
     back: 'Kembali ke beranda'
   },
@@ -124,6 +126,11 @@ export const id = {
     scanNext: 'Pindai Pameran Berikutnya',
     backToResult: 'Kembali ke Hasil',
     backToInfo: 'Kembali ke info'
+  },
+  mahjong: {
+    title: 'Mahjong',
+    loading: 'Menyiapkan bidak…',
+    close: 'Tutup permainan dan kembali ke menu'
   },
   progress: {
     scanned: 'Dipindai'
