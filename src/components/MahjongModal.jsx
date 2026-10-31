@@ -4,7 +4,7 @@ import { getTranslation } from '../i18n/getTranslation.js'
 // Point this at the deployed mahjong project.
 // For local dev testing, change to your local server URL (e.g. http://localhost:3000/).
 // The mahjong game lives in its own repo and its own Vercel project.
-const MAHJONG_GAME_URL = 'http://localhost:3000/' // ← change this
+const MAHJONG_GAME_URL = 'https://mahjong-web-neon.vercel.app/' // ← change this
 
 export function MahjongModal({ language, onClose }) {
   const [loaded, setLoaded] = useState(false)
@@ -84,9 +84,7 @@ export function MahjongModal({ language, onClose }) {
         <div className="mahjong-transition" aria-live="polite">
           <div className="mahjong-transition-inner">
             <div className="mahjong-transition-spinner" aria-hidden="true" />
-            <p className="mahjong-transition-text">
-              {getTranslation(language, 'mahjong.loading')}
-            </p>
+            <p className="mahjong-transition-text">{getTranslation(language, 'mahjong.loading')}</p>
           </div>
         </div>
       )}
