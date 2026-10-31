@@ -9,7 +9,6 @@ import { ScannerScreen } from './screens/ScannerScreen.jsx'
 import { ScanResultScreen } from './screens/ScanResultScreen.jsx'
 import { ExhibitScreen } from './screens/ExhibitScreen.jsx'
 import { AdminScreen } from './screens/AdminScreen.jsx'
-import { QuizScreen } from './screens/QuizScreen.jsx'
 import { TwibbonPhotoScreen } from './screens/TwibbonPhotoScreen.jsx'
 import { MahjongModal } from './components/MahjongModal.jsx'
 import { ScanProgress } from './components/ScanProgress.jsx'
@@ -18,11 +17,6 @@ import { addScannedExhibitId, loadScannedExhibitIds, saveScannedExhibitIds } fro
 import { parseQrPayload } from './lib/qrPayload.js'
 import { getExhibitById } from './lib/exhibitLookup.js'
 
-// Reads ?exhibit=PSBIKT-NNN from the current URL and returns the exhibit
-// record if the value parses to a known exhibit ID. Used to deep-link from
-// reprint QR codes that encode full URLs — the visitor scans with their
-// phone camera, the browser opens the app at this URL, and App lands on the
-// Scan Result screen directly for that exhibit.
 function getDeepLinkExhibit() {
   if (typeof window === 'undefined') return null
   const params = new URLSearchParams(window.location.search)
@@ -35,8 +29,6 @@ function getDeepLinkExhibit() {
 }
 
 function App() {
-  // Computed once on mount. All deep-link-derived state is initialized from
-  // this value below, so no effect needs to call setState on mount.
   const [deepLinkExhibit] = useState(() => getDeepLinkExhibit())
   const [language, setLanguage] = useState(getInitialLanguage)
   const [selectedExhibit, setSelectedExhibit] = useState(deepLinkExhibit)
@@ -54,11 +46,6 @@ function App() {
     applyDocumentLanguage(language)
   }, [language])
 
-  // Strip the ?exhibit query param on mount so a reload lands on Welcome
-  // instead of re-triggering the deep link. No setState here — the deep-link
-  // state was already initialized above, and sessionStorage was updated
-  // inside the scannedExhibitIds initializer. This effect only touches the
-  // browser's history entry, which is the correct use of an effect.
   useEffect(() => {
     if (typeof window === 'undefined') return
     const params = new URLSearchParams(window.location.search)
@@ -85,16 +72,12 @@ function App() {
     setScreen('twibbon')
   }
 
-  function handleStartAdmin() {
-    setScreen('admin')
-  }
-
-  function handleSelectQuiz() {
-    setScreen('quiz')
-  }
-
   function handleSelectMahjong() {
     setScreen('mahjong')
+  }
+
+  function handleStartAdmin() {
+    setScreen('admin')
   }
 
   function handleBackToWelcome() {
@@ -161,7 +144,7 @@ function App() {
                   ? handleAdminBack
                   : screen === 'twibbon'
                     ? handleBackToMenu
-                    : screen === 'quiz'
+                    : screen === 'mahjong'
                       ? handleBackToMenu
                       : undefined
       }
@@ -177,7 +160,6 @@ function App() {
       {screen === 'menu' && (
         <MenuScreen
           language={language}
-          onSelectQuiz={handleSelectQuiz}
           onSelectTour={handleSelectTour}
           onSelectPhoto={handleSelectPhoto}
           onSelectMahjong={handleSelectMahjong}
@@ -206,7 +188,6 @@ function App() {
         />
       )}
       {screen === 'twibbon' && <TwibbonPhotoScreen language={language} />}
-      {screen === 'quiz' && <QuizScreen language={language} onDone={handleBackToMenu} />}
       {screen === 'mahjong' && (
         <MahjongModal language={language} onClose={handleBackToMenu} />
       )}
