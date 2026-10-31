@@ -21,7 +21,7 @@ import { chromium } from 'playwright'
 import { mkdirSync, existsSync } from 'node:fs'
 import { screensContent } from '../../documentation/screens-content.mjs'
 
-const BASE_URL = process.env.DOCS_BASE_URL || 'http://localhost:5173'
+const BASE_URL = process.env.DOCS_BASE_URL || 'https://mahjong-web-neon.vercel.app'
 const OUTPUT_DIR = 'documentation/screenshots'
 const LANGUAGES = [
   { code: 'en', locale: 'en-US' },
@@ -78,7 +78,15 @@ async function probeFeature(probePage) {
   return probe
 }
 
-console.log('Capturing ' + screensContent.length + ' screens x ' + LANGUAGES.length + ' languages = ' + screensContent.length * LANGUAGES.length + ' screenshots')
+console.log(
+  'Capturing ' +
+    screensContent.length +
+    ' screens x ' +
+    LANGUAGES.length +
+    ' languages = ' +
+    screensContent.length * LANGUAGES.length +
+    ' screenshots',
+)
 console.log('Base URL: ' + BASE_URL)
 console.log('Viewport: ' + VIEWPORT.width + 'x' + VIEWPORT.height + ' at ' + DEVICE_SCALE_FACTOR + 'x DPI')
 console.log('Output: ' + OUTPUT_DIR + '/*.jpg')
@@ -87,10 +95,7 @@ console.log('')
 await checkServer()
 
 const browser = await chromium.launch({
-  args: [
-    '--use-fake-ui-for-media-stream',
-    '--use-fake-device-for-media-stream',
-  ],
+  args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
 })
 
 // ---- Prerequisite probe ----
@@ -126,13 +131,16 @@ for (const lang of LANGUAGES) {
     locale: lang.locale,
   })
 
-  await context.addInitScript((args) => {
-    try {
-      window.localStorage.setItem(args.key, args.value)
-    } catch {
-      // ignore — private mode may block localStorage
-    }
-  }, { key: LANG_STORAGE_KEY, value: lang.code })
+  await context.addInitScript(
+    (args) => {
+      try {
+        window.localStorage.setItem(args.key, args.value)
+      } catch {
+        // ignore — private mode may block localStorage
+      }
+    },
+    { key: LANG_STORAGE_KEY, value: lang.code },
+  )
 
   const page = await context.newPage()
   page.setDefaultTimeout(8000)
