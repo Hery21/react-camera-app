@@ -1611,3 +1611,17 @@ Using Tab and Enter only.
 **Decisions made:** URL hardcoded to localhost:3000 for dev testing. Mahjong screen intentionally NOT added to AppShell onBack chain — uses its own full-screen ✕ close button (top-right, 44x44 gold-bordered circle) instead of AppShell back arrow, because the back arrow is small and easy to miss against the busy game board. Close button matches language toggle aesthetic. Transition has 700ms minimum so it feels intentional, 6s safety net so iframe failure still shows close button. Iframe unmounted on screen change, so each play is a fresh game. Escape key handler for keyboard accessibility. Two failed runs during this integration: original mahjong-iframe.plan.mjs failed at step 11 because it targeted a FullscreenToggle import that App.jsx no longer has (recovery used TwibbonPhotoScreen as anchor); mahjong-recover.plan.mjs failed at step 2 because the file already had localhost:3000 URL, so no change was needed (this plan skips that step). Lesson: for replace targets, verify the exact current content rather than assuming from memory — especially when a file may have been modified between plan writes.
 **Next part:** User tests locally on dev server. Then verifies mahjong repo LICENSE, deploys mahjong repo to Vercel, updates MAHJONG_GAME_URL to the Vercel URL, deploys main app, tests on phone.
 **Commit:** 5922ccb
+
+## Feature — Remove Quiz menu
+
+**Status:** Complete
+**Goal:** Remove the Quiz card and all associated routing from the main app now that the quiz period is over.
+**Files changed:** src/screens/MenuScreen.jsx (removed Quiz card, dropped onSelectQuiz prop), src/App.jsx (removed QuizScreen import, handleSelectQuiz handler, onBack routing for quiz, and the screen render).
+**User-visible result:** The main menu now shows three cards: Tour, Take a Photo, and Play Mahjong. The Quiz option is completely gone from the UI and cannot be navigated to.
+**Automated checks:** npm run lint; npm run check:mvp; npm run check:flow.
+**Unit tests:** Intentionally omitted per urgent-policy override.
+**Manual checks:** Pending. (1) Open Menu, verify only three cards present. (2) Verify Tour, Photo, and Mahjong still work.
+**Not checked:** npm run build (deferred per user request).
+**Remaining risks:** QuizScreen.jsx and the translation keys for quiz are still on disk but completely unreferenced. Harmless. If the quiz is reinstated for a future expo, the file is still there.
+**Decisions made:** Only rewrote the menu and App routing. Left the QuizScreen component in place rather than deleting it to minimize the diff and preserve the work. If the codebase is cleaned up later, the unused file can be safely removed.
+**Next part:** Deploy to Vercel.
